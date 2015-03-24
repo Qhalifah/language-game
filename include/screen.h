@@ -29,10 +29,10 @@ along with Dina'ki Adventures. If not, see <http://www.gnu.org/licenses/>.*/
 #define SCREEN_H_
 
 #include <SFML/Graphics.hpp>
-#include <initializer_list>
-using std::initializer_list;
 using sf::Vector2f;
 using sf::Vector2i;
+#include <initializer_list>
+using std::initializer_list;
 #include <utility>
 using std::pair;
 #include <string>
