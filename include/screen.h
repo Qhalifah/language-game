@@ -162,8 +162,8 @@ struct ScreenItem
     wstring name    = L"none";
     wstring sound   = L"none";
     wstring hover_text = L"none";
-    Vec2   position = {0,0};
-    Vec2   size     = {0,0};
+    Vec2   position = Vec2{0,0};
+    Vec2   size     = Vec2{0,0};
     float  volume   = 100;
     float  pitch    = 1;
     bool   visible  = true;
