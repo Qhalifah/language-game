@@ -1,4 +1,4 @@
-Everything before "MAP" is ignored, so this space can be used for documentation.
+﻿Everything before "MAP" is ignored, so this space can be used for documentation.
 
 Behavior Flags:
 1 = mouse_down_engage, 2 = mouse_down_select, 4 = mouse_up_engage

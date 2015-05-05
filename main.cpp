@@ -17,6 +17,8 @@ along with Dina'ki Adventures. If not, see <http://www.gnu.org/licenses/>.*/
 
 // main.cpp
 
+//#define  SFML_STATIC
+
 #include "compile.h"
 #include "controller.h"
 #include "mapcontroller.h"

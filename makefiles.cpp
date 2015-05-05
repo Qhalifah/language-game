@@ -64,45 +64,45 @@
 //    //setlocale(LC_ALL, "en_US.UTF-8");
 //    //std::locale loc (std::locale(), new std::codecvt_utf8<char32_t>);
 //    //std::locale::global(loc);
-//    
+//
 //    flexifstream fin("db/content.txt");
-//    
+//
 //    #if defined(__clang__)
 //        fin.imbue(std::locale("en_US.UTF-8"));
-//    
+//
 //    #elif defined(__GNUC__) || defined(__GNUG__)
 //        fin.imbue(std::locale("en_US.UTF-8"));
-//    
+//
 //   #elif defined(_MSC_VER)
 //	  _setmode(_fileno(stdout),_O_WTEXT);
 //      fin.imbue(std::locale(fin.getloc(),new std::codecvt_utf8<wchar_t, 0xffff, std::consume_header>));
 //    //fin.imbue(std::locale("en_US.UTF-8"));
-//        
+//
 //    #endif
 //
 //	   //std::wcout << "abcdefghijklmnopqrstuvwxyzł.'ˋ" << std::endl;
 //	   /*while (fin)
 //	   {
-//		   std::wstring t_string; 
+//		   std::wstring t_string;
 //		  std::getline(fin,t_string);
 //		   std::wcout << t_string << std::endl;
 //	   }
 //
 //	   return -2;*/
-//    
+//
 //    if( !fin )
 //    {
 //        cerr << "Error opening content.txt" << endl;
 //        exit(0);
 //    }
-//    
+//
 //    flexstring input;
-//    
+//
 //    // Skip documentation, assume MAP is first declaration
 //    do {
 //        fin >> input;
 //    }while( (input != L"MAP") && !fin.eof() );
-//    
+//
 //    // Look for file type definitions and write out files.
 //    while( !fin.eof() )
 //    {
@@ -124,12 +124,12 @@
 //        }
 //        else
 //            error(input);
-//        
+//
 //        fin >> input;
 //    }
-//    
+//
 //    fin.close();
-//    
+//
 ////    cout << "Done" << endl;
 //    return 0;
 //}
@@ -533,25 +533,25 @@
 //{
 //    flexstring input;
 //    fin >> input; // First input after MAP should be the name
-//    
+//
 //    //Hack to convert to string without code that'll make your mother cry.
 //    string name = flex_to_string(input);
-//    
+//
 //    /*wofstream out("name.txt");
 //    out << input;
 //    out.close();
-//    
+//
 //    ifstream in("name.txt");
 //    in >> name;
 //    in.close();*/
-//    
+//
 //    // Make a map object, and empty vectors for ScreenItems and MusicItems
 //    std::shared_ptr<BasicScreen>    ppage(new BasicScreen(name ,nullptr, ".//db//profilepage//", "pp"));
 //    std::vector<ScreenItem> images;
 //    std::vector<MusicItem>  bgms;
-//    
+//
 //    fin >> input;
-//    
+//
 //    // Look for ScreenItems, MusicItems, or Dictionaries and add to object.
 //    while( (input != L"END_PROFILE_PAGE") && !fin.eof() )
 //    {
@@ -569,13 +569,13 @@
 //        }
 //        else
 //            error(input);
-//        
+//
 //        fin >> input;
 //    }
-//    
+//
 //    ppage->setScreenItems(images);
 //    ppage->setBGM(bgms);
-//    
+//
 //    ppage->save();
 //}
 //
