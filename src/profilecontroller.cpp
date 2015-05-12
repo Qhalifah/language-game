@@ -31,8 +31,8 @@ along with Dina'ki Adventures. If not, see <http://www.gnu.org/licenses/>.*/
 #include <vector>
 #include <iostream>
 
-#include <SFML\Graphics\Color.hpp>
-#include <SFML\Audio\SoundSource.hpp>
+#include <SFML/Graphics/Color.hpp>
+#include <SFML/Audio/SoundSource.hpp>
 
 ProfileController::ProfileController(std::shared_ptr<ProfileWrangler> wrangler, std::shared_ptr<Profile> profile,
                   std::shared_ptr<Interface> interface,
