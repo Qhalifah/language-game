@@ -394,6 +394,11 @@ void ProfileController::mouseButtonReleasedEvent(sf::Event event, sf::Vector2i m
         --hit_sprite;
     }
     
+	if (m_selected_sprite != hit_sprite)
+	{
+		m_master_controller->closeProfileWindowIfUp(m_profile_wrangler->getProfiles()[0]);
+	}
+
     if( hit_sprite > -1)
     {
         ScreenItem screen_item;

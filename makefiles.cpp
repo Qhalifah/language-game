@@ -66,18 +66,18 @@
 //    //std::locale::global(loc);
 //
 //    flexifstream fin("db/content.txt");
-//
+//	cout << "hi" << endl;
 //    #if defined(__clang__)
 //        fin.imbue(std::locale("en_US.UTF-8"));
 //
 //    #elif defined(__GNUC__) || defined(__GNUG__)
 //        fin.imbue(std::locale("en_US.UTF-8"));
-//
+//		
 //   #elif defined(_MSC_VER)
 //	  _setmode(_fileno(stdout),_O_WTEXT);
 //      fin.imbue(std::locale(fin.getloc(),new std::codecvt_utf8<wchar_t, 0xffff, std::consume_header>));
 //    //fin.imbue(std::locale("en_US.UTF-8"));
-//
+//	  cout << "hi2" << endl;
 //    #endif
 //
 //	   //std::wcout << "abcdefghijklmnopqrstuvwxyzł.'ˋ" << std::endl;

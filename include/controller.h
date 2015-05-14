@@ -127,6 +127,8 @@ public:
     void toggleBackButton();
     
     void controlLoop(); 
+
+	void closeProfileWindowIfUp(std::shared_ptr<Profile> dummyProfilePtr);
     
 private:
     std::shared_ptr<Interface> m_interface;
