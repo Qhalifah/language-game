@@ -397,6 +397,7 @@ void ProfileController::mouseButtonReleasedEvent(sf::Event event, sf::Vector2i m
     if( hit_sprite > -1)
     {
         ScreenItem screen_item;
+        screen_item = m_screen->getScreenItems()[(size_t)hit_sprite];
         
         if (m_engaged_sprite != hit_sprite && m_engaged_sprite > 0)
         {
@@ -404,15 +405,13 @@ void ProfileController::mouseButtonReleasedEvent(sf::Event event, sf::Vector2i m
         }
         
         if (m_selected_sprite != hit_sprite && m_selected_sprite > 0
-            && m_screen->getScreenItems()[(size_t)hit_sprite].name != L"-"
-            && m_screen->getScreenItems()[(size_t)hit_sprite].name != L"Go")
+            && screen_item.name != L"-"
+            && screen_item.name != L"Go")
         {
             deselectedItem((size_t)m_selected_sprite, m_box_color);
             m_selected_sprite = -1;
             m_profile_wrangler->setCurrentProfile(-1);
         }
-        
-        screen_item = m_screen->getScreenItems()[(size_t)hit_sprite];
         
         if (screen_item.behavior & MOUSE_UP_ENGAGE)
         {
@@ -455,13 +454,13 @@ void ProfileController::mouseButtonReleasedEvent(sf::Event event, sf::Vector2i m
                 m_selected_sprite = -1;
                 //std::cout << m_profile_wrangler->getCurrentProfile()->getAge() << std::endl;
                 
-                std::shared_ptr<Map> game_map(new Map("WorldMap"));
+                std::shared_ptr<Map> game_map = make_shared<Map>("WorldMap");
                 game_map->load();
                 
-                std::shared_ptr<MapController> map_controller(new MapController(
-                                                                                m_master_controller->getProfile(),
-                                                                                m_master_controller->getInterface(),
-                                                                                m_master_controller, game_map));
+                std::shared_ptr<MapController> map_controller =
+                        make_shared<MapController>(m_master_controller->getProfile(),
+                                                   m_master_controller->getInterface(),
+                                                   m_master_controller, game_map);
                 
                 m_master_controller->push_controller(map_controller);
             }

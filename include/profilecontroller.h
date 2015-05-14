@@ -24,6 +24,8 @@ along with Dina'ki Adventures. If not, see <http://www.gnu.org/licenses/>.*/
 #include "interface.h"
 #include "dictionary.h"
 #include <memory>
+using std::shared_ptr;
+using std::make_shared;
 #include <vector>
 #include <string>
 #include <stack>

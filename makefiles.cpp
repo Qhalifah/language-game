@@ -31,6 +31,9 @@
 //using std::wcerr;
 //using std::cout;
 //using std::endl;
+//#include <memory>
+//using std::shared_ptr;
+//using std::make_shared;
 //
 //
 //typedef wifstream flexifstream;
@@ -597,7 +600,7 @@
 //    in.close();*/
 //
 //    // Make a map object, and empty vectors for ScreenItems and MusicItems
-//    std::shared_ptr<Map>    map(new Map(name));
+//    std::shared_ptr<Map>    map = make_shared<Map>(name);
 //    std::vector<ScreenItem> images;
 //    std::vector<MusicItem>  bgms;
 //
