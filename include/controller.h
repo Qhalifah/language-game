@@ -128,7 +128,7 @@ public:
     
     void controlLoop(); 
 
-	void closeProfileWindowIfUp(std::shared_ptr<Profile> dummyProfilePtr);
+	void closeProfileWindowIfUp();
     
 private:
     std::shared_ptr<Interface> m_interface;

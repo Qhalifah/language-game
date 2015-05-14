@@ -560,10 +560,11 @@ void MasterController::controlLoop()
     }*/
 }
 
-void MasterController::closeProfileWindowIfUp(std::shared_ptr<Profile> dummyProfilePtr)
+void MasterController::closeProfileWindowIfUp()
 {
 	if (m_hud->isProfileUp())
 	{
+	    shared_ptr<Profile>dummyProfilePtr = nullptr;
 		m_hud->toggleProfile(m_interface, dummyProfilePtr);
 	}
 }

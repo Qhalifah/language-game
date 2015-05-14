@@ -396,7 +396,7 @@ void ProfileController::mouseButtonReleasedEvent(sf::Event event, sf::Vector2i m
     
 	if (m_selected_sprite != hit_sprite)
 	{
-		m_master_controller->closeProfileWindowIfUp(m_profile_wrangler->getProfiles()[0]);
+		m_master_controller->closeProfileWindowIfUp();
 	}
 
     if( hit_sprite > -1)

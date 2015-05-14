@@ -88,6 +88,7 @@ HUD::HUD() : m_buttons(6, ScreenItem())
     m_buttons[m_firstKey-1].position = {(m_width-m_buttons[m_firstKey-1].size.x)*.5f,
                                         (float)(5.5*m_height)};
 
+    // Set position of virtual keys
     for(auto ii = 0u; ii < 10; ++ii)
     {
         temp.position = Vec2(m_buttons[m_firstKey-1].position.x+1+.5*temp.size.x+(temp.size.x+1)*ii,
@@ -97,19 +98,19 @@ HUD::HUD() : m_buttons(6, ScreenItem())
     for(auto ii = 0u; ii < 10; ++ii)
     {
         temp.position = Vec2(m_buttons[m_firstKey-1].position.x+1+(temp.size.x+1)*ii,
-                m_buttons[m_firstKey-1].position.y + 2 + m_height*.5);
+                             m_buttons[m_firstKey-1].position.y + 2 + m_height*.5);
         m_buttons.push_back(temp);
     }
     for(auto ii = 0u; ii < 10; ++ii)
     {
         temp.position = Vec2(m_buttons[m_firstKey-1].position.x+1+(temp.size.x+1)*ii,
-                m_buttons[m_firstKey-1].position.y + 3 + m_height*1.0);
+                             m_buttons[m_firstKey-1].position.y + 3 + m_height*1.0);
         m_buttons.push_back(temp);
     }
     for(auto ii = 0u; ii < 10; ++ii)
     {
         temp.position = Vec2(m_buttons[m_firstKey-1].position.x+1 + (temp.size.x+1)*ii,
-                m_buttons[m_firstKey-1].position.y + 4 + m_height*1.5);
+                             m_buttons[m_firstKey-1].position.y + 4 + m_height*1.5);
         m_buttons.push_back(temp);
     }
 
@@ -158,6 +159,7 @@ HUD::HUD() : m_buttons(6, ScreenItem())
     m_buttons[m_firstKey+39].name = L"Done";
     m_buttons[m_firstKey+39].size  = {2*temp.size.x+1, temp.size.y};
     
+    // Profile information overlay starts here
     m_profile_index = m_buttons.size(); 
     ScreenItem t_screen_item;
     
@@ -191,6 +193,7 @@ HUD::HUD() : m_buttons(6, ScreenItem())
     t_screen_item.visible = false;
     m_buttons.push_back(t_screen_item);
     
+    // Place holder for profile name
     t_screen_item.type = TEXT;
     t_screen_item.name = L"";
     t_screen_item.sound = L"none";
@@ -202,6 +205,7 @@ HUD::HUD() : m_buttons(6, ScreenItem())
     
     m_name_index = m_buttons.size() -1;
     
+    // Place holder for user age
     t_screen_item.type = TEXT;
     t_screen_item.name = L"";
     t_screen_item.sound = L"none";
@@ -296,20 +300,22 @@ void HUD::updateProfile(shared_ptr<Interface> interface, std::shared_ptr<Profile
     std::vector<Badge> t_badges = t_profile->getBadges();
     
     size_t curr_display_badge = m_badge_image_index;
-    for(size_t pos_badge = m_badge_index; pos_badge < t_badges.size() && curr_display_badge < m_badge_image_index + 3; ++pos_badge)
+    for(size_t pos_badge = m_badge_index;
+        pos_badge < t_badges.size() && curr_display_badge < m_badge_image_index + 3;
+        ++pos_badge, ++curr_display_badge)
     {
         if(t_badges[pos_badge].isComplete())
         {
             m_buttons[curr_display_badge].name = t_badges[pos_badge].m_image;
             m_buttons[curr_display_badge].hover_text = t_badges[pos_badge].m_name;
-            curr_display_badge++;
         }
         else
-        for(size_t pos_piece = 0; pos_piece < t_badges[pos_badge].m_pieces.size() && curr_display_badge < m_badge_image_index+3; ++pos_piece)
+        for(size_t pos_piece = 0;
+            pos_piece < t_badges[pos_badge].m_pieces.size() && curr_display_badge < m_badge_image_index+3;
+            ++pos_piece, ++curr_display_badge)
             {
                 m_buttons[curr_display_badge].name = t_badges[pos_badge].m_pieces[pos_piece].m_image;
                 m_buttons[curr_display_badge].hover_text = t_badges[pos_badge].m_name + L" " + std::to_wstring(t_badges[pos_badge].m_pieces[pos_piece].m_id);
-                curr_display_badge++;
             }
     }
     /*size_t badge = m_badge_index;
@@ -340,21 +346,31 @@ void HUD::updateProfile(shared_ptr<Interface> interface, std::shared_ptr<Profile
     interface->updateHud(m_badge_image_index, m_buttons.size(), m_buttons);
 }
 
+//
 void HUD::toggleProfile(shared_ptr<Interface> interface, std::shared_ptr<Profile> t_profile)
 {
     //std::cout << name.size() << age.size() << std::endl;
-    m_buttons[m_name_index].name = t_profile->getName();
-    m_buttons[m_age_index].name = std::to_wstring(t_profile->getAge());
+    // Set name and age of profile to display
+    if(t_profile != nullptr) {
+        m_buttons[m_name_index].name = t_profile->getName();
+        m_buttons[m_age_index].name = std::to_wstring(t_profile->getAge());
+    }
     
+    // Toggle visibility of all profile overlay objects
     for(size_t ii = m_profile_index; ii < m_buttons.size(); ++ii)
     {
+        // TODO: improve synchronization with m_profile_up
         m_buttons[(size_t)ii].visible = !m_buttons[(size_t)ii].visible;
     }
     
-    updateProfile(interface, t_profile); 
+    if(t_profile != nullptr) {
+        updateProfile(interface, t_profile);
+    }
+    else {
+        interface->updateHud(m_profile_index, m_buttons.size(), m_buttons);
+    }
+
     m_profile_up = !m_profile_up;
-    
-    interface->updateHud(m_profile_index, m_buttons.size(), m_buttons);
 }
 
 void HUD::toggleKeys(shared_ptr<Interface> interface)
