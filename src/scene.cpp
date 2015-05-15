@@ -44,37 +44,23 @@ Badge Scene::badge()
 
 void Scene::save()
 {
-    std::ofstream os(".//db//scenes//" + m_id + ".scn");
-    if( !os.fail() )
+    std::ofstream out_stream(".//db//scenes//" + m_id + ".scn", std::ios::binary);
+
+    if( !out_stream.fail() )
     {
-        cereal::BinaryOutputArchive archive(os);
+        cereal::BinaryOutputArchive archive(out_stream);
         archive(*this);
-        /*archive(m_screenItems,
-            m_BGM,
-            m_dictionary,
-            m_activities,
-            m_requirements,
-            m_badge
-            );*/
     }
 }
 
 void Scene::load()
 {
-    std::ifstream is(".//db//scenes//" + m_id + ".scn");
+    std::ifstream in_stream(".//db//scenes//" + m_id + ".scn", std::ios::binary);
 
-    if(!is.eof() && is)
+    if(in_stream && !in_stream.eof())
     {
-        cereal::BinaryInputArchive archive(is);
-
+        cereal::BinaryInputArchive archive(in_stream);
         archive(*this);
-        /*archive(m_screenItems,
-            m_BGM,
-            m_dictionary,
-            m_activities,
-            m_requirements,
-            m_badge
-            );*/
     }
 }
 

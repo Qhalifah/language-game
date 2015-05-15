@@ -58,9 +58,7 @@ public:
     template <class Archive>
 	void serialize( Archive & ar )
 	{
-	    cout << "piece1" << endl;
 		ar( m_image, m_id, m_badge_name );
-		cout << "piece2" << endl;
 	}
 };
 
@@ -96,9 +94,7 @@ public:
 	template <class Archive>
 	void serialize( Archive & ar )
 	{
-	    cout << "test1" << endl;
 		ar( m_name, m_image, m_pieces, m_total_pieces );
-		cout << "test2" << endl;
 	}
 
 	/*template <class Archive>
