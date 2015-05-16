@@ -97,7 +97,7 @@ void MapController::mouseButtonReleasedEvent(sf::Event event, sf::Vector2i mouse
 {
     int hit_sprite = m_interface->getScreenHit(mouse_loc.x, mouse_loc.y);
 
-    if( hit_sprite > -1 && m_screen->getScreenItems().size() > hit_sprite)
+    if( hit_sprite > -1 && (int)m_screen->getScreenItems().size() > hit_sprite)
     {// It is a valid sprite
         ScreenItem screen_item;
 

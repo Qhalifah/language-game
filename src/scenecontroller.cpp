@@ -74,7 +74,7 @@ void SceneController::mouseButtonReleasedEvent(sf::Event event, sf::Vector2i mou
 {
     int hit_sprite = m_interface->getScreenHit(mouse_loc.x, mouse_loc.y);
 
-    if( hit_sprite > -1 && m_screen->getScreenItems().size() > hit_sprite)
+    if( hit_sprite > -1 && (int)m_screen->getScreenItems().size() > hit_sprite)
     {
         ScreenItem m_screen_item = m_screen->getScreenItems()[(size_t)hit_sprite];
 
