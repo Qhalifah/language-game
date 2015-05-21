@@ -178,6 +178,8 @@ Interface::Interface()
     loadCharacter('9', "./font/9.png");
     loadCharacter('-', "./font/minus.png");
     loadCharacter('+', "./font/plus.png");
+	loadCharacter('<', "./font/Arrow_Up.png");
+	loadCharacter('>', "./font/Arrow_Down.png");
 }
 
 Interface::~Interface()

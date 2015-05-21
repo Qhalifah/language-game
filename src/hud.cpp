@@ -217,6 +217,7 @@ HUD::HUD() : m_buttons(6, ScreenItem())
     
     m_age_index = m_buttons.size() -1;
     
+	// Create placeholders for the badges
     t_screen_item.type = IMAGE;
     t_screen_item.name = L"none";
     t_screen_item.hover_text = L"none";
@@ -267,8 +268,6 @@ void HUD::handleHit(std::shared_ptr<Interface> interface, int hitsprite)
             m_last_hover = hitsprite;
             interface->updateHud((size_t)m_last_hover, m_buttons[(size_t)m_last_hover]);
         }
-        
-        
     }
 }
 
@@ -337,13 +336,20 @@ void HUD::updateProfile(shared_ptr<Interface> interface, std::shared_ptr<Profile
                 m_buttons[badge + m_badge_image_index - m_badge_index].hover_text = t_badges[badge].m_name;
             }
     }*/
+
+	// This will display up to three badges
     for(;curr_display_badge <m_badge_image_index+3; ++curr_display_badge )
     {
         m_buttons[curr_display_badge].name = L"none";
         m_buttons[curr_display_badge].hover_text = L"none";
     }
     
-    interface->updateHud(m_badge_image_index, m_buttons.size(), m_buttons);
+	std::cout << "m_buttons.size(): " << m_buttons.size() << std::endl;
+	std::cout << "m_badge_image_index: " << m_badge_image_index << std::endl;
+
+	//updates the badges within the profile box
+    //interface->updateHud(m_badge_image_index, m_buttons.size(), m_buttons);
+	interface->updateHud(m_badge_image_index, m_buttons.size(), m_buttons);
 }
 
 //
@@ -363,13 +369,15 @@ void HUD::toggleProfile(shared_ptr<Interface> interface, std::shared_ptr<Profile
         m_buttons[(size_t)ii].visible = !m_buttons[(size_t)ii].visible;
     }
     
-    if(t_profile != nullptr) {
+	if (t_profile != nullptr) {
+		cout << "t_profile != nullptr" << endl;
         updateProfile(interface, t_profile);
     }
     else {
-        interface->updateHud(m_profile_index, m_buttons.size(), m_buttons);
+		cout << "m_profile_index: " << m_profile_index << endl;
     }
 
+	interface->updateHud(m_profile_index, m_buttons.size(), m_buttons);
     m_profile_up = !m_profile_up;
 }
 

@@ -40,6 +40,7 @@ using std::pair;
 #include <iostream>
 using std::cout;
 using std::endl;
+using std::wcout;
 
 class minioncontroller_matching : public MinionController
 {
@@ -50,7 +51,7 @@ public:
                               std::shared_ptr<Activity> activity);
 
     //private:
-    size_t       m_grade,
+	size_t       m_grade,
                  m_currentRound,
                  m_correctAnswerIndex,
                  m_currentScore,

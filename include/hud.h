@@ -29,6 +29,7 @@ along with Dina'ki Adventures. If not, see <http://www.gnu.org/licenses/>.*/
 #include "screen.h"
 #include "interface.h"
 #include "profile.h"
+#include <iostream>
 #include <string>
 using std::string;
 #include <SFML/Graphics.hpp>

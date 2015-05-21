@@ -134,26 +134,36 @@ ProfileController::ProfileController(std::shared_ptr<ProfileWrangler> wrangler, 
     }
     
     //create plus, minus and go buttons
-    ScreenItem plusButton;
-    plusButton.type = BUTTON;
-    plusButton.name = L"+";
-    plusButton.size = {60,60};
-    plusButton.color = Color(140,140,140,255);
-    plusButton.position = {20,top_pos -120};
-    plusButton.behavior = MOUSE_DOWN_ENGAGE | MOUSE_UP_ENGAGE;
-    plusButton.sound = L"audio/other/click2.wav";
-    m_screen_items.push_back(plusButton);
+	ScreenItem scrollDownButton;
+    scrollDownButton.type = BUTTON;
+    scrollDownButton.name = L">";
+    scrollDownButton.size = {60,60};
+    scrollDownButton.color = Color(140,140,140,255);
+    scrollDownButton.position = {20,top_pos-120};
+    scrollDownButton.behavior = MOUSE_DOWN_ENGAGE | MOUSE_UP_ENGAGE;
+    scrollDownButton.sound = L"audio/other/click2.wav";
+    m_screen_items.push_back(scrollDownButton);
     
-    ScreenItem minusButton;
-    minusButton.type = BUTTON;
-    minusButton.name = L"-";
-    minusButton.size = {60,60};
-    minusButton.color = Color(140,140,140,255);
-    minusButton.position = {20,top_pos -200};
-    minusButton.behavior = MOUSE_DOWN_ENGAGE | MOUSE_UP_ENGAGE;
-    minusButton.sound = L"audio/other/click2.wav";
-    m_screen_items.push_back(minusButton);
-    
+    ScreenItem scrollUpButton;
+    scrollUpButton.type = BUTTON;
+    scrollUpButton.name = L"<";
+    scrollUpButton.size = {60,60};
+    scrollUpButton.color = Color(140,140,140,255);
+    scrollUpButton.position = {20,top_pos - 540};
+    scrollUpButton.behavior = MOUSE_DOWN_ENGAGE | MOUSE_UP_ENGAGE;
+    scrollUpButton.sound = L"audio/other/click2.wav";
+    m_screen_items.push_back(scrollUpButton);
+	
+	ScreenItem deleteButton;
+	 deleteButton.type = BUTTON;
+	 deleteButton.name = L"Delete";
+	 deleteButton.size = { 85, 35 };
+	 deleteButton.color = Color(140, 140, 140, 255);
+	 deleteButton.position = { 710, top_pos - 540 };
+	 deleteButton.behavior = MOUSE_DOWN_ENGAGE | MOUSE_UP_ENGAGE;
+	 deleteButton.sound = L"audio/other/click2.wav";
+	m_screen_items.push_back( deleteButton);
+	
     ScreenItem goButton;
     goButton.type = BUTTON;
     goButton.name = L"Go";
@@ -164,6 +174,7 @@ ProfileController::ProfileController(std::shared_ptr<ProfileWrangler> wrangler, 
     goButton.sound = L"audio/other/click2.wav";
     m_screen_items.push_back(goButton);
     
+	// create the window for the creation of a new profile
     ScreenItem newProfileBox;
     newProfileBox.type = BOX;
     newProfileBox.name = L"newProfileBox";
@@ -333,7 +344,7 @@ void ProfileController::mouseMovedEvent(sf::Event event, sf::Vector2i mouse_loc)
         --hit_sprite;
     }
     
-    // If we hit anything besides the backgorund
+    // If we hit anything besides the background
     if(hit_sprite > -1)
     {
         ScreenItem n_screen_item = m_screen->getScreenItem((size_t)hit_sprite);
@@ -433,7 +444,7 @@ void ProfileController::mouseButtonReleasedEvent(sf::Event event, sf::Vector2i m
                 engageItem((size_t)m_engaged_sprite);
             }
             
-            if(screen_item.name == L"-" && m_selected_sprite > 0)
+            if(screen_item.name == L"Delete" && m_selected_sprite > 0)
             {
                 deselectedItem((size_t)m_selected_sprite,m_box_color);
                 
@@ -443,16 +454,21 @@ void ProfileController::mouseButtonReleasedEvent(sf::Event event, sf::Vector2i m
                 
                 updateProfiles();
             }
-            else if(screen_item.name == L"+")
-            {
-                if(m_current_edit != -1)
-                    disengageItem((size_t)m_current_edit);
-                m_current_edit = (int)m_name_field;
-                togleNewProfileBox();
-            }
+
+			else if (screen_item.name == L"<" && m_top_profile > 0)
+			{
+				--m_top_profile;
+				updateProfiles();
+			}
+
+			else if (screen_item.name == L">" && m_profile_wrangler->getProfiles().size() > 4 + m_top_profile)
+			{
+				++m_top_profile;
+				updateProfiles();
+			}
+
             else if(screen_item.name == L"Go" && m_selected_sprite > 0)
             {
-                
                 deselectedItem((size_t)m_selected_sprite, m_box_color);
                 m_profile_wrangler->setCurrentProfile((m_selected_sprite-3)/2 + (int)m_top_profile);
                 //m_master_controller->getProfile();

@@ -17,6 +17,9 @@ along with Dina'ki Adventures. If not, see <http://www.gnu.org/licenses/>.*/
 
 #include "matchingcontroller.h"
 #include "word.h"
+#include <iostream>
+using std::wcout;
+using std::endl;
 
 minioncontroller_matching::minioncontroller_matching(std::shared_ptr<Profile> profile,
                                                      std::shared_ptr<Interface> interface,
@@ -215,7 +218,6 @@ void minioncontroller_matching::endGame()
     t_badge.m_image = L"images/rod.png";*/
     
     //m_profile->addBadge();
-    m_profile->addBadgePiece(m_activity->getBadgePiece());
     
     vector<ScreenItem> t_screenitems = m_screen->getScreenItems();
 
@@ -228,6 +230,12 @@ void minioncontroller_matching::endGame()
     m_interface->update(m_indexOfInstrBox, t_screenitems[m_indexOfInstrBox]);
     // set text with player score to visible
     setGrade(m_grade);
+
+	//if (m_grade == 100)
+	{
+		m_profile->addBadgePiece(m_activity->getBadgePiece());
+	}
+
     t_screenitems[m_indexOfInstrText].name = L"Your score is " + std::to_wstring(getGrade());
     t_screenitems[m_indexOfInstrText].size.x = 30;
     t_screenitems[m_indexOfInstrText].visible = true;
