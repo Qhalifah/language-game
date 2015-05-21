@@ -222,7 +222,7 @@ SCREEN_ITEM
 	NAME       Help_Text
 	SIZE	   10 0
 	POSITION   105 105
-    	VISIBLE false
+    VISIBLE false
 END
 
 END_SCENE

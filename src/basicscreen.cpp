@@ -35,7 +35,7 @@ BasicScreen::BasicScreen(string name, shared_ptr<Dictionary> dictionary, string 
 
 void BasicScreen::save()
 {
-    std::ofstream os(m_file_location + m_id + "." + m_file_type, std::ios::binary | std::ios_base::binary | ofstream::out | std::ios::trunc);
+    std::ofstream os(m_file_location + m_id + "." + m_file_type, std::ios::binary | ofstream::out | std::ios::trunc);
     
     cereal::PortableBinaryOutputArchive archive(os);
     
@@ -45,7 +45,7 @@ void BasicScreen::save()
 
 void BasicScreen::load()
 {
-    std::ifstream is(m_file_location + m_id + "." + m_file_type, std::ios::binary | std::ios_base::binary | ifstream::in);
+    std::ifstream is(m_file_location + m_id + "." + m_file_type, std::ios::binary | ifstream::in);
     
     if(!is.eof() && is)
     {

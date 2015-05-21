@@ -41,15 +41,6 @@ Activity::~Activity()
 {
 }
 
-void Activity::save()
-{
-	std::ofstream os(".//db//activities//" + m_id + ".act", std::ios::binary);
-
-    cereal::BinaryOutputArchive archive(os);
-
-    archive( *this );
-}
-
 void Activity::setChoices(size_t choices)
 {
     m_choices = choices;
@@ -99,14 +90,24 @@ size_t Activity::getMaxScore()
     return m_maxScore;
 }
 
+void Activity::save()
+{
+    std::ofstream out_stream(".//db//activities//" + m_id + ".act", std::ios::binary);
+
+    if( !out_stream.fail() )
+    {
+        cereal::BinaryOutputArchive archive(out_stream);
+        archive( *this );
+    }
+}
+
 void Activity::load()
 {
-    std::ifstream is(".//db//activities//" + m_id + ".act",std::ios::binary);
+    std::ifstream in_stream(".//db//activities//" + m_id + ".act",std::ios::binary);
 
-    if(!is.eof() && is)
+    if(in_stream && !in_stream.eof())
     {
-        cereal::BinaryInputArchive archive(is);
-
+        cereal::BinaryInputArchive archive(in_stream);
         archive(*this);
     }
 }
