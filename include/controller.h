@@ -31,6 +31,7 @@ using std::free;
 #include "dictionary.h"
 #include "word.h"
 #include "hud.h"
+#include "badge.h"
 #include <memory>
 #include <vector>
 #include <string>
@@ -121,7 +122,11 @@ public:
     std::shared_ptr<ProfileWrangler> getProfileWranlger(); 
 
     std::shared_ptr<Interface> getInterface();
-    
+
+	Dictionary badgePieceCountForBadgeNamesDict;
+
+	vector<Badge> badgeList;
+
     void toggleKeyboard();
     
     void toggleBackButton();
@@ -129,7 +134,7 @@ public:
     void controlLoop(); 
 
 	void closeProfileWindowIfUp();
-    
+
 private:
     std::shared_ptr<Interface> m_interface;
     

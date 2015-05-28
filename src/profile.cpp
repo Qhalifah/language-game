@@ -94,14 +94,52 @@ void Profile::setGender(Profile::gender gen)
 
 void Profile::addBadgePiece(Piece piece)
 {
-    if(m_badges.count(piece.m_badge_name))
-    {
-        m_badges[piece.m_badge_name].m_pieces.push_back(piece);
-    }
+	cout << "inside addBadgePiece" << endl;
+	std::string s((const char*)&m_badges[piece.m_badge_name].m_name[0], sizeof(wchar_t) / sizeof(char)*m_badges[piece.m_badge_name].m_name.size());
+	for (int ii = 0; ii < s.size(); ++ii)
+		cout << s;
+	cout << endl;
+	std::string t((const char*)&piece.m_badge_name[0], sizeof(wchar_t) / sizeof(char)*piece.m_badge_name.size());
+	for (int ii = 0; ii < t.size(); ++ii)
+		cout << t;
+	cout << endl;
+	if (!m_badges[piece.m_badge_name].isComplete())
+	{
+		cout << "badge is not complete, adding piece" << endl;
+
+		bool badgePieceIsNew = true;
+
+		for (int ii = 0; ii < m_badges[piece.m_badge_name].m_pieces.size(); ++ii)
+		{
+			if (piece.m_id == m_badges[piece.m_badge_name].m_pieces[ii].m_id)
+			{
+				cout << "piece isn't new" << endl;
+				badgePieceIsNew = false;
+				break;
+			}
+		}
+
+		if (badgePieceIsNew && m_badges.count(piece.m_badge_name))
+		{
+			cout << "adding piece" << endl;
+			m_badges[piece.m_badge_name].m_pieces.push_back(piece);
+		
+			if (m_badges[piece.m_badge_name].isComplete())
+			{
+				cout << "adding badge" << endl;
+				addBadge(m_badges[piece.m_badge_name]);
+			}
+		}
+	}
+	else
+	{
+		cout << "badge is already complete" << endl;
+	}
 }
 
 void Profile::addBadge(Badge badge)
 {
+	//will insert the badge, unless it is already in the unordered_map
     m_badges.insert(std::make_pair(badge.m_name, badge));
 }
 
@@ -137,7 +175,7 @@ std::vector<Badge> Profile::getBadges()
 size_t Profile::getBadgeItemCount()
 {
     size_t t_count = 0;
-    
+	cout << "iniside of getBadgeItemCount" << endl;
     for(auto badge : getBadges())
     {
         if(badge.isComplete())
@@ -165,6 +203,7 @@ bool Profile::lookupBadge(std::string badge) const
 
 bool Profile::lookupBadge(std::wstring badge_name) const
 {
+	cout << "Inside lookUpBadge" << endl;
     //count for unordered map returns 1 or 0 so the cast is legit...
     return (bool)(m_badges.count(badge_name)) && m_badges.find(badge_name)->second.isComplete();
 }

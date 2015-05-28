@@ -23,7 +23,7 @@ along with Dina'ki Adventures. If not, see <http://www.gnu.org/licenses/>.*/
 // It also includes the get and set functions which allow
 // the game to change values
 
-// Notes: at the moment the password is stored in plane text 
+// Notes: at the moment the password is stored in plain text 
 
 #ifndef __PROFILE_H__
 #define __PROFILE_H__
@@ -78,7 +78,7 @@ public:
     // Sets the current scene by name
     //void setCurrentScene(std::wstring);
     
-    // adds badge to gamestate/profile
+    // adds a piece if a badge to gamestate/profile
     void addBadgePiece(Piece);
 
     // adds badge to gamestate/profile

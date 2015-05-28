@@ -217,8 +217,6 @@ void minioncontroller_matching::endGame()
     t_piece.m_id = 1;
     t_badge.m_image = L"images/rod.png";*/
     
-    //m_profile->addBadge();
-    
     vector<ScreenItem> t_screenitems = m_screen->getScreenItems();
 
     // change background screen to black
@@ -237,6 +235,8 @@ void minioncontroller_matching::endGame()
 	}
 
     t_screenitems[m_indexOfInstrText].name = L"Your score is " + std::to_wstring(getGrade());
+	t_screenitems[m_indexOfInstrText].name += L"Badge piece name is ";
+	t_screenitems[m_indexOfInstrText].name += m_activity->getBadgePiece().m_badge_name;
     t_screenitems[m_indexOfInstrText].size.x = 30;
     t_screenitems[m_indexOfInstrText].visible = true;
     m_interface->update(m_indexOfInstrText, t_screenitems[m_indexOfInstrText]);

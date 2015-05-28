@@ -37,7 +37,7 @@ bool MapController::locked(unsigned index)
         //if(badge.size() && !m_profile->lookupBadge(badge))
         //string hi = "none";
 		wstring hi = L"none";
-        if(badge != hi && !m_profile->lookupBadge(badge))
+		if (badge != L"none" && !m_profile->lookupBadge(badge))
         {
             locked = true;
             break;

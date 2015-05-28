@@ -53,9 +53,7 @@ int main()
 
 	std::shared_ptr<ProfileController> profile_controller(new ProfileController(game_controller->getProfileWranlger(), game_controller->getProfile(), game_controller->getInterface(), game_controller, profile_page));
 
-
 	game_controller->push_controller(profile_controller);
-
 
 	game_controller->controlLoop();
 	return 0;

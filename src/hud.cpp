@@ -297,12 +297,19 @@ void HUD::rotateBadges(int rot, std::shared_ptr<Profile> profile)
 void HUD::updateProfile(shared_ptr<Interface> interface, std::shared_ptr<Profile> t_profile)
 {
     std::vector<Badge> t_badges = t_profile->getBadges();
-    
+	cout << "inside updateProfile" << endl;
+
     size_t curr_display_badge = m_badge_image_index;
     for(size_t pos_badge = m_badge_index;
         pos_badge < t_badges.size() && curr_display_badge < m_badge_image_index + 3;
         ++pos_badge, ++curr_display_badge)
     {
+		cout << "inside updateProfile for loop, looking at ";
+		string s((const char*)&t_badges[pos_badge].m_name[0], sizeof(wchar_t) / sizeof(char)*t_badges[pos_badge].m_name.size());
+		for (int ii = 0; ii < s.size(); ++ii)
+			cout << s;
+		cout << endl;
+		cout << "t_badges.size(): " << t_badges.size() << endl;
         if(t_badges[pos_badge].isComplete())
         {
             m_buttons[curr_display_badge].name = t_badges[pos_badge].m_image;

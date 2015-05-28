@@ -222,7 +222,7 @@ SCREEN_ITEM
 	NAME       Help_Text
 	SIZE	   10 0
 	POSITION   105 105
-    VISIBLE false
+    	VISIBLE false
 END
 
 END_SCENE
@@ -235,9 +235,10 @@ ROUNDS    1
 MAX_SCORE 6
 
 BADGE_PIECE
-	FishBadge
-	ID     0
-	IMAGE  images/rubberboots.png
+BEGIN
+	BADGE_NAME FishBadge
+	ID     	   0
+	IMAGE  	   images/rubberboots.png
 END
 
 SCREEN_ITEM
@@ -452,9 +453,10 @@ ROUNDS    5
 MAX_SCORE 5
 
 BADGE_PIECE
-	FishBadge
-	ID     0
-	IMAGE  images/rod.png
+BEGIN
+	BADGE_NAME FishBadge
+	ID	   1
+	IMAGE	   images/rod.png
 END
 
 SCREEN_ITEM

@@ -88,6 +88,7 @@ public:
 
     bool isComplete() const
     {
+		cout << "m_pieces.size(): " << m_pieces.size() << ", m_total_pieces: " << m_total_pieces << endl;
         return m_pieces.size() == m_total_pieces;
     }
 
