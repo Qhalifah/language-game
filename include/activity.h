@@ -59,9 +59,7 @@ public:
     template<class Archive>
     void serialize(Archive & ar)
     {
-        //cout << "hi" << endl;
         ar(m_screenItems, m_BGM, m_dictionary, m_choices, m_rounds, m_maxScore, m_badge_piece);
-        //cout << "by" << endl;
     }
 
     

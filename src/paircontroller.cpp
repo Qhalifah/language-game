@@ -320,19 +320,12 @@ bool PairController::gameIsOver()
 
 void PairController::endGame()
 {
-    /*Badge t_badge;
-    t_badge.m_name = L"FishBadge";
-    t_badge.m_image  = L"images/fish.png";
-    
-    Piece t_piece;
-    t_piece.m_id = 0;
-    t_badge.m_image = L"images/rod.png";*/
-    
-    //m_profile->addBadge(t_badge);
-    //m_profile->addBadgePiece(t_badge,t_piece);
-    
-    //m_profile->addBadgePiece(m_activity->m_badge, m_activity->m_badge_piece);
-    m_profile->addBadgePiece(m_activity->getBadgePiece());
+	size_t m_grade = (m_answered*100.0) / m_tries;
+
+	if (m_grade >= m_activity->getMaxScore())
+	{
+		m_profile->addBadgePiece(m_activity->getBadgePiece());
+	}
     
     vector<ScreenItem> t_screenitems = m_screen->getScreenItems();
 
@@ -345,7 +338,7 @@ void PairController::endGame()
     m_interface->update(1, t_screenitems[1]);
 
     // set text with player score to visible
-    t_screenitems[2].name = L"Your score is " + to_wstring(int((m_answered*100.0)/m_tries));
+    t_screenitems[2].name = L"Your score is " + to_wstring(int(m_grade));
     t_screenitems[2].size.x = 30;
     t_screenitems[2].visible = true;
     m_interface->update(2, t_screenitems[2]);

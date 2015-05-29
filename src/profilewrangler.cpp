@@ -70,6 +70,7 @@ void ProfileWrangler::removeProfile(std::shared_ptr<Profile> old_profile)
     {
         if(m_profiles[pos] == old_profile)
         {
+			cout << "found profile to delete" << endl;
             m_profiles.erase(m_profiles.begin() + (int)pos);
         }
     }

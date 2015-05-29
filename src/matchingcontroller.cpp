@@ -83,13 +83,6 @@ void minioncontroller_matching::mouseMovedEvent(sf::Event event, sf::Vector2i mo
     }
 }
 
-
-void minioncontroller_matching::setGrade(size_t newGrade)
-{
-    m_grade = newGrade;
-}
-
-
 void minioncontroller_matching::mouseButtonReleasedEvent(sf::Event event, sf::Vector2i pos)
 {
     if (gameIsOver())
@@ -111,6 +104,10 @@ void minioncontroller_matching::mouseButtonReleasedEvent(sf::Event event, sf::Ve
     }
 }
 
+void minioncontroller_matching::setGrade(size_t newGrade)
+{
+	m_grade = newGrade;
+}
 
 size_t  minioncontroller_matching::getGrade()
 {
@@ -209,14 +206,6 @@ bool minioncontroller_matching::gameIsOver()
 
 void minioncontroller_matching::endGame()
 {
-    /*Badge t_badge;
-    t_badge.m_name = L"FishBadge";
-    t_badge.m_image  = L"images/fish.png";
-    
-    Piece t_piece;
-    t_piece.m_id = 1;
-    t_badge.m_image = L"images/rod.png";*/
-    
     vector<ScreenItem> t_screenitems = m_screen->getScreenItems();
 
     // change background screen to black
@@ -229,7 +218,7 @@ void minioncontroller_matching::endGame()
     // set text with player score to visible
     setGrade(m_grade);
 
-	//if (m_grade == 100)
+	if (m_grade >= m_activity->getMaxScore())
 	{
 		m_profile->addBadgePiece(m_activity->getBadgePiece());
 	}

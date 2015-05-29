@@ -162,7 +162,7 @@ ProfileController::ProfileController(std::shared_ptr<ProfileWrangler> wrangler, 
 	 deleteButton.position = { 710, top_pos - 540 };
 	 deleteButton.behavior = MOUSE_DOWN_ENGAGE | MOUSE_UP_ENGAGE;
 	 deleteButton.sound = L"audio/other/click2.wav";
-	m_screen_items.push_back( deleteButton);
+	m_screen_items.push_back(deleteButton);
 	
     ScreenItem goButton;
     goButton.type = BUTTON;
@@ -421,8 +421,8 @@ void ProfileController::mouseButtonReleasedEvent(sf::Event event, sf::Vector2i m
         }
         
         if (m_selected_sprite != hit_sprite && m_selected_sprite > 0
-            && screen_item.name != L"-"
-            && screen_item.name != L"Go")
+            && screen_item.name != L"Go"
+			&& screen_item.name != L"Delete")
         {
             deselectedItem((size_t)m_selected_sprite, m_box_color);
             m_selected_sprite = -1;
@@ -443,19 +443,8 @@ void ProfileController::mouseButtonReleasedEvent(sf::Event event, sf::Vector2i m
                 m_engaged_sprite = hit_sprite;
                 engageItem((size_t)m_engaged_sprite);
             }
-            
-            if(screen_item.name == L"Delete" && m_selected_sprite > 0)
-            {
-                deselectedItem((size_t)m_selected_sprite,m_box_color);
-                
-                m_profile_wrangler->removeProfile();
-                m_selected_sprite = -1;
-                m_profile_wrangler->setCurrentProfile(-1);
-                
-                updateProfiles();
-            }
 
-			else if (screen_item.name == L"<" && m_top_profile > 0)
+			if (screen_item.name == L"<" && m_top_profile > 0)
 			{
 				--m_top_profile;
 				updateProfiles();
@@ -467,7 +456,8 @@ void ProfileController::mouseButtonReleasedEvent(sf::Event event, sf::Vector2i m
 				updateProfiles();
 			}
 
-            else if(screen_item.name == L"Go" && m_selected_sprite > 0)
+			cout << "m_selected_sprite: " << m_selected_sprite << endl;
+            if(screen_item.name == L"Go" && m_selected_sprite > 0)
             {
                 deselectedItem((size_t)m_selected_sprite, m_box_color);
                 m_profile_wrangler->setCurrentProfile((m_selected_sprite-3)/2 + (int)m_top_profile);
@@ -485,6 +475,25 @@ void ProfileController::mouseButtonReleasedEvent(sf::Event event, sf::Vector2i m
                 
                 m_master_controller->push_controller(map_controller);
             }
+
+			cout << "Above Delete button" << endl;
+			cout << "screen_item.name: ";
+			std::string s((const char*)&screen_item.name[0], sizeof(wchar_t) / sizeof(char)*screen_item.name.size());
+			for (int ii = 0; ii < s.size(); ++ii)
+				cout << s;
+			cout << endl;
+			cout << "m_selected_sprite: " << m_selected_sprite << endl;
+			if (screen_item.name == L"Delete" && m_selected_sprite != hit_sprite && m_selected_sprite > 0)
+			{
+				cout << "Delete button pressed" << endl;
+				deselectedItem((size_t)m_selected_sprite, m_box_color);
+
+				m_profile_wrangler->removeProfile();
+				m_selected_sprite = -1;
+				m_profile_wrangler->setCurrentProfile(-1);
+
+				updateProfiles();
+			}
         }
         
         if (screen_item.behavior & MOUSE_UP_SELECT)
