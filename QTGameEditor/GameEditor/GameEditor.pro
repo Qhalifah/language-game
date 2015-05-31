@@ -66,6 +66,6 @@ FORMS    += mainwindow.ui \
     chooseactivity.ui \
     chooseacttype.ui
 
-CONFIG += c++11
+CONFIG += c++14
 
 INCLUDEPATH += include/ \

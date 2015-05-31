@@ -30,23 +30,25 @@
 #ifndef CEREAL_DETAILS_TRAITS_HPP_
 #define CEREAL_DETAILS_TRAITS_HPP_
 
+#include <cereal/access.hpp>
+
 #include <type_traits>
 #include <typeindex>
 #include <memory>
-
-#include <cereal/access.hpp>
 
 namespace cereal
 {
   namespace traits
   {
-    template<typename> struct Void { typedef void type; };
+    template<typename>
+  struct Void
+  { typedef void type; };
 
     // ######################################################################
     // Member load_and_allocate
     template<typename T, typename A>
-      bool constexpr has_member_load_and_allocate()
-      { return std::is_same<decltype( access::load_and_allocate<T>( std::declval<A&>() ) ), T*>::value; }
+      const bool has_member_load_and_allocate()
+      { return std::is_same<decltype( access::load_and_allocate<T>( std::declval<A&>() ) ), T*>::value; };
 
     // ######################################################################
     // Non Member load_and_allocate
@@ -57,7 +59,7 @@ namespace cereal
     // ######################################################################
     // Has either a member or non member allocate
     template<typename T, typename A>
-      bool constexpr has_load_and_allocate()
+      const bool has_load_and_allocate()
       { return has_member_load_and_allocate<T, A>() || has_non_member_load_and_allocate<T, A>(); }
 
     // ######################################################################
@@ -76,7 +78,7 @@ namespace cereal
     // Non Member Serialize
     char & serialize(...);
     template<typename T, typename A>
-      bool constexpr has_non_member_serialize()
+      bool has_non_member_serialize() //bool constexpr has_non_member_serialize()
       { return std::is_void<decltype(serialize(std::declval<A&>(), std::declval<T&>()))>::value; };
 
     // ######################################################################
@@ -95,7 +97,7 @@ namespace cereal
     // Non Member Load
     char & load(...);
     template<typename T, typename A>
-      bool constexpr has_non_member_load()
+      const bool has_non_member_load()
       { return std::is_void<decltype(load(std::declval<A&>(), std::declval<T&>()))>::value; };
 
     // ######################################################################
@@ -128,7 +130,7 @@ namespace cereal
 
     // Returns true if we detect a member save function that is not const
     template <class T, class A>
-    constexpr bool is_non_const_member_save()
+    const bool is_non_const_member_save()
     {
       return !has_member_save<T, A>() && detail::has_member_save_any<T, A>();
     }
@@ -137,7 +139,7 @@ namespace cereal
     // Non Member Save
     char & save(...);
     template<typename T, typename A>
-      bool constexpr has_non_member_save()
+      bool has_non_member_save() //bool constexpr has_non_member_save()
       { return std::is_void<decltype(save(std::declval<A&>(), std::declval<T const &>()))>::value; }
 
     // ######################################################################
@@ -145,34 +147,34 @@ namespace cereal
     namespace detail
     {
       template<typename T, typename A>
-        bool constexpr has_non_member_save_any()
+        const bool has_non_member_save_any() //bool constexpr has_non_member_save_any()
         { return std::is_void<decltype(save(std::declval<A&>(), std::declval<typename std::remove_const<T>::type &>()))>::value; }
     }
 
     // Returns true if we detect a non-member save function that is not const
     template<typename T, typename A>
-      bool constexpr is_non_const_non_member_save()
+      bool is_non_const_non_member_save() //bool constexpr is_non_const_non_member_save()
       { return !has_non_member_save<T, A>() && detail::has_non_member_save_any<T, A>(); }
 
     // ######################################################################
     // Returns true if we have an invalid save function (non const)
     template <class T, class A>
-    bool constexpr has_non_const_save()
+    const bool has_non_const_save()
     { return is_non_const_member_save<T, A>() || is_non_const_non_member_save<T, A>(); }
 
     // ######################################################################
     template <class T, class InputArchive, class OutputArchive>
-      constexpr bool has_member_split()
+      const bool has_member_split()
       { return has_member_load<T, InputArchive>() && has_member_save<T, OutputArchive>(); }
 
     // ######################################################################
     template <class T, class InputArchive, class OutputArchive>
-      constexpr bool has_non_member_split()
+      const bool has_non_member_split()
       { return has_non_member_load<T, InputArchive>() && has_non_member_save<T, OutputArchive>(); }
 
     // ######################################################################
     template <class T, class OutputArchive>
-      constexpr bool is_output_serializable()
+      const bool is_output_serializable()
       {
         static_assert( !has_non_const_save<T, OutputArchive>(),
                        "cereal detected a non const save. \n "
@@ -187,7 +189,7 @@ namespace cereal
 
     // ######################################################################
     template <class T, class InputArchive>
-      constexpr bool is_input_serializable()
+      const bool is_input_serializable()
       {
         return
           has_member_load<T, InputArchive>() ^
@@ -201,24 +203,24 @@ namespace cereal
     namespace detail
     {
       template <class T, class A>
-      constexpr auto is_specialized_member_serialize() -> bool
+      auto is_specialized_member_serialize() -> bool // const
       { return !std::is_base_of<std::false_type, specialize<A, T, specialization::member_serialize>>(); }
 
       template <class T, class A>
-      constexpr auto is_specialized_member_load_save() -> bool
+      auto is_specialized_member_load_save() -> bool // const
       { return !std::is_base_of<std::false_type, specialize<A, T, specialization::member_load_save>>(); }
 
       template <class T, class A>
-      constexpr auto is_specialized_non_member_serialize() -> bool
+      auto is_specialized_non_member_serialize() -> bool // const
       { return !std::is_base_of<std::false_type, specialize<A, T, specialization::non_member_serialize>>(); }
 
       template <class T, class A>
-      constexpr auto is_specialized_non_member_load_save() -> bool
+      auto is_specialized_non_member_load_save() -> bool // const
       { return !std::is_base_of<std::false_type, specialize<A, T, specialization::non_member_load_save>>(); }
 
       // Considered an error if specialization exists for more than one type
       template <class T, class A>
-      constexpr auto is_specialized_error() -> bool
+      auto is_specialized_error() -> bool // const
       {
         return (is_specialized_member_serialize<T, A>() +
                 is_specialized_member_load_save<T, A>() +
@@ -228,7 +230,7 @@ namespace cereal
     } // namespace detail
 
     template <class T, class A>
-    constexpr auto is_specialized() -> bool
+    auto is_specialized() -> bool // const
     {
       static_assert(detail::is_specialized_error<T, A>(), "More than one explicit specialization detected for type.");
       return detail::is_specialized_member_serialize<T, A>() ||
@@ -238,7 +240,7 @@ namespace cereal
     }
 
     template <class T, class A>
-    constexpr auto is_specialized_member_serialize() -> bool
+    auto is_specialized_member_serialize() -> bool // const
     {
       static_assert( (is_specialized<T, A>() && detail::is_specialized_member_serialize<T, A>() && has_member_serialize<T, A>())
                      || !(is_specialized<T, A>() && detail::is_specialized_member_serialize<T, A>()),
@@ -247,7 +249,7 @@ namespace cereal
     }
 
     template <class T, class A>
-    constexpr auto is_specialized_member_load() -> bool
+    auto is_specialized_member_load() -> bool // const
     {
       static_assert( (is_specialized<T, A>() && detail::is_specialized_member_load_save<T, A>() && has_member_load<T, A>())
                      || !(is_specialized<T, A>() && detail::is_specialized_member_load_save<T, A>()),
@@ -256,7 +258,7 @@ namespace cereal
     }
 
     template <class T, class A>
-    constexpr auto is_specialized_member_save() -> bool
+    auto is_specialized_member_save() -> bool // const
     {
       static_assert( (is_specialized<T, A>() && detail::is_specialized_member_load_save<T, A>() && has_member_save<T, A>())
                      || !(is_specialized<T, A>() && detail::is_specialized_member_load_save<T, A>()),
@@ -265,7 +267,7 @@ namespace cereal
     }
 
     template <class T, class A>
-    constexpr auto is_specialized_non_member_serialize() -> bool
+    auto is_specialized_non_member_serialize() -> bool // const
     {
       static_assert( (is_specialized<T, A>() && detail::is_specialized_non_member_serialize<T, A>() && has_non_member_serialize<T, A>())
                      || !(is_specialized<T, A>() && detail::is_specialized_non_member_serialize<T, A>()),
@@ -274,7 +276,7 @@ namespace cereal
     }
 
     template <class T, class A>
-    constexpr auto is_specialized_non_member_load() -> bool
+    auto is_specialized_non_member_load() -> bool // const
     {
       static_assert( (is_specialized<T, A>() && detail::is_specialized_non_member_load_save<T, A>() && has_non_member_load<T, A>())
                      || !(is_specialized<T, A>() && detail::is_specialized_non_member_load_save<T, A>()),
@@ -283,7 +285,7 @@ namespace cereal
     }
 
     template <class T, class A>
-    constexpr auto is_specialized_non_member_save() -> bool
+    auto is_specialized_non_member_save() -> bool // const
     {
       static_assert( (is_specialized<T, A>() && detail::is_specialized_non_member_load_save<T, A>() && has_non_member_save<T, A>())
                      || !(is_specialized<T, A>() && detail::is_specialized_non_member_load_save<T, A>()),
@@ -293,7 +295,7 @@ namespace cereal
 
     // ######################################################################
     template <class T>
-    constexpr size_t sizeof_array( size_t rank = std::rank<T>::value )
+    const size_t sizeof_array( size_t rank = std::rank<T>::value )
     {
       return rank == 0 ? 1 : std::extent<T>::value * sizeof_array<typename std::remove_extent<T>::type>( rank - 1 );
     }
@@ -303,7 +305,7 @@ namespace cereal
     {
       template <class T, typename Enable = void>
         struct is_empty_class_impl
-        { static constexpr bool value = false; };
+        { static const bool value = false; };
 
       template <class T>
         struct is_empty_class_impl<T, typename std::enable_if<std::is_class<T>::value>::type>
@@ -311,7 +313,7 @@ namespace cereal
           struct S : T
           { uint8_t t; };
 
-          static constexpr bool value = sizeof(S) == sizeof(uint8_t);
+          static const bool value = sizeof(S) == sizeof(uint8_t);
         };
 
       struct base_class_id
