@@ -53,4 +53,22 @@ void BasicScreen::load()
         
         archive(m_screenItems, m_BGM, m_dictionary);
     }
+
+	for (int ii = 0; ii < m_screenItems.size(); ++ii)
+	{
+		if (m_screenItems[ii].type == TEXT)
+		{
+			cout << "m_screenItems[ii].size.x: " << m_screenItems[ii].size.x << endl;
+			cout << "m_screenItems[ii].size.y: " << m_screenItems[ii].size.y << endl;
+		}
+		else
+		{
+			cout << "m_screenItems[ii].size.y: " << m_screenItems[ii].size.y << endl;
+		}
+
+		m_screenItems[ii].size.x = 20;
+		m_screenItems[ii].size.y = 20;
+	}
+
+	cout << "m_screenItems.size: " << endl;
 }

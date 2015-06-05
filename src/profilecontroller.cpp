@@ -477,15 +477,9 @@ void ProfileController::mouseButtonReleasedEvent(sf::Event event, sf::Vector2i m
             }
 
 			cout << "Above Delete button" << endl;
-			cout << "screen_item.name: ";
-			std::string s((const char*)&screen_item.name[0], sizeof(wchar_t) / sizeof(char)*screen_item.name.size());
-			for (int ii = 0; ii < s.size(); ++ii)
-				cout << s;
-			cout << endl;
 			cout << "m_selected_sprite: " << m_selected_sprite << endl;
 			if (screen_item.name == L"Delete" && m_selected_sprite != hit_sprite && m_selected_sprite > 0)
 			{
-				cout << "Delete button pressed" << endl;
 				deselectedItem((size_t)m_selected_sprite, m_box_color);
 
 				m_profile_wrangler->removeProfile();

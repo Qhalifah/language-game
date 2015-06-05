@@ -32,8 +32,6 @@ void SceneController::mouseMovedEvent(sf::Event event, sf::Vector2i mouse_loc)
 {
     int hit_sprite = m_interface->getScreenHit(mouse_loc.x, mouse_loc.y);
 
-
-
     if( hit_sprite > -1 && m_engaged_sprite != hit_sprite )
     {// Then sprite is valid and not already engaged.
         ScreenItem screen_item;
