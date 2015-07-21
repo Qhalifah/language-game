@@ -61,6 +61,7 @@ bool save(string filename, float & vol, float & pitch, string & soundPath)
 
 int main()
 {
+    cout << "inside main of SFML_SOUND" << endl;
     string soundPath = "";
     float volume = 50;
     float pitch = 50;

@@ -23,9 +23,12 @@ along with Dina'ki Adventures. If not, see <http://www.gnu.org/licenses/>.*/
 #include <string>
 using std::string;
 #include <cereal/archives/binary.hpp>
+#include <cereal/types/vector.hpp>
 #include <cereal/types/string.hpp>
 #include <cereal/types/memory.hpp>
 #include <cereal/types/base_class.hpp>
+#include <cereal/types/common.hpp>
+#include <cereal/types/utility.hpp>
 using cereal::BinaryInputArchive;
 using cereal::BinaryOutputArchive;
 #include <fstream>
@@ -66,7 +69,6 @@ void Activity::setHelpMessage(wstring message)
 
 void Activity::setBadgePiece(Piece piece)
 {
-    //m_badge = badge;
     m_badge_piece = piece;
 }
 
@@ -110,4 +112,8 @@ void Activity::load()
         cereal::BinaryInputArchive archive(in_stream);
         archive(*this);
     }
+
+	m_choices = stoi(s_choices);
+	m_rounds = stoi(s_rounds);
+	m_maxScore = stoi(s_maxScore);
 }

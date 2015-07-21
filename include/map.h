@@ -29,8 +29,13 @@ using std::string;
 using std::unordered_map;
 #include <set>
 using std::set;
+/*
 #include <cereal/types/unordered_map.hpp>
 #include <cereal/types/set.hpp>
+*/
+
+#include "cereal\types\unordered_map.hpp"
+#include "cereal\types\set.hpp"
 
 class Map : public Screen
 {
@@ -57,7 +62,7 @@ public:
         ar(m_screenItems, m_BGM, m_dictionary, m_scenes, m_scene_prereqs, m_scnPreRegsIds);
     }
 
-    unordered_map<unsigned, set<unsigned>> m_scnPreRegsIds;
+    //unordered_map<unsigned, set<unsigned>> m_scnPreRegsIds;
 private:
     string m_id;
     unordered_map<unsigned, string> m_scenes;

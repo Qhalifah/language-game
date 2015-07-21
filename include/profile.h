@@ -48,7 +48,7 @@ public:
     enum gender {male, female};
     
     // Construct, which will create a class of a person who's name is NAME, age is 0 and has no password.
-    Profile(std::wstring name = L"NAME", uint32_t age =0, gender gen = female, std::wstring password=L"password", std::wstring password_hint = L"password" );
+    Profile(std::wstring name = L"NAME", uint32_t age = 0, gender gen = female, std::wstring password=L"password", std::wstring password_hint = L"password" );
    
     // Checks if password is correct
     bool checkPassword(const std::wstring&) const;
@@ -119,13 +119,24 @@ public:
     template <class Archive>
 	void save( Archive & ar ) const
 	{
-		ar( m_name, m_age, m_password_hint, m_password, m_badges);
+		ar( m_name, 
+			m_age, 
+			m_gender,
+			m_password_hint, 
+			m_password, 
+			m_badges);
 	}
 	
 	template <class Archive>
 	void load( Archive & ar )
 	{
-		ar( m_name, m_age, m_password_hint, m_password, m_badges);
+		ar( m_name, 
+			m_age, 
+			m_gender,
+			m_password_hint, 
+			m_password, 
+			m_badges
+			);
         updateSavedFileName();
 	}
 private:

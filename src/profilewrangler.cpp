@@ -42,6 +42,11 @@ std::vector<std::shared_ptr<Profile>> ProfileWrangler::loadProfiles(std::string 
         archive(m_profiles);
     }
     
+	if (m_profiles.size() > 0)
+	{
+		cout << "From the profile wrangler load, index 0 is a " << m_profiles[0]->getGender() << endl;
+	}
+
     return m_profiles;
 }
 

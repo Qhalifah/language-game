@@ -193,17 +193,18 @@ void MasterController::handleEvent(sf::Event event)
     else if(event.type == sf::Event::LostFocus)
     {
         //I stop the main BGM, you should stop any extra you need!
-        m_interface->stopBGM(0);
+        m_interface->stopAllBGM();
         
         lostFocusEvent();
     }
     else if(event.type == sf::Event::GainedFocus)
     {
-        m_interface->playBGM(0);
+		m_interface->playAllBGM();
         gainedFocusEvent();
     }
     else if(event.type == sf::Event::TextEntered)
     {
+		cout << "text entered" << endl;
         m_controllers.top()->textEnteredEvent(event);
     }
     else if(event.type == sf::Event::KeyPressed)
@@ -266,10 +267,7 @@ void MasterController::handleEvent(sf::Event event)
         }
         else if(event.key.code == sf::Keyboard::F4)
         {
-            if(getProfile() != nullptr)
-            {
-                
-            }
+
         }
         
         if(m_hud->isProfileUp() && event.key.code == sf::Keyboard::Right)
@@ -324,6 +322,14 @@ void MasterController::handleEvent(sf::Event event)
     }
     else if(event.type == sf::Event::MouseButtonPressed)
     {
+		for (int ii = 0; ii < badgeList.size(); ++ii)
+		{
+			std::string s((const char*)&badgeList[ii].m_name[0], sizeof(wchar_t) / sizeof(char)*badgeList[ii].m_name.size());
+			for (int ii = 0; ii < s.size(); ++ii)
+				cout << s;
+			cout << endl;
+		}
+
         Vector2i mouse_loc = sf::Mouse::getPosition(*m_window);
 
         int hit_sprite = m_interface->getHudHit(mouse_loc.x, mouse_loc.y);
@@ -414,10 +420,13 @@ void MasterController::handleEvent(sf::Event event)
                 else if(m_hud->getItems()[(size_t)hit_sprite].name == L"Done")
                 {
                     t_event.text.unicode = L'\n';
+					cout << "inside DONE" << endl;
                     // n_event.key.code = sf::Keyboard::Return;
                 }
                 else
-                { // It is a normal character to pass on
+				{
+					cout << "inside ELSE" << endl;
+					// It is a normal character to pass on
                     t_event.text.unicode = (uint32_t)m_hud->getItems()[(size_t)hit_sprite].name[0];
                     /*if((m_hud->getButtons()[(size_t)hit_sprite].name[0] >= 'A' && m_hud->getButtons()[(size_t)hit_sprite].name[0] <= 'Z'))
                         n_event.key.code = sf::Keyboard::Key(m_hud->getButtons()[(size_t)hit_sprite].name[0] - 'A');
@@ -425,7 +434,6 @@ void MasterController::handleEvent(sf::Event event)
                         n_event.key.code = sf::Keyboard::Key(m_hud->getButtons()[(size_t)hit_sprite].name[0] - 'a');*/
                 }
                 handleEvent(t_event);
-                //handleEvent(n_event);
             }
         }
         else if(hit_sprite == -1)
@@ -536,6 +544,7 @@ void MasterController::controlLoop()
         handleEvent(local_event);
     }
 
+	cout << "exited the while loop" << endl;
     /*while(true)
     {
         if(m_window->pollEvent(local_event))

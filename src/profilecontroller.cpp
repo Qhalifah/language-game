@@ -236,7 +236,7 @@ ProfileController::ProfileController(std::shared_ptr<ProfileWrangler> wrangler, 
     maleButton.sound = L"audio/other/click2.wav";
     maleButton.behavior = MOUSE_DOWN_ENGAGE;
     m_screen_items.push_back(maleButton);
-    
+
     ScreenItem femaleButton;
     femaleButton.type = BUTTON;
     femaleButton.name = L"Female";
@@ -246,7 +246,7 @@ ProfileController::ProfileController(std::shared_ptr<ProfileWrangler> wrangler, 
     femaleButton.visible = false;
     femaleButton.sound = L"audio/other/click2.wav";
     femaleButton.behavior = MOUSE_DOWN_ENGAGE;
-    m_screen_items.push_back(femaleButton);
+	m_screen_items.push_back(femaleButton);
     
     // Change the model
     m_screen->setScreenItems(m_screen_items);
@@ -291,7 +291,7 @@ void ProfileController::togleNewProfileBox()
     
     m_show_new_profile = !m_show_new_profile;
     
-    for(size_t profileBoxes  = 3; profileBoxes < 21; ++profileBoxes)
+    for(size_t profileBoxes  = 3; profileBoxes < m_screen_items.size(); ++profileBoxes)
     {
         m_screen_items[profileBoxes].visible = !m_screen_items[profileBoxes].visible;
     }
@@ -302,7 +302,7 @@ void ProfileController::togleNewProfileBox()
     m_master_controller->toggleKeyboard();
     
     m_screen->setScreenItems(m_screen_items);
-    m_interface->update(3,21,m_screen->getScreenItems());
+	m_interface->update(3, m_screen_items.size(), m_screen->getScreenItems());
     
     setFieldHighlight();
 }
@@ -614,8 +614,23 @@ void ProfileController::textEnteredEvent(sf::Event event)
                 if(m_screen->getScreenItem((size_t)m_name_field).name.size() > 0 && m_screen->getScreenItem((size_t)m_age_field).name.size() > 0 && m_engaged_sprite > -1)
                 {
                     Profile::gender t_gen = Profile::female;
-                    if(m_screen->getScreenItem((size_t)m_engaged_sprite).name == L"Male")
-                        t_gen = Profile::male;
+					if (m_screen->getScreenItem((size_t)m_engaged_sprite).name == L"Male")
+					{
+						t_gen = Profile::male;
+						cout << "gender set to male" << endl;
+					}
+					else
+					{
+						t_gen = Profile::female;
+						cout << "gender set to female" << endl;
+					}
+
+					wstring wstr = m_screen->getScreenItem((size_t)m_engaged_sprite).name;
+					cout << "active item is at " << m_screen->getScreenItem((size_t)m_engaged_sprite).position.x << endl;
+					std::string s((const char*)&wstr, sizeof(wchar_t) / sizeof(char)*wstr.size());
+					for (int ii = 0; ii < s.size(); ++ii)
+						cout << s;
+					cout << endl;
                         
                     m_profile_wrangler->addProfile(std::make_shared<Profile>(
                                                                              m_screen->getScreenItem((size_t)m_name_field).name,
@@ -623,7 +638,6 @@ void ProfileController::textEnteredEvent(sf::Event event)
                                                                              t_gen
                                                                              )
                                                    );
-                    //disengageItem((size_t)m_current_edit-2);
                     m_current_edit = -1;
                     togleNewProfileBox();
                     updateProfiles();
@@ -663,22 +677,5 @@ void ProfileController::keyPressedEvent(sf::Event event)
         
         updateProfiles();
     }
-    /*if(event.key.code == sf::Keyboard::P)
-    {
-        //std::cout << "plus " << std::endl;
-        std::shared_ptr<Profile> n_profile(std::make_shared<Profile>());
-        m_profile_wrangler->addProfile(n_profile);
-        m_profile_wrangler->saveProfiles();
-    }
-    else if(event.key.code == sf::Keyboard::M)
-    {
-        //std::cout << "minus " << std::endl;
-        
-        if(m_profile_wrangler->getProfiles().size() > 0)
-        {
-            m_profile_wrangler->removeProfile(m_profile_wrangler->getProfiles().back());
-            m_profile_wrangler->saveProfiles();
-        }
-    }*/
 }
 

@@ -123,7 +123,7 @@ public:
 
     std::shared_ptr<Interface> getInterface();
 
-	Dictionary badgePieceCountForBadgeNamesDict;
+	//Dictionary badgePieceCountForBadgeNamesDict;
 
 	vector<Badge> badgeList;
 
@@ -134,6 +134,22 @@ public:
     void controlLoop(); 
 
 	void closeProfileWindowIfUp();
+
+	template <class Archive>
+	void save(Archive & ar) const
+	{
+		ar(//badgePieceCountForBadgeNamesDict, 
+			badgeList
+			);
+	}
+
+	template <class Archive>
+	void load(Archive & ar)
+	{
+		ar(//badgePieceCountForBadgeNamesDict, 
+			badgeList
+			);
+	}
 
 private:
     std::shared_ptr<Interface> m_interface;

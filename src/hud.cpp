@@ -304,12 +304,6 @@ void HUD::updateProfile(shared_ptr<Interface> interface, std::shared_ptr<Profile
         pos_badge < t_badges.size() && curr_display_badge < m_badge_image_index + 3;
         ++pos_badge, ++curr_display_badge)
     {
-		cout << "inside updateProfile for loop, looking at ";
-		string s((const char*)&t_badges[pos_badge].m_name[0], sizeof(wchar_t) / sizeof(char)*t_badges[pos_badge].m_name.size());
-		for (int ii = 0; ii < s.size(); ++ii)
-			cout << s;
-		cout << endl;
-		cout << "t_badges.size(): " << t_badges.size() << endl;
         if(t_badges[pos_badge].isComplete())
         {
             m_buttons[curr_display_badge].name = t_badges[pos_badge].m_image;
@@ -317,11 +311,11 @@ void HUD::updateProfile(shared_ptr<Interface> interface, std::shared_ptr<Profile
         }
         else
         for(size_t pos_piece = 0;
-            pos_piece < t_badges[pos_badge].m_pieces.size() && curr_display_badge < m_badge_image_index+3;
+            pos_piece < t_badges[pos_badge].m_pieces_map.size() && curr_display_badge < m_badge_image_index+3;
             ++pos_piece, ++curr_display_badge)
             {
-                m_buttons[curr_display_badge].name = t_badges[pos_badge].m_pieces[pos_piece].m_image;
-                m_buttons[curr_display_badge].hover_text = t_badges[pos_badge].m_name + L" " + std::to_wstring(t_badges[pos_badge].m_pieces[pos_piece].m_id);
+                m_buttons[curr_display_badge].name = t_badges[pos_badge].m_pieces_map[pos_piece].m_image;
+                m_buttons[curr_display_badge].hover_text = t_badges[pos_badge].m_name + L" " + std::to_wstring(t_badges[pos_badge].m_pieces_map[pos_piece].m_id);
             }
     }
     /*size_t badge = m_badge_index;
@@ -355,11 +349,10 @@ void HUD::updateProfile(shared_ptr<Interface> interface, std::shared_ptr<Profile
 	std::cout << "m_badge_image_index: " << m_badge_image_index << std::endl;
 
 	//updates the badges within the profile box
-    //interface->updateHud(m_badge_image_index, m_buttons.size(), m_buttons);
 	interface->updateHud(m_badge_image_index, m_buttons.size(), m_buttons);
 }
 
-//
+
 void HUD::toggleProfile(shared_ptr<Interface> interface, std::shared_ptr<Profile> t_profile)
 {
     //std::cout << name.size() << age.size() << std::endl;
@@ -386,6 +379,8 @@ void HUD::toggleProfile(shared_ptr<Interface> interface, std::shared_ptr<Profile
 
 	interface->updateHud(m_profile_index, m_buttons.size(), m_buttons);
     m_profile_up = !m_profile_up;
+
+	cout << "user is a " << t_profile->getGender() << endl;
 }
 
 void HUD::toggleKeys(shared_ptr<Interface> interface)

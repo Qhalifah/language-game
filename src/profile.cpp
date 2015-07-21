@@ -16,7 +16,6 @@ You should have received a copy of the GNU General Public License
 along with Dina'ki Adventures. If not, see <http://www.gnu.org/licenses/>.*/
 
 #include "profile.h"
-#include "badge.h"
 
 #include <string>
 #include <unordered_map>
@@ -29,6 +28,10 @@ along with Dina'ki Adventures. If not, see <http://www.gnu.org/licenses/>.*/
 
 Profile::Profile(std::wstring name , uint32_t age, gender gen, std::wstring password, std::wstring password_hint ): m_name(name), m_age(age), m_gender(gen), m_password(password), m_password_hint(password_hint), m_saved_games_file(name + std::to_wstring(age))
 {
+	this->setGender(gen);
+	cout << "profile.cpp is setting gender to " << gen << endl;
+	cout << "profile.cpp has set gender to " << this->getGender() << endl;
+
     //GameState new_game;
     //new_game.m_current_scene = L"scene"; //will be start scene when defined ...might be some clever way to read this from a file...like game settings
 }
@@ -95,35 +98,27 @@ void Profile::setGender(Profile::gender gen)
 void Profile::addBadgePiece(Piece piece)
 {
 	cout << "inside addBadgePiece" << endl;
-	std::string s((const char*)&m_badges[piece.m_badge_name].m_name[0], sizeof(wchar_t) / sizeof(char)*m_badges[piece.m_badge_name].m_name.size());
-	for (int ii = 0; ii < s.size(); ++ii)
-		cout << s;
-	cout << endl;
-	std::string t((const char*)&piece.m_badge_name[0], sizeof(wchar_t) / sizeof(char)*piece.m_badge_name.size());
-	for (int ii = 0; ii < t.size(); ++ii)
-		cout << t;
-	cout << endl;
+
 	if (!m_badges[piece.m_badge_name].isComplete())
 	{
 		cout << "badge is not complete, adding piece" << endl;
 
 		bool badgePieceIsNew = true;
 
-		for (int ii = 0; ii < m_badges[piece.m_badge_name].m_pieces.size(); ++ii)
+		if (m_badges[piece.m_badge_name].m_pieces_map.count(piece.m_id))
 		{
-			if (piece.m_id == m_badges[piece.m_badge_name].m_pieces[ii].m_id)
-			{
-				cout << "piece isn't new" << endl;
-				badgePieceIsNew = false;
-				break;
-			}
+			cout << "piece isn't new" << endl;
+			badgePieceIsNew = false;
 		}
+
+		cout << "piece.m_id: " << piece.m_id << endl;
 
 		if (badgePieceIsNew && m_badges.count(piece.m_badge_name))
 		{
 			cout << "adding piece" << endl;
-			m_badges[piece.m_badge_name].m_pieces.push_back(piece);
-		
+
+			m_badges[piece.m_badge_name].m_pieces_map.insert(std::make_pair(piece.m_id, piece));
+
 			if (m_badges[piece.m_badge_name].isComplete())
 			{
 				cout << "adding badge" << endl;
@@ -184,7 +179,7 @@ size_t Profile::getBadgeItemCount()
         }
         else
         {
-            t_count += badge.m_pieces.size();
+            t_count += badge.m_pieces_map.size();
         }
     }
     

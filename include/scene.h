@@ -24,8 +24,10 @@ along with Dina'ki Adventures. If not, see <http://www.gnu.org/licenses/>.*/
 
 #include "screen.h"
 #include "badge.h"
+
 #include <cereal/types/map.hpp>
 #include <cereal/types/set.hpp>
+
 #include <string>
 using std::string;
 #include <vector>
@@ -38,6 +40,18 @@ using std::map;
 #include <utility>
 using std::pair;
 
+#include <cereal/types/memory.hpp>
+#include <cereal/archives/binary.hpp>
+#include <cereal/types/utility.hpp>
+#include <cereal/types/common.hpp>
+#include <cereal/types/tuple.hpp>
+
+using cereal::BinaryInputArchive;
+using cereal::BinaryOutputArchive;
+#include <fstream>
+using std::ifstream;
+using std::ofstream;
+
 enum GameType {MATCHING, PAIR};
 typedef pair<GameType, string> MiniGame;
 
@@ -45,7 +59,7 @@ class Scene : public Screen
 {
 public:
     Scene(string filename, shared_ptr<Dictionary> dictionary = nullptr);
-//        Scene(float winW, float winH, string fileName);
+        Scene(float winW, float winH, string fileName);
 
     void setActivities(vector<MiniGame>& activities);
     void setRequirements(map<set<unsigned>,unsigned>& requirements);
@@ -59,13 +73,13 @@ public:
 
     template <class Archive>
     void serialize( Archive & ar )
-    {
-        ar(m_screenItems,
-            m_BGM,
-            m_dictionary,
-            m_activities,
-            m_requirements,
-            m_badge
+	{
+		ar(m_screenItems,
+			m_BGM,
+			m_dictionary,
+			m_activities,
+			m_requirements,
+			m_badge
           );
     }
 

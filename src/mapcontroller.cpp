@@ -34,7 +34,6 @@ bool MapController::locked(unsigned index)
         cout << "almost" << endl;
         cout << "sz:" << badge.size() << endl;
         //cout << "nm:" << badge << endl;
-        //if(badge.size() && !m_profile->lookupBadge(badge))
         //string hi = "none";
 		wstring hi = L"none";
 		if (badge != L"none" && !m_profile->lookupBadge(badge))

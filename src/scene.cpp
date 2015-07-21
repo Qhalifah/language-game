@@ -19,17 +19,8 @@ along with Dina'ki Adventures. If not, see <http://www.gnu.org/licenses/>.*/
 // Joseph DeWilde
 // 2/24/2014
 
+
 #include "scene.h"
-#include <cereal/types/memory.hpp>
-#include <cereal/archives/binary.hpp>
-#include <cereal/types/utility.hpp>
-#include <cereal/types/common.hpp>
-#include <cereal/types/tuple.hpp>
-using cereal::BinaryInputArchive;
-using cereal::BinaryOutputArchive;
-#include <fstream>
-using std::ifstream;
-using std::ofstream;
 
 
 Scene::Scene(string name, shared_ptr<Dictionary> dictionary)
@@ -44,7 +35,7 @@ Badge Scene::badge()
 
 void Scene::save()
 {
-    std::ofstream out_stream(".//db//scenes//" + m_id + ".scn", std::ios::binary);
+	std::ofstream out_stream(".//db//scenes//" + m_id + ".scn");
 
     if( !out_stream.fail() )
     {
@@ -55,13 +46,20 @@ void Scene::save()
 
 void Scene::load()
 {
-    std::ifstream in_stream(".//db//scenes//" + m_id + ".scn", std::ios::binary);
+    std::ifstream in_stream(".//db//scenes//" + m_id + ".scn");
 
+	cout << "beginning scene loading." << endl;
     if(in_stream && !in_stream.eof())
     {
+		cout << "Scene file " << m_id << ".scn" << " is now open" << endl;
+
         cereal::BinaryInputArchive archive(in_stream);
         archive(*this);
     }
+	else
+	{
+		cout << "Scene file " << m_id << ".scn" << " failed to open" << endl;
+	}
 }
 
 void Scene::setActivities(vector<MiniGame>& activities)

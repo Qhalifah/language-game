@@ -32,6 +32,7 @@ using std::string;
 using std::cout;
 using std::endl;
 
+
 class Activity : public Screen
 {
 public:
@@ -47,29 +48,35 @@ public:
     
     void setHelpMessage(wstring);
 
-    size_t getChoices();
-    size_t getRounds();
-    size_t getMaxScore();
+	size_t getChoices();
+	size_t getRounds();
+	size_t getMaxScore();
 
     void save();
     void load();
     
-    
-
     template<class Archive>
     void serialize(Archive & ar)
     {
-        ar(m_screenItems, m_BGM, m_dictionary, m_choices, m_rounds, m_maxScore, m_badge_piece);
+		ar(
+			m_screenItems
+			, m_BGM
+			, m_dictionary
+			, m_badge_piece,
+			s_choices
+			, s_rounds
+			, s_maxScore
+			);
     }
 
-    
-    //Badge m_badge;
 private:
     string m_id;
-    size_t m_choices;
-    size_t m_rounds;
-    size_t m_maxScore;
-    
+	size_t m_choices;
+	size_t m_rounds;
+	size_t m_maxScore;
+	string s_choices;
+	string s_rounds;
+	string s_maxScore;
     Piece m_badge_piece;
 };
 

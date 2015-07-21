@@ -72,8 +72,10 @@ public:
     void changeHUD(shared_ptr<HUD> hud);
     void resize();
     
-    void playBGM(size_t index);
-    void stopBGM(size_t index);
+	void playBGM(size_t index);
+	void playAllBGM();
+	void stopBGM(size_t index);
+	void stopAllBGM();
     
     void playHudSound(size_t index);
     void playScreenSound(size_t index);

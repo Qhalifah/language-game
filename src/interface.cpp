@@ -249,12 +249,30 @@ void Interface::playBGM(size_t index)
     }
 }
 
+void Interface::playAllBGM()
+{
+	for (int ii = 0; ii < m_BGM.size(); ++ii)
+	{
+		if (m_BGM[ii]->getStatus() == sf::Music::Stopped ||
+			m_BGM[ii]->getStatus() == sf::Music::Paused)
+			m_BGM[ii]->play();
+	}
+}
+
 void Interface::stopBGM(size_t index)
 {
     if( unsigned(index) < m_BGM.size() )
     {
         m_BGM[index]->pause();
     }
+}
+
+void Interface::stopAllBGM()
+{
+	for (int ii = 0; ii < m_BGM.size(); ++ii)
+	{
+		m_BGM[ii]->pause();
+	}
 }
 
 void Interface::resizeSprite(shared_ptr<Sprite> sprite,
