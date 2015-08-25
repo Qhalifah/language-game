@@ -78,7 +78,8 @@ class Dictionary
     template <class Archive>
     void save(Archive & ar) const
     {
-        ar(
+		ar(
+			dictSet_id,
             m_words
            );
     }
@@ -87,16 +88,17 @@ class Dictionary
     void load(Archive & ar)
     {
         cout << "dict" << endl;
-        ar(
-           m_words
+		ar(
+			dictSet_id,
+            m_words
            );
            cout << "dict2" << endl;
     }
 
-
     private:
 
     std::map<std::wstring, Word> m_words;
+	std::string dictSet_id = "None";
 };
 
 #endif // DICTIONARY_H

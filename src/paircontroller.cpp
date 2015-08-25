@@ -81,7 +81,7 @@ void PairController::randomizeWords(unsigned int start, unsigned int end)
         t_screen_items[image].size = Vec2(width, width);
         t_screen_items[image].position = Vec2(x+deltaX*((image-start)/4),
                                               y1+(image/2%2)*(width+y1));
-        t_screen_items[image].behavior = 24;
+        t_screen_items[image].behavior = 24; //     MOUSE_UP_SELECT = 8 and HOVER_ENGAGE = 16
         
         t_screen_items[word].type = TEXT;
         t_screen_items[word].name = t_word.getDinName();
@@ -95,7 +95,7 @@ void PairController::randomizeWords(unsigned int start, unsigned int end)
                                              y2+(word/2%2)*width);
         t_screen_items[word].size = {20, 0};
         t_screen_items[word].color = Color::Black;
-        t_screen_items[word].behavior = 24;
+        t_screen_items[word].behavior = 24; //     MOUSE_UP_SELECT = 8 and HOVER_ENGAGE = 16
 
         // Save these two items as a pair
         m_pairs.emplace(set<unsigned>({image, word}));
@@ -126,7 +126,7 @@ PairController::PairController(std::shared_ptr<Profile> profile,
     
     ScreenItem t_screen_item;
     t_screen_item.type = IMAGE;
-    t_screen_item.name = L"images/fish.png";
+    t_screen_item.name = m_activity->getRewardImage();
     t_screen_item.size = m_screen->getScreenItems()[0].size * .05;
     //t_screen_item.sound = L"audio/other/splash.wav";
     t_screen_item.visible = false;
@@ -138,6 +138,7 @@ PairController::PairController(std::shared_ptr<Profile> profile,
     t_screen_items.resize(initial_size+(2*m_count));
 
     srand(unsigned(time(NULL)));
+
     // Push the rewards on the back
     for( unsigned ii = 0; ii < m_count; ++ii )
     {
@@ -149,12 +150,6 @@ PairController::PairController(std::shared_ptr<Profile> profile,
     }
     m_screen->setScreenItems(t_screen_items);
     randomizeWords(initial_size, initial_size + 2*m_count);
-
-    /*t_screen_items = m_screen->getScreenItems();
-    for(auto ii: t_screen_items)
-    {
-        std::wcout << ii.name << std::endl;
-    }*/
 };
 
 void PairController::mouseButtonPressedEvent(sf::Event event, sf::Vector2i mouse_loc)
@@ -194,13 +189,6 @@ void PairController::mouseMovedEvent(sf::Event event, sf::Vector2i mouse_loc)
             m_screen->setScreenItem((size_t)hit_sprite, screen_item);
             m_interface->update((size_t)hit_sprite, screen_item);
             m_engaged_sprite = hit_sprite;
-        }
-
-        if (screen_item.behavior & HOVER_SELECT)
-        {
-            //TODO: decided if this will be implemented
-            //m_interface->update(hit_sprite, screen_item);
-            //m_engaged_sprite = hit_sprite;
         }
     }
 }
@@ -281,7 +269,7 @@ void PairController::mouseButtonReleasedEvent(sf::Event event, sf::Vector2i mous
                                 screen_item1.color = sf::Color::White;
                                 m_screen->setScreenItem(sprite1, screen_item1);
                                 m_interface->update(sprite1, screen_item1);
-
+								
                                 screen_item2.selected = false;
                                 screen_item2.color = sf::Color::White;
                                 m_screen->setScreenItem(sprite2, screen_item2);

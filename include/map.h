@@ -59,7 +59,9 @@ public:
     template<class Archive>
     void serialize(Archive & ar)
     {
-        ar(m_screenItems, m_BGM, m_dictionary, m_scenes, m_scene_prereqs, m_scnPreRegsIds);
+        ar(m_screenItems, m_BGM, 
+			//m_dictionary, 
+			m_scenes, m_scene_prereqs, m_scnPreRegsIds);
     }
 
     //unordered_map<unsigned, set<unsigned>> m_scnPreRegsIds;

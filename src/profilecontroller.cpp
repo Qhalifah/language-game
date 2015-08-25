@@ -82,9 +82,11 @@ ProfileController::ProfileController(std::shared_ptr<ProfileWrangler> wrangler, 
     t_help_text.name += L"5. Click on your gender.\n";
     t_help_text.name += L"6. Click DONE to complete your profile!";
     
-    m_screen_items.push_back(t_background_image);
+	m_screen_items.push_back(t_background_image);
     m_screen_items.push_back(t_help_box);
     m_screen_items.push_back(t_help_text); 
+
+	cout << "Current size of the window is: " << m_screen_items[0].size.x << " by " << m_screen_items[0].size.y << endl;
 
     //get profiles from file
     std::vector<std::shared_ptr<Profile>> t_profiles = m_profile_wrangler->loadProfiles();
@@ -125,7 +127,7 @@ ProfileController::ProfileController(std::shared_ptr<ProfileWrangler> wrangler, 
         t_screen_item_text.size     = {20,0};
         t_screen_item_text.visible  = true;
         t_screen_item_text.hover    = true;
-        t_screen_item_text.color =  Color::White;
+        t_screen_item_text.color    = Color::White;
                                       
         m_screen_items.push_back(t_screen_item);
         m_screen_items.push_back(t_screen_item_text);

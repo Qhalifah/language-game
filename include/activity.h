@@ -44,7 +44,8 @@ public:
     void setMaxScore(size_t score);
     
     void setBadgePiece(Piece);
-    Piece getBadgePiece(); 
+	Piece getBadgePiece();
+	wstring getRewardImage();
     
     void setHelpMessage(wstring);
 
@@ -62,10 +63,11 @@ public:
 			m_screenItems
 			, m_BGM
 			, m_dictionary
-			, m_badge_piece,
-			s_choices
+			, m_badge_piece
+			, s_choices
 			, s_rounds
 			, s_maxScore
+			, m_reward_image
 			);
     }
 
@@ -77,7 +79,8 @@ private:
 	string s_choices;
 	string s_rounds;
 	string s_maxScore;
-    Piece m_badge_piece;
+	Piece m_badge_piece;
+	wstring m_reward_image;
 };
 
 #endif // ACTIVITY_H

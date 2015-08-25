@@ -236,6 +236,8 @@ public:
     void setScreenItem(unsigned index, const ScreenItem& new_val);
     void setDictionary(shared_ptr<Dictionary> dictionary);
 
+	Vec2 getSize(){ return m_screenItems[0].size;}
+
     virtual void save() = 0;
     virtual void load() = 0;
 

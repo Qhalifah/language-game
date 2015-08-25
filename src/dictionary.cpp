@@ -30,12 +30,13 @@ along with Dina'ki Adventures. If not, see <http://www.gnu.org/licenses/>.*/
 Dictionary::Dictionary()
 {
     //Done. No need to add things to a blank Dictionary
+	dictSet_id = "None";
 }
 
 //TODO
 Dictionary::Dictionary(std::string const& fileLocation)
 {
-
+	dictSet_id = "None";
 }
 
 //TODO

@@ -56,10 +56,13 @@ public:
                  m_correctAnswerIndex,
                  m_currentScore,
                  m_engaged_sprite,
-                 m_numOfScrItems,
                  m_indexOfInstrBox,
-                 m_indexOfInstrText,
-                 m_indexOfPicture,
+				 m_indexOfInstrText,
+				 // Get the index of the main image to be matched
+				 m_mainImageIndex,
+				 // Get the start of the textobjects in the screen items
+				 m_textObjectsIndex,
+
                  m_numOfChoices;
 
     vector<wstring> m_wordList;

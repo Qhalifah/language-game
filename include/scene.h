@@ -89,7 +89,6 @@ public:
 private:
     string m_id;
     Badge m_badge;
-
 };
 
 #endif // SCENE_H

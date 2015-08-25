@@ -62,7 +62,8 @@ void Activity::setMaxScore(size_t score)
 void Activity::setHelpMessage(wstring message)
 {
     if (m_screenItems.size() > 2)
-    {
+	{
+		m_screenItems[2].size = { 10, 0 };
         std::swap(m_screenItems[2].name, message);
     }
 }
@@ -75,6 +76,11 @@ void Activity::setBadgePiece(Piece piece)
 Piece Activity::getBadgePiece()
 {
     return m_badge_piece;
+}
+
+wstring Activity::getRewardImage()
+{
+	return m_reward_image;
 }
 
 size_t Activity::getChoices()

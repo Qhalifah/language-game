@@ -31,7 +31,7 @@ minioncontroller_matching::minioncontroller_matching(std::shared_ptr<Profile> pr
 
     m_helpMessage  = L"In this game, I'll give you a bunch of words and then a\n";
     m_helpMessage += L"picture of one of them.All you have to do is click on the\n";
-    m_helpMessage += L"word that matches the picture!Isn't that easy ? Just keep\n";
+    m_helpMessage += L"word that matches the picture! Isn't that easy ? Just keep\n";
     m_helpMessage += L"doing it until you win!\n\n";
     m_helpMessage += L"Don't feel too bad if you mess up.You can replay these\n";
     m_helpMessage += L"games as often as you need.Have fun!";
@@ -41,10 +41,12 @@ minioncontroller_matching::minioncontroller_matching(std::shared_ptr<Profile> pr
     m_grade = 0;
     m_engaged_sprite = 0;
     m_currentRound = 0;
-    m_numOfScrItems = 4;
     m_indexOfInstrBox = 1;
-    m_indexOfInstrText = 2;
-    m_indexOfPicture = 3;
+	m_indexOfInstrText = 2;
+	// Get the index of the main image to be matched
+	m_mainImageIndex = 3;
+	// Get the start of the textobjects in the screen items
+	m_textObjectsIndex = m_activity->getScreenItems().size() - m_activity->getRounds();
     m_numOfChoices = m_activity->getChoices();
     createInitialRound();
 };
@@ -53,15 +55,15 @@ minioncontroller_matching::minioncontroller_matching(std::shared_ptr<Profile> pr
 void minioncontroller_matching::mouseMovedEvent(sf::Event event, sf::Vector2i mouse_loc)
 {
     int hit_sprite = m_interface->getScreenHit(mouse_loc.x, mouse_loc.y);
-    if (hit_sprite > -1 && (size_t)hit_sprite > m_numOfScrItems-1)
+    if (((size_t)hit_sprite >= m_textObjectsIndex && (size_t)hit_sprite < m_activity->getScreenItems().size()) || 
+		hit_sprite == m_mainImageIndex)
     {
         ScreenItem m_screen_item;
-        
-        //Hit sprite is above 0 from above
-        if (m_engaged_sprite != (size_t)hit_sprite && m_engaged_sprite > m_numOfScrItems-1)
+		
+        // If hit sprite is not the currently engaged sprite
+		if (m_engaged_sprite != (size_t)hit_sprite && m_engaged_sprite < m_activity->getScreenItems().size() - 1)
         {
             m_screen_item = m_screen->getScreenItems()[m_engaged_sprite];
-            
             m_screen_item.engaged = false;
             m_interface->update(m_engaged_sprite, m_screen_item);
         }
@@ -71,9 +73,9 @@ void minioncontroller_matching::mouseMovedEvent(sf::Event event, sf::Vector2i mo
         
         m_screen_item.engaged = true;
         m_interface->update(m_engaged_sprite, m_screen_item);
-        
-    }
-    else if (hit_sprite > -1 && (size_t)hit_sprite < m_numOfScrItems-1 && m_engaged_sprite > 0)
+	}
+	// If no sprite to be the engaged sprite
+	else if (hit_sprite > -1 && (size_t)hit_sprite < m_activity->getScreenItems().size() - 1 && m_engaged_sprite > 0)
     {
         ScreenItem m_screen_item = m_screen->getScreenItems()[m_engaged_sprite];
             
@@ -91,15 +93,16 @@ void minioncontroller_matching::mouseButtonReleasedEvent(sf::Event event, sf::Ve
     }
     else
     {
-        int index = m_interfacePtr->getScreenHit(pos.x, pos.y);
+		int hit_sprite = m_interfacePtr->getScreenHit(pos.x, pos.y);
         
-        if(index > 0)
-            m_interface->playScreenSound((size_t)index);
+		if (hit_sprite > m_textObjectsIndex || hit_sprite == m_mainImageIndex)
+			m_interface->playScreenSound((size_t)hit_sprite);
 
-        // if index is between the unclickable screen items and the number of clickable text boxes
-        if (index > 0 && (size_t)index > m_numOfScrItems-1 && index < (int)(m_numOfScrItems + m_numOfChoices))
+        // if index is one of the clickable text boxes
+		if ((size_t)hit_sprite >= m_textObjectsIndex && 
+			hit_sprite < (int)(m_activity->getScreenItems().size()))
         {
-            checkAnswer((size_t)index);
+			checkAnswer((size_t)hit_sprite);
         }
     }
 }
@@ -117,17 +120,23 @@ size_t  minioncontroller_matching::getGrade()
 
 void minioncontroller_matching::checkAnswer(size_t index)
 {
-    std::cout << "clicked box's index: " << index << "correct answer index: " << m_correctAnswerIndex + m_numOfScrItems << std::endl;
+	std::cout << "clicked box's index: " << index << ", correct answer index: " << m_correctAnswerIndex + m_textObjectsIndex << std::endl;
     //check index of clicked box against stored index of correct answer
-    if (index == m_correctAnswerIndex + m_numOfScrItems)
+	if (index == m_correctAnswerIndex + m_textObjectsIndex)
     {
+
+		cout << "Answer correct." << endl;
         ScreenItem t_screenitem;
 
-        for (auto ii = unsigned(m_numOfScrItems + m_numOfChoices);
-                ii < m_screen->getScreenItems().size(); ++ii)
+		for (auto ii = m_mainImageIndex + 1; ii < m_textObjectsIndex; ++ii)
         {
+			cout << "Checking if index " << ii << " is invisble." << endl;
+
+			// Make the first invisble reward item visible
             if (!m_screen->getScreenItems()[ii].visible)
             {
+				cout << "Answer correct, making reward item visible." << endl;
+
                 t_screenitem = m_screen->getScreenItems()[ii];
                 t_screenitem.visible = true;
                 m_screen->setScreenItem(ii, t_screenitem);
@@ -140,7 +149,6 @@ void minioncontroller_matching::checkAnswer(size_t index)
     }
     else
     {
-        //showCorrectImage(index); // If incorrect
         createNewRound();
     }
 }
@@ -158,33 +166,85 @@ void minioncontroller_matching::populateRound()
         vector<ScreenItem> t_screenitems = m_screen->getScreenItems();
         vector<Word> t_wordlist;
 
-        t_wordlist = getRandomWords(m_numOfChoices);
-        for (size_t ii = 0; ii + m_numOfScrItems < m_numOfScrItems + m_numOfChoices; ++ii)
+        t_wordlist = getRandomWords(m_activity->getChoices());
+
+		for (size_t ii = 0; ii < m_activity->getChoices(); ++ii)
         {
-            t_screenitems[ii + m_numOfScrItems].name = t_wordlist[ii].getDinName();
+			t_screenitems[ii + m_textObjectsIndex].name = t_wordlist[ii].getDinName();
             
             if(m_profile->getGender() == Profile::female)
-                 t_screenitems[ii + m_numOfScrItems].sound = t_wordlist[ii].getGirlAudioLocation();
+				t_screenitems[ii + m_textObjectsIndex].sound = t_wordlist[ii].getGirlAudioLocation();
             else
-                 t_screenitems[ii + m_numOfScrItems].sound = t_wordlist[ii].getBoyAudioLocation();
-            
-            //t_screenitems[ii + m_numOfScrItems].sound = t_wordlist[ii].getGirlAudioLocation(); // TODO: NEED PROFILE CHECKING FOR BOY/GIRL
+				t_screenitems[ii + m_textObjectsIndex].sound = t_wordlist[ii].getBoyAudioLocation();
         }
 
         //randomly choose a selected word to be the correct answer
         srand(unsigned(time(NULL)));
         m_correctAnswerIndex = ((size_t)rand() % m_numOfChoices);
-        t_screenitems[m_indexOfPicture].name = t_wordlist[m_correctAnswerIndex].getImageLocation();
+        t_screenitems[m_mainImageIndex].name = t_wordlist[m_correctAnswerIndex].getImageLocation();
         if(m_profile->getGender() == Profile::female)
-            t_screenitems[m_indexOfPicture].sound = t_wordlist[m_correctAnswerIndex].getGirlAudioLocation();
+			t_screenitems[m_mainImageIndex].sound = t_wordlist[m_correctAnswerIndex].getGirlAudioLocation();
         else
-            t_screenitems[m_indexOfPicture].sound = t_wordlist[m_correctAnswerIndex].getBoyAudioLocation(); // TODO: NEED PROFILE CHECKING FOR BOY/GIRL
+			t_screenitems[m_mainImageIndex].sound = t_wordlist[m_correctAnswerIndex].getBoyAudioLocation();
         m_screen->setScreenItems(t_screenitems);
     }
 }
 
 void minioncontroller_matching::createInitialRound()
 {
+	vector<ScreenItem> t_screen_items = m_activity->getScreenItems();
+
+	int xRatio = m_activity->getSize().x / 800;
+	int yRatio = m_activity->getSize().y / 600;
+
+	ScreenItem t_screen_item;
+
+	// Create the main image
+	t_screen_item.type = IMAGE;
+	t_screen_item.name = L"None";
+	t_screen_item.size = Vec2(200 * xRatio, 200 * yRatio);
+	t_screen_item.visible = true;
+	t_screen_item.behavior = 24; //     MOUSE_UP_SELECT = 8 and HOVER_ENGAGE = 16,
+	t_screen_item.position = Vec2(550 * xRatio, 100 * yRatio);
+
+	t_screen_items.push_back(t_screen_item);
+
+	// Create the reward image items
+	t_screen_item.type = IMAGE;
+	t_screen_item.name = m_activity->getRewardImage();
+	t_screen_item.size = Vec2(50 * xRatio, 50 * yRatio);
+	t_screen_item.visible = false;
+	t_screen_item.behavior = 0; //     None
+	
+	for (int ii = 0; ii < m_activity->getRounds(); ++ii)
+	{
+		t_screen_item.position.x = m_screen->getScreenItems()[0].size.x * .4
+			* (1.0 + (rand() % 100) / 200.0);
+		t_screen_item.position.y = m_screen->getScreenItems()[0].size.y * .6
+			* (1.0 + (rand() % 100) / 200.0);
+		t_screen_items.push_back(t_screen_item);
+	}
+
+	// Create the Text items
+	t_screen_item.type = TEXT;
+	t_screen_item.name = L"e";
+	t_screen_item.size = Vec2(20, 0);
+	t_screen_item.visible = true;
+	t_screen_item.color = Color::Black;
+	t_screen_item.hover = true;
+	t_screen_item.behavior = 24; //     MOUSE_UP_SELECT = 8 and HOVER_ENGAGE = 16,
+	
+	m_textObjectsIndex = t_screen_items.size();
+	int spacer = m_screen->getScreenItems()[0].size.y / m_activity->getChoices();
+
+	for (int ii = 0; ii < m_activity->getChoices(); ++ii)
+	{
+		t_screen_item.position = Vec2(100, spacer + ii * 90);
+		t_screen_items.push_back(t_screen_item);
+	}
+
+	m_screen->setScreenItems(t_screen_items);
+
     populateRound();
 }
 
@@ -192,10 +252,14 @@ void minioncontroller_matching::createInitialRound()
 void minioncontroller_matching::createNewRound()
 {
     populateRound();
-    m_interface->update(m_numOfScrItems, m_numOfScrItems + m_numOfChoices,
-                        m_screen->getScreenItems());
-    m_interface->update(m_indexOfPicture,
-                        m_screen->getScreenItems()[m_indexOfPicture]);
+
+	// Update the text objects
+    m_interface->update(m_textObjectsIndex, 
+		m_activity->getScreenItems().size(), 
+		m_screen->getScreenItems());
+
+	// Update the main image
+	m_interface->update(m_mainImageIndex, m_screen->getScreenItems()[m_mainImageIndex]);
 }
 
 
@@ -231,7 +295,7 @@ void minioncontroller_matching::endGame()
     m_interface->update(m_indexOfInstrText, t_screenitems[m_indexOfInstrText]);
 
     // set all other screen items to invisible
-    for (auto ii = m_numOfScrItems-1; ii < t_screenitems.size(); ++ii)
+    for (auto ii = m_mainImageIndex; ii < t_screenitems.size(); ++ii)
     {
         t_screenitems[ii].visible = false;
         m_interface->update(ii, t_screenitems[ii]);

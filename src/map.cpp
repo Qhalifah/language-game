@@ -58,7 +58,9 @@ void Map::setScenePrereqs(unordered_map<unsigned, set<std::wstring>>& prereqs)
 void Map::setHelpMessage()
 {
     if (m_screenItems.size() > 2)
-    {
+	{
+		m_screenItems[2].size = { 10, 0 };
+
         wstring helpMessage;
         helpMessage  = L"Hey there! This is the main map where you can pick where\n";
         helpMessage += L"you would like to go! Just click on any of those places to\n";

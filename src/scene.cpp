@@ -80,7 +80,9 @@ void Scene::setBadge(Badge& badge)
 void Scene::setHelpMessage()
 {
     if (m_screenItems.size() > 2)
-    {
+	{
+		m_screenItems[2].size = { 10, 0 };
+
         wstring helpMessage;
         helpMessage  = L"Why, hello again! Here we are at a fun location with all\n";
         helpMessage += L"sorts of activities to play. Again, just click the places\n";
@@ -92,6 +94,10 @@ void Scene::setHelpMessage()
         helpMessage += L"reminder of what to do. Have fun!";
 
         std::swap(m_screenItems[2].name, helpMessage);
+
+
+		cout << "Current size of the window is: " << m_screenItems[0].size.x << " by " << m_screenItems[0].size.y << endl;
+
     }
 }
 
