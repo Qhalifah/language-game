@@ -62,9 +62,10 @@ public:
         Scene(float winW, float winH, string fileName);
 
     void setActivities(vector<MiniGame>& activities);
-    void setRequirements(map<set<unsigned>,unsigned>& requirements);
+    void setRequirements(map<set<unsigned>, string>& requirements);
     void setBadge(Badge& badge);
     void setHelpMessage();
+	MiniGame getMiniGameForActivityFileName(string);
 
     Badge badge();
 
@@ -80,11 +81,13 @@ public:
 			m_activities,
 			m_requirements,
 			m_badge
-          );
+			);
+		cout << "Scene seialize" << endl;
     }
 
     vector<MiniGame> m_activities;
-    map<set<unsigned>, unsigned> m_requirements;
+    //map<set<unsigned>, unsigned> m_requirements;
+	map<set<unsigned>, string> m_requirements;
 
 private:
     string m_id;

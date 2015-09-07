@@ -100,13 +100,13 @@ void SceneController::mouseButtonReleasedEvent(sf::Event event, sf::Vector2i mou
                 if ( m_scene->m_requirements.count(m_myset) )
                 {
                     std::shared_ptr<MinionController> act_controller;
-
-                    std::shared_ptr<Activity> new_activity(new Activity(m_scene->m_activities[(size_t)m_scene->m_requirements[m_myset]].second));
+					MiniGame currentActMiniGame = m_scene->getMiniGameForActivityFileName(m_scene->m_requirements[m_myset]);
+                    std::shared_ptr<Activity> new_activity(new Activity(currentActMiniGame.second));
                     cout << "hi world" << endl;
                     new_activity->load();
                     cout << "bye world" << endl;
-                    act_controller = getGameType( m_scene->m_activities[(size_t)m_scene->m_requirements[m_myset]].first , new_activity);
-
+                    act_controller = getGameType(currentActMiniGame.first , new_activity);
+					cout << "Here" << endl;
                     auto screenItems = m_screen->getScreenItems();
 
                     for(auto ii = 0u; ii < screenItems.size(); ++ii)

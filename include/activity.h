@@ -69,6 +69,8 @@ public:
 			, s_maxScore
 			, m_reward_image
 			);
+
+		cout << "End Activity seialize" << endl;
     }
 
 private:

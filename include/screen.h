@@ -185,7 +185,7 @@ struct ScreenItem
                 size,
                 volume,
                 pitch,
-                visible, // TODO: is this a good idea?
+                visible,
                 color,
                 behavior
         );

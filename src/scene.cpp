@@ -60,6 +60,7 @@ void Scene::load()
 	{
 		cout << "Scene file " << m_id << ".scn" << " failed to open" << endl;
 	}
+	cout << "Scene loaded" << endl;
 }
 
 void Scene::setActivities(vector<MiniGame>& activities)
@@ -67,7 +68,7 @@ void Scene::setActivities(vector<MiniGame>& activities)
     std::swap(m_activities, activities);
 }
 
-void Scene::setRequirements(map<set<unsigned>, unsigned>& requirements)
+void Scene::setRequirements(map<set<unsigned>, string>& requirements)
 {
     std::swap(m_requirements, requirements);
 }
@@ -98,7 +99,14 @@ void Scene::setHelpMessage()
 
 		cout << "Current size of the window is: " << m_screenItems[0].size.x << " by " << m_screenItems[0].size.y << endl;
 
-    }
+	}
 }
 
-
+MiniGame Scene::getMiniGameForActivityFileName(string actFileName)
+{
+	for (auto itr = m_activities.begin(); itr != m_activities.end(); ++itr)
+	{
+		if (actFileName == itr->second)
+			return *itr;
+	}
+}

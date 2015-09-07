@@ -48,7 +48,10 @@ minioncontroller_matching::minioncontroller_matching(std::shared_ptr<Profile> pr
 	// Get the start of the textobjects in the screen items
 	m_textObjectsIndex = m_activity->getScreenItems().size() - m_activity->getRounds();
     m_numOfChoices = m_activity->getChoices();
-    createInitialRound();
+	createInitialRound();
+
+	ScreenItem t_screen_item = m_activity->getScreenItem(m_indexOfInstrBox);
+
 };
 
 
@@ -288,7 +291,6 @@ void minioncontroller_matching::endGame()
 	}
 
     t_screenitems[m_indexOfInstrText].name = L"Your score is " + std::to_wstring(getGrade());
-	t_screenitems[m_indexOfInstrText].name += L"Badge piece name is ";
 	t_screenitems[m_indexOfInstrText].name += m_activity->getBadgePiece().m_badge_name;
     t_screenitems[m_indexOfInstrText].size.x = 30;
     t_screenitems[m_indexOfInstrText].visible = true;

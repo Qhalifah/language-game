@@ -122,4 +122,6 @@ void Activity::load()
 	m_choices = stoi(s_choices);
 	m_rounds = stoi(s_rounds);
 	m_maxScore = stoi(s_maxScore);
+
+	cout << "End Activity load" << endl;
 }
