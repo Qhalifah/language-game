@@ -80,6 +80,7 @@ size_t Map::getSceneListSize()
 
 const string& Map::getScene(size_t index) const
 {
+	cout << "m_scenes.size() is " << m_scenes.size() << endl;
     static const string nullstr = "";
     if(m_scenes.count(index))
         return m_scenes.at(index);

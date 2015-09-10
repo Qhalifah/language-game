@@ -64,7 +64,7 @@ public:
 			m_scenes, m_scene_prereqs, m_scnPreRegsIds);
     }
 
-    //unordered_map<unsigned, set<unsigned>> m_scnPreRegsIds;
+    unordered_map<unsigned, set<unsigned>> m_scnPreRegsIds;
 private:
     string m_id;
     unordered_map<unsigned, string> m_scenes;
