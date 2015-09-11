@@ -38,6 +38,7 @@ using std::ofstream;
 Activity::Activity(string name, shared_ptr<Dictionary> dictionary, Piece piece)
 : Screen(dictionary), m_id(name), m_choices(0), m_rounds(0), m_maxScore(0), m_badge_piece(piece)
 {
+	m_reward_sound = L"audio/other/splash.wav";
 }
 
 Activity::~Activity()

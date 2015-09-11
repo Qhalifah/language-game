@@ -259,6 +259,7 @@ void PairController::mouseButtonReleasedEvent(sf::Event event, sf::Vector2i mous
                                     auto index = m_screen->getScreenItems().size() - m_answered - 1;
                                     auto reward = m_screen->getScreenItems()[index];
                                     reward.visible = true;
+
                                     m_screen->setScreenItem(index, reward);
                                     m_interface->update(index, reward);
                                     ++m_answered;

@@ -69,7 +69,6 @@ public:
 			, s_maxScore
 			, m_reward_image
 			);
-
 		cout << "End Activity seialize" << endl;
     }
 
@@ -83,6 +82,7 @@ private:
 	string s_maxScore;
 	Piece m_badge_piece;
 	wstring m_reward_image;
+	wstring m_reward_sound;
 };
 
 #endif // ACTIVITY_H
