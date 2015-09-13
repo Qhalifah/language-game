@@ -128,8 +128,10 @@ PairController::PairController(std::shared_ptr<Profile> profile,
     t_screen_item.type = IMAGE;
     t_screen_item.name = m_activity->getRewardImage();
     t_screen_item.size = m_screen->getScreenItems()[0].size * .05;
-    //t_screen_item.sound = L"audio/other/splash.wav";
-    t_screen_item.visible = false;
+	t_screen_item.visible = false;
+	t_screen_item.sound = m_activity->getRewardSoundFile();
+	t_screen_item.volume = m_activity->getRewardSoundVolume();
+	t_screen_item.pitch = m_activity->getRewardSoundPitch();
     
     m_count = m_activity->getChoices();
     size_t initial_size = t_screen_items.size();
@@ -259,10 +261,15 @@ void PairController::mouseButtonReleasedEvent(sf::Event event, sf::Vector2i mous
                                     auto index = m_screen->getScreenItems().size() - m_answered - 1;
                                     auto reward = m_screen->getScreenItems()[index];
                                     reward.visible = true;
-
                                     m_screen->setScreenItem(index, reward);
                                     m_interface->update(index, reward);
                                     ++m_answered;
+									//setActivitySound();
+									//m_sound->play();
+									//playActivitySound();
+									m_activity->playRewardSound();
+									//m_interface->
+									//m_interface->playScreenSound((size_t)index);
                                 }
 
                                 // Erase selection
@@ -339,4 +346,31 @@ void PairController::endGame()
         m_interface->update(ii, t_screenitems[ii]);
     }
     m_screen->setScreenItems(t_screenitems);
+}
+
+void PairController::setActivitySound()
+{
+	m_sound = new sf::Sound;
+	m_soundBuffer = new sf::SoundBuffer;
+
+	sf::SoundBuffer sB;
+	cout << "loading sound file: " << sf::String(m_activity->getRewardSoundFile()).toAnsiString() << endl;
+
+	if (!sB.loadFromFile(sf::String(m_activity->getRewardSoundFile())))
+		cout << "loading sound failed: " << sf::String(m_activity->getRewardSoundFile()).toAnsiString() << endl;
+
+	cout << "loading sound time: " << sB.getDuration().asSeconds() << endl;
+
+	*m_soundBuffer = sB;
+
+	m_sound->setBuffer(*m_soundBuffer);
+	m_sound->setVolume(m_activity->getRewardSoundVolume());
+	m_sound->setPitch(1);
+	//m_sound->setPitch(m_activity->getRewardSoundPitch());
+	m_sound->setLoop(false);
+}
+
+void PairController::playActivitySound()
+{
+	m_sound->play();
 }

@@ -38,11 +38,14 @@ using std::ofstream;
 Activity::Activity(string name, shared_ptr<Dictionary> dictionary, Piece piece)
 : Screen(dictionary), m_id(name), m_choices(0), m_rounds(0), m_maxScore(0), m_badge_piece(piece)
 {
-	m_reward_sound = L"audio/other/splash.wav";
 }
 
 Activity::~Activity()
 {
+	if (m_sound.getStatus() == sf::Sound::Playing)
+		m_sound.stop();
+	m_sound.~Sound();
+	m_soundBuffer.~SoundBuffer();
 }
 
 void Activity::setChoices(size_t choices)
@@ -58,6 +61,21 @@ void Activity::setRounds(size_t rounds)
 void Activity::setMaxScore(size_t score)
 {
     m_maxScore = score;
+}
+
+void Activity::setRewardSoundFile(wstring newRewardSoundFileString)
+{
+	m_reward_MusicItem.file = newRewardSoundFileString;
+}
+
+void Activity::setRewardSoundVolume(float newVolume)
+{
+	m_reward_MusicItem.volume = newVolume;
+}
+
+void Activity::setRewardSoundPitch(float newPitch)
+{
+	m_reward_MusicItem.pitch = newPitch;
 }
 
 void Activity::setHelpMessage(wstring message)
@@ -97,6 +115,35 @@ size_t Activity::getRounds()
 size_t Activity::getMaxScore()
 {
     return m_maxScore;
+}
+
+wstring Activity::getRewardSoundFile()
+{
+	return m_reward_MusicItem.file;
+}
+
+float Activity::getRewardSoundVolume()
+{
+	return m_reward_MusicItem.volume;
+}
+
+float Activity::getRewardSoundPitch()
+{
+	return m_reward_MusicItem.pitch;
+}
+
+void Activity::playRewardSound()
+{  
+	if (!m_soundBuffer.loadFromFile(sf::String(getRewardSoundFile())))
+		cout << "loading sound failed: " << sf::String(getRewardSoundFile()).toAnsiString() << endl;
+
+	cout << "loading sound time: " << m_soundBuffer.getDuration().asSeconds() << endl;
+
+	m_sound.setBuffer(m_soundBuffer);
+	m_sound.setVolume(getRewardSoundVolume());
+	m_sound.setPitch(1);
+	m_sound.setLoop(false);
+	m_sound.play();
 }
 
 void Activity::save()

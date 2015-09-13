@@ -31,6 +31,7 @@ using std::string;
 #include <iostream>
 using std::cout;
 using std::endl;
+#include <SFML/Audio.hpp>
 
 
 class Activity : public Screen
@@ -41,7 +42,10 @@ public:
 
     void setChoices(size_t choices);
     void setRounds(size_t rounds);
-    void setMaxScore(size_t score);
+	void setMaxScore(size_t score);
+	void setRewardSoundFile(wstring);
+	void setRewardSoundVolume(float);
+	void setRewardSoundPitch(float);
     
     void setBadgePiece(Piece);
 	Piece getBadgePiece();
@@ -52,6 +56,11 @@ public:
 	size_t getChoices();
 	size_t getRounds();
 	size_t getMaxScore();
+	wstring getRewardSoundFile();
+	float getRewardSoundVolume();
+	float getRewardSoundPitch();
+
+	void playRewardSound();
 
     void save();
     void load();
@@ -68,6 +77,7 @@ public:
 			, s_rounds
 			, s_maxScore
 			, m_reward_image
+			, m_reward_MusicItem
 			);
 		cout << "End Activity seialize" << endl;
     }
@@ -82,7 +92,9 @@ private:
 	string s_maxScore;
 	Piece m_badge_piece;
 	wstring m_reward_image;
-	wstring m_reward_sound;
+	MusicItem m_reward_MusicItem;
+	sf::Sound m_sound;
+	sf::SoundBuffer m_soundBuffer;
 };
 
 #endif // ACTIVITY_H

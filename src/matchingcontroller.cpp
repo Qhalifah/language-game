@@ -144,6 +144,7 @@ void minioncontroller_matching::checkAnswer(size_t index)
                 t_screenitem.visible = true;
                 m_screen->setScreenItem(ii, t_screenitem);
                 m_interface->update(ii, t_screenitem);
+				m_activity->playRewardSound();
                 break;
             }
         }
@@ -218,6 +219,9 @@ void minioncontroller_matching::createInitialRound()
 	t_screen_item.size = Vec2(50 * xRatio, 50 * yRatio);
 	t_screen_item.visible = false;
 	t_screen_item.behavior = 0; //     None
+	t_screen_item.sound = m_activity->getRewardSoundFile();
+	t_screen_item.volume = m_activity->getRewardSoundVolume();
+	t_screen_item.pitch = m_activity->getRewardSoundPitch();
 	
 	for (int ii = 0; ii < m_activity->getRounds(); ++ii)
 	{
@@ -291,7 +295,6 @@ void minioncontroller_matching::endGame()
 	}
 
     t_screenitems[m_indexOfInstrText].name = L"Your score is " + std::to_wstring(getGrade());
-	t_screenitems[m_indexOfInstrText].name += m_activity->getBadgePiece().m_badge_name;
     t_screenitems[m_indexOfInstrText].size.x = 30;
     t_screenitems[m_indexOfInstrText].visible = true;
     m_interface->update(m_indexOfInstrText, t_screenitems[m_indexOfInstrText]);

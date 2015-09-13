@@ -60,6 +60,9 @@ private:
     unsigned int m_answered;
     unsigned int m_tries;
 
+	sf::Sound *m_sound;
+	sf::SoundBuffer *m_soundBuffer;
+
     set<set<unsigned>> m_pairs;
 
     set<unsigned> m_selected;
@@ -69,6 +72,9 @@ private:
     bool gameIsOver();
 
     void endGame();
+
+	void setActivitySound();
+	void playActivitySound();
 };
 
 #endif /* end define for __PAIR_CONTROLLER_H__ */
