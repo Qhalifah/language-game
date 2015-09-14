@@ -379,8 +379,6 @@ void HUD::toggleProfile(shared_ptr<Interface> interface, std::shared_ptr<Profile
 
 	interface->updateHud(m_profile_index, m_buttons.size(), m_buttons);
     m_profile_up = !m_profile_up;
-
-	cout << "user is a " << t_profile->getGender() << endl;
 }
 
 void HUD::toggleKeys(shared_ptr<Interface> interface)

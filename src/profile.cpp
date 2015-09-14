@@ -29,8 +29,6 @@ along with Dina'ki Adventures. If not, see <http://www.gnu.org/licenses/>.*/
 Profile::Profile(std::wstring name , uint32_t age, gender gen, std::wstring password, std::wstring password_hint ): m_name(name), m_age(age), m_gender(gen), m_password(password), m_password_hint(password_hint), m_saved_games_file(name + std::to_wstring(age))
 {
 	this->setGender(gen);
-	cout << "profile.cpp is setting gender to " << gen << endl;
-	cout << "profile.cpp has set gender to " << this->getGender() << endl;
 
     //GameState new_game;
     //new_game.m_current_scene = L"scene"; //will be start scene when defined ...might be some clever way to read this from a file...like game settings

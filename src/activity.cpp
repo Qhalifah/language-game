@@ -42,10 +42,7 @@ Activity::Activity(string name, shared_ptr<Dictionary> dictionary, Piece piece)
 
 Activity::~Activity()
 {
-	if (m_sound.getStatus() == sf::Sound::Playing)
-		m_sound.stop();
-	m_sound.~Sound();
-	m_soundBuffer.~SoundBuffer();
+	m_sound.resetBuffer();
 }
 
 void Activity::setChoices(size_t choices)
@@ -137,13 +134,17 @@ void Activity::playRewardSound()
 	if (!m_soundBuffer.loadFromFile(sf::String(getRewardSoundFile())))
 		cout << "loading sound failed: " << sf::String(getRewardSoundFile()).toAnsiString() << endl;
 
-	cout << "loading sound time: " << m_soundBuffer.getDuration().asSeconds() << endl;
-
 	m_sound.setBuffer(m_soundBuffer);
 	m_sound.setVolume(getRewardSoundVolume());
-	m_sound.setPitch(1);
+	m_sound.setPitch(getRewardSoundPitch());
+	cout << "Pitch is " << getRewardSoundPitch() << endl;
 	m_sound.setLoop(false);
 	m_sound.play();
+}
+
+void Activity::stopRewardSound()
+{
+	m_sound.stop();
 }
 
 void Activity::save()

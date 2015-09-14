@@ -264,12 +264,7 @@ void PairController::mouseButtonReleasedEvent(sf::Event event, sf::Vector2i mous
                                     m_screen->setScreenItem(index, reward);
                                     m_interface->update(index, reward);
                                     ++m_answered;
-									//setActivitySound();
-									//m_sound->play();
-									//playActivitySound();
 									m_activity->playRewardSound();
-									//m_interface->
-									//m_interface->playScreenSound((size_t)index);
                                 }
 
                                 // Erase selection
@@ -316,6 +311,8 @@ bool PairController::gameIsOver()
 
 void PairController::endGame()
 {
+	m_activity->stopRewardSound();
+
 	size_t m_grade = (m_answered*100.0) / m_tries;
 
 	if (m_grade >= m_activity->getMaxScore())

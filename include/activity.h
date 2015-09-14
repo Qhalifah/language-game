@@ -61,6 +61,7 @@ public:
 	float getRewardSoundPitch();
 
 	void playRewardSound();
+	void stopRewardSound();
 
     void save();
     void load();
@@ -79,7 +80,7 @@ public:
 			, m_reward_image
 			, m_reward_MusicItem
 			);
-		cout << "End Activity seialize" << endl;
+		cout << "End Activity serialize" << endl;
     }
 
 private:
