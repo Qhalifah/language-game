@@ -100,7 +100,7 @@ void Map::save()
 
     cereal::PortableBinaryOutputArchive archive(os);
 
-    archive(m_screenItems, m_BGM, m_dictionary, m_scenes, m_scene_prereqs);
+    archive(*this);
 }
 
 void Map::load()
@@ -114,7 +114,7 @@ void Map::load()
 
         cereal::PortableBinaryInputArchive archive(is);
 
-        archive(m_screenItems, m_BGM, m_dictionary, m_scenes, m_scene_prereqs);
+        archive(*this);
     }
 	else
 	{

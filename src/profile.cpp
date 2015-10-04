@@ -18,6 +18,7 @@ along with Dina'ki Adventures. If not, see <http://www.gnu.org/licenses/>.*/
 #include "profile.h"
 
 #include <string>
+#include <SFML\System\String.hpp>
 #include <unordered_map>
 #include <fstream>
 
@@ -99,7 +100,8 @@ void Profile::addBadgePiece(Piece piece)
 
 	if (!m_badges[piece.m_badge_name].isComplete())
 	{
-		cout << "badge is not complete, adding piece" << endl;
+		sf::String sStr = m_badges[piece.m_badge_name].m_name;
+		cout << "badge " << sStr.toAnsiString() << " is not complete. Total pieces needed is " << m_badges[piece.m_badge_name].m_total_pieces << endl;
 
 		bool badgePieceIsNew = true;
 
@@ -107,6 +109,11 @@ void Profile::addBadgePiece(Piece piece)
 		{
 			cout << "piece isn't new" << endl;
 			badgePieceIsNew = false;
+		}
+		cout << "badge pieces: " << endl;
+		for (auto ii : m_badges[piece.m_badge_name].m_pieces_map)
+		{
+			cout << ii.second.m_id << endl;
 		}
 
 		cout << "piece.m_id: " << piece.m_id << endl;

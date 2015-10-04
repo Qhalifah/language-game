@@ -35,7 +35,7 @@ Badge Scene::badge()
 
 void Scene::save()
 {
-	std::ofstream out_stream(".//db//scenes//" + m_id + ".scn");
+	std::ofstream out_stream(".//db//scenes//" + m_id + ".scn", std::ios::binary | std::ios_base::binary | ofstream::out | std::ios::trunc);
 
     if( !out_stream.fail() )
     {
@@ -46,7 +46,7 @@ void Scene::save()
 
 void Scene::load()
 {
-    std::ifstream in_stream(".//db//scenes//" + m_id + ".scn");
+	std::ifstream in_stream(".//db//scenes//" + m_id + ".scn", std::ios::binary | std::ios_base::binary | ifstream::in);
 
 	cout << "beginning scene loading." << endl;
     if(in_stream && !in_stream.eof())
@@ -61,6 +61,13 @@ void Scene::load()
 		cout << "Scene file " << m_id << ".scn" << " failed to open" << endl;
 	}
 	cout << "Scene loaded" << endl;
+	cout << "badge pieces, size is: " << m_badge.m_pieces_map.size() << " of " << m_badge.m_total_pieces << endl;
+	for (auto ii : m_badge.m_pieces_map)
+	{
+		cout << ii.second.m_id << endl;
+	}		
+	cout << "Total pieces needed is " << m_badge.m_total_pieces << endl;
+
 }
 
 void Scene::setActivities(vector<MiniGame>& activities)

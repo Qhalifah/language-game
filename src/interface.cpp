@@ -180,6 +180,8 @@ Interface::Interface()
     loadCharacter('+', "./font/plus.png");
 	loadCharacter('<', "./font/Arrow_Up.png");
 	loadCharacter('>', "./font/Arrow_Down.png");
+
+	setScreenRatio();
 }
 
 Interface::~Interface()
@@ -278,8 +280,8 @@ void Interface::stopAllBGM()
 void Interface::resizeSprite(shared_ptr<Sprite> sprite,
                              float scale, float h_adjust)
 {
-    float x = sprite->getPosition().x*scale + h_adjust;
-    float y = sprite->getPosition().y*scale;
+	float x = sprite->getPosition().x*scale +h_adjust;
+	float y = sprite->getPosition().y*scale;
     sprite->scale(scale, scale);
     sprite->setPosition(x, y);
 }
@@ -288,29 +290,30 @@ void Interface::resizeSprite(shared_ptr<Sprite> sprite,
 void Interface::resize()
 {
     float win_h = m_window->getSize().y;
-    float win_w = m_window->getSize().x;
+	float win_w = m_window->getSize().x;
     float scale = 1;
     m_view = View(FloatRect(0.f, 0.f, win_w, win_h));
     m_window->setView(m_view);
 
     if( !m_screenSprites.empty() )
     {
-        FloatRect bg = m_screenSprites[0]->getGlobalBounds();
+		
+		FloatRect bg = m_screenSprites[0]->getGlobalBounds();
 
         if( (win_h/win_w) < ((bg.height+m_hud_height)/bg.width) )
         {// Height is short dimension
-            scale = win_h / (bg.height+m_hud_height);
+			scale = win_h / (bg.height + m_hud_height);
         }
         else
         {// Width is short dimension
-            scale = win_w / bg.width;
+			scale = win_w / bg.width;
         }
 
         m_scale *= scale;
         bg.width *= scale;
         bg.left  *= scale;
-        float h_adjust = .5 * (win_w-bg.width) - bg.left;
-
+		float h_adjust = .5 * (win_w - bg.width) - bg.left;
+		
         for( auto sprite : m_screenSprites )
         {
             resizeSprite(sprite, scale, h_adjust);
@@ -324,12 +327,11 @@ void Interface::resize()
             resizeSprite(sprite.second, scale, h_adjust);
         }
     }
-
     m_hud_width = m_hud_width*scale;
     m_hud_height = m_hud_height*scale; //new_hud_h;
     m_hud_scale *= scale;
     m_win_h = win_h;
-    m_win_w = win_w;
+	m_win_w = win_w;
 
     render();
 }
@@ -381,7 +383,9 @@ void Interface::newHudObject(const ScreenItem& data, size_t index)
         m_hudtext[index]->setPosition(data.position);
 
         // Position sprite relative to map
-        float bg_width = m_screenSprites[0]->getGlobalBounds().width;
+        //float bg_width = m_screenSprites[0]->getGlobalBounds().width;
+		float bg_width = getScreenRatioWidth();
+
         m_hudtext[index]->move(.5 * (m_window->getSize().x - bg_width), 0);
 
         m_hudtext[index]->scale(m_scale);
@@ -459,7 +463,9 @@ void Interface::updateHudSprite(size_t index, const ScreenItem& data)
             m_hudSprites[index]->setPosition(m_hudItems[index].position);
 
             // Position sprite relative to map
-            float bg_width = m_screenSprites[0]->getGlobalBounds().width;
+            //float bg_width = m_screenSprites[0]->getGlobalBounds().width;
+			float bg_width = getScreenRatioWidth();
+
             m_hudSprites[index]->move(.5 * (m_window->getSize().x - bg_width), 0);
 
             // Adjust for border if it is a box
@@ -478,7 +484,9 @@ void Interface::updateHudSprite(size_t index, const ScreenItem& data)
                 m_hudSprites[index]->setPosition(position);
 
                 // Position sprite relative to map
-                float bg_width = m_screenSprites[0]->getGlobalBounds().width;
+                //float bg_width = m_screenSprites[0]->getGlobalBounds().width;
+				float bg_width = getScreenRatioWidth();
+
                 m_hudSprites[index]->move(.5 * (m_window->getSize().x - bg_width), 0);
 
                 // TODO: should check for change of type as well as name
@@ -516,7 +524,9 @@ void Interface::updateHudSprite(size_t index, const ScreenItem& data)
                 m_hudtext[index]->setPosition(m_hud_scale * data.position);
 
                 // Position sprite relative to map
-                float bg_width = m_screenSprites[0]->getGlobalBounds().width;
+                //float bg_width = m_screenSprites[0]->getGlobalBounds().width;
+				float bg_width = getScreenRatioWidth();
+
                 m_hudtext[index]->move(.5 * (m_window->getSize().x - bg_width), 0);
 
                 m_hudtext[index]->scale(m_scale);
@@ -742,7 +752,11 @@ void Interface::changeMode(shared_ptr<Screen> new_screen)
     }
 
     // Set scale factor from background image size.
+	m_screenItems[0].size.x = getScreenRatioWidth();
+	m_screenItems[0].size.y = getScreenRatioHeight();
     const ScreenItem& bg = m_screenItems[0]; // Background image
+
+
     float win_h  = m_window->getSize().y;
     float win_w  = m_window->getSize().x;
     m_view = View(FloatRect(0.f, 0.f, win_w, win_h));
@@ -777,7 +791,7 @@ void Interface::changeMode(shared_ptr<Screen> new_screen)
         shared_ptr<Music> bgm = make_shared<Music>();
         bgm->openFromFile(sf::String(musicItem.file));
         bgm->setVolume(musicItem.volume);
-        bgm->setPitch(musicItem.pitch);
+        bgm->setPitch(1);
         bgm->setLoop(true);
         bgm->play();
         new_BGM.push_back(bgm);
@@ -815,7 +829,8 @@ void Interface::positionSprite(shared_ptr<Sprite> sprite,
     sprite->setPosition(screenItem.position*m_scale);
 
     // Position sprite relative to map
-    float bg_width = m_screenSprites[0]->getGlobalBounds().width;
+    //float bg_width = m_screenSprites[0]->getGlobalBounds().width;
+	float bg_width = getScreenRatioWidth();
     sprite->move(.5 * (m_window->getSize().x - bg_width), m_hud_height);
 
     // Adjust for border if it is a box
@@ -1118,4 +1133,23 @@ void Interface::render()
     }
 
     m_window->display();
+}
+
+void Interface::setScreenRatio()
+{
+	Map m("WorldMap", NULL);
+
+	m.load();
+
+	m_screenRatio = m.getScreenItems()[0].size;
+}
+
+int Interface::getScreenRatioWidth()
+{
+	return m_screenRatio.x;
+}
+
+int Interface::getScreenRatioHeight()
+{
+	return m_screenRatio.y;
 }

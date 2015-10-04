@@ -34,7 +34,7 @@ using sf::Event;
 using sf::RenderTexture;
 using sf::Vector2f;
 using sf::Sprite;
-using sf::Texture;
+using sf::Texture;;
 using sf::Font;
 using sf::Shader;
 #include <SFML/Audio.hpp>
@@ -51,6 +51,7 @@ using std::wstring;
 using std::string;
 #include <map>
 using std::unordered_map;
+#include "map.h"
 
 typedef unordered_map<wstring, shared_ptr<Texture>> TexMap;
 
@@ -93,6 +94,8 @@ private:
     int borderSize = 5;
     float m_win_w = 800; // Initial value of window & used for resize
     float m_win_h = 600;
+	float m_old_win_w = 800; // These are used for when the window resizes
+	float m_old_win_h = 600;
     float m_hud_width;
     float m_hud_height;
     float m_hud_scale;
@@ -124,6 +127,8 @@ private:
     unordered_map<size_t, shared_ptr<Sprite>> m_hudtext;
     unordered_map<size_t, shared_ptr<Texture>> m_hudtextTextures;
 
+	Vec2 m_screenRatio; // The ratio of the Map's background image, from the aspect ratio in the editor, default is 800x600
+
     void render();
 
     void newHudObject(const ScreenItem&, size_t index);
@@ -150,6 +155,12 @@ private:
     void updateHudSprite(size_t index, const ScreenItem&);
     
     void loadError(const wstring& file, const wstring& problem, const wstring& func);
+
+	void setScreenRatio();
+
+	int getScreenRatioWidth();
+
+	int getScreenRatioHeight();
 };
 
 #endif /* Interface_H_ */

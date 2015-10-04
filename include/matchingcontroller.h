@@ -51,7 +51,7 @@ public:
                               std::shared_ptr<Activity> activity);
 
     //private:
-	size_t       m_grade,
+	size_t       m_score,
                  m_currentRound,
                  m_correctAnswerIndex,
                  m_currentScore,
@@ -69,8 +69,6 @@ public:
     std::shared_ptr<Activity> m_activity;
     std::shared_ptr<Interface> m_interfacePtr;
 
-    void setGrade(size_t newGrade);
-    size_t  getGrade();
    // void clickHappened(int);
     void boxIsClicked(size_t index);
     void checkAnswer(size_t index);

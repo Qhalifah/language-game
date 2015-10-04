@@ -77,12 +77,12 @@ public:
 	{
 		ar(m_screenItems,
 			m_BGM,
-			m_dictionary,
+			//m_dictionary,
 			m_activities,
 			m_requirements,
 			m_badge
 			);
-		cout << "Scene seialize" << endl;
+		cout << "Scene serialize" << endl;
     }
 
     vector<MiniGame> m_activities;

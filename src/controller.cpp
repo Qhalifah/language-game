@@ -387,7 +387,6 @@ void MasterController::handleEvent(sf::Event event)
                 }
                 else if(m_hud->getItems()[(size_t)hit_sprite].name == L"Profile")
                 {
-                    //std::cout << (getProfile()->getAge()) << std::endl;
                     if(getProfile() != nullptr)
                         m_hud->toggleProfile(m_interface, getProfile());
                 }
@@ -420,7 +419,6 @@ void MasterController::handleEvent(sf::Event event)
                 else if(m_hud->getItems()[(size_t)hit_sprite].name == L"Done")
                 {
                     t_event.text.unicode = L'\n';
-					cout << "inside DONE" << endl;
                     // n_event.key.code = sf::Keyboard::Return;
                 }
                 else

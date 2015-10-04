@@ -30,15 +30,15 @@ minioncontroller_matching::minioncontroller_matching(std::shared_ptr<Profile> pr
 {
 
     m_helpMessage  = L"In this game, I'll give you a bunch of words and then a\n";
-    m_helpMessage += L"picture of one of them.All you have to do is click on the\n";
+    m_helpMessage += L"picture of one of them. All you have to do is click on the\n";
     m_helpMessage += L"word that matches the picture! Isn't that easy ? Just keep\n";
     m_helpMessage += L"doing it until you win!\n\n";
     m_helpMessage += L"Don't feel too bad if you mess up.You can replay these\n";
-    m_helpMessage += L"games as often as you need.Have fun!";
+    m_helpMessage += L"games as often as you need. Have fun!";
 
     m_activity->setHelpMessage( m_helpMessage );
 
-    m_grade = 0;
+	m_score = 0;
     m_engaged_sprite = 0;
     m_currentRound = 0;
     m_indexOfInstrBox = 1;
@@ -47,11 +47,14 @@ minioncontroller_matching::minioncontroller_matching(std::shared_ptr<Profile> pr
 	m_mainImageIndex = 3;
 	// Get the start of the textobjects in the screen items
 	m_textObjectsIndex = m_activity->getScreenItems().size() - m_activity->getRounds();
-    m_numOfChoices = m_activity->getChoices();
+	// Perform a check to make sure that the number of Words to display does not exceed the number of Words in the Dictionary Set
+	if (m_activity->getChoices() > m_activity->getDictionary()->getSize())
+		m_numOfChoices = m_activity->getDictionary()->getSize();
+	else
+		m_numOfChoices = m_activity->getChoices();
 	createInitialRound();
 
 	ScreenItem t_screen_item = m_activity->getScreenItem(m_indexOfInstrBox);
-
 };
 
 
@@ -110,17 +113,6 @@ void minioncontroller_matching::mouseButtonReleasedEvent(sf::Event event, sf::Ve
     }
 }
 
-void minioncontroller_matching::setGrade(size_t newGrade)
-{
-	m_grade = newGrade;
-}
-
-size_t  minioncontroller_matching::getGrade()
-{
-    return m_grade;
-}
-
-
 void minioncontroller_matching::checkAnswer(size_t index)
 {
 	std::cout << "clicked box's index: " << index << ", correct answer index: " << m_correctAnswerIndex + m_textObjectsIndex << std::endl;
@@ -148,7 +140,7 @@ void minioncontroller_matching::checkAnswer(size_t index)
                 break;
             }
         }
-        m_grade += 20;
+		++m_score;
         createNewRound();
     }
     else
@@ -274,6 +266,8 @@ bool minioncontroller_matching::gameIsOver()
 
 void minioncontroller_matching::endGame()
 {
+	int finalScore = (m_score / m_activity->getRounds()) * 100;
+
 	m_activity->stopRewardSound();
 
     vector<ScreenItem> t_screenitems = m_screen->getScreenItems();
@@ -285,15 +279,13 @@ void minioncontroller_matching::endGame()
     // set box with player score to visible
     t_screenitems[m_indexOfInstrBox].visible = true;
     m_interface->update(m_indexOfInstrBox, t_screenitems[m_indexOfInstrBox]);
-    // set text with player score to visible
-    setGrade(m_grade);
 
-	if (m_grade >= m_activity->getMaxScore())
+	if (finalScore >= m_activity->getMaxScore())
 	{
 		m_profile->addBadgePiece(m_activity->getBadgePiece());
 	}
 
-    t_screenitems[m_indexOfInstrText].name = L"Your score is " + std::to_wstring(getGrade());
+    t_screenitems[m_indexOfInstrText].name = L"Your score is " + std::to_wstring(finalScore);
     t_screenitems[m_indexOfInstrText].size.x = 30;
     t_screenitems[m_indexOfInstrText].visible = true;
     m_interface->update(m_indexOfInstrText, t_screenitems[m_indexOfInstrText]);

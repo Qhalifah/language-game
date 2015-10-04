@@ -43,6 +43,7 @@ void PairController::randomizeWords(unsigned int start, unsigned int end)
     images.reserve(m_count);
     vector<unsigned> words;
     words.reserve(m_count);
+	cout << "m_count: " << m_count << endl;
 
     // Load the vector with all the possible indices for images/words
     for(unsigned int iter = start; iter < end; iter+=2)
@@ -313,9 +314,9 @@ void PairController::endGame()
 {
 	m_activity->stopRewardSound();
 
-	size_t m_grade = (m_answered*100.0) / m_tries;
+	size_t finaleScore = (m_answered*100.0) / m_tries;
 
-	if (m_grade >= m_activity->getMaxScore())
+	if (finaleScore >= m_activity->getMaxScore())
 	{
 		m_profile->addBadgePiece(m_activity->getBadgePiece());
 	}
@@ -331,7 +332,7 @@ void PairController::endGame()
     m_interface->update(1, t_screenitems[1]);
 
     // set text with player score to visible
-    t_screenitems[2].name = L"Your score is " + to_wstring(int(m_grade));
+    t_screenitems[2].name = L"Your score is " + to_wstring(int(finaleScore));
     t_screenitems[2].size.x = 30;
     t_screenitems[2].visible = true;
     m_interface->update(2, t_screenitems[2]);
