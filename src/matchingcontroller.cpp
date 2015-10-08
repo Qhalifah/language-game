@@ -191,11 +191,11 @@ void minioncontroller_matching::createInitialRound()
 	vector<ScreenItem> t_screen_items = m_activity->getScreenItems();
 
 	int xRatio = m_activity->getSize().x / 800;
-	int yRatio = m_activity->getSize().y / 600;
+	int yRatio = m_activity->getSize().y / 600;//(m_activity->getChoices() + 1);
 
 	ScreenItem t_screen_item;
 
-	// Create the main image
+	// Create the main image to be matched to
 	t_screen_item.type = IMAGE;
 	t_screen_item.name = L"None";
 	t_screen_item.size = Vec2(200 * xRatio, 200 * yRatio);
@@ -212,6 +212,7 @@ void minioncontroller_matching::createInitialRound()
 	t_screen_item.visible = false;
 	t_screen_item.behavior = 0; //     None
 	
+	// Set the reward images in the vector
 	for (int ii = 0; ii < m_activity->getRounds(); ++ii)
 	{
 		t_screen_item.position.x = m_screen->getScreenItems()[0].size.x * .4
@@ -231,11 +232,11 @@ void minioncontroller_matching::createInitialRound()
 	t_screen_item.behavior = 24; //     MOUSE_UP_SELECT = 8 and HOVER_ENGAGE = 16,
 	
 	m_textObjectsIndex = t_screen_items.size();
-	int spacer = m_screen->getScreenItems()[0].size.y / m_activity->getChoices();
+	int spacer = m_screen->getScreenItems()[0].size.y / (m_activity->getChoices() + 1);
 
 	for (int ii = 0; ii < m_activity->getChoices(); ++ii)
 	{
-		t_screen_item.position = Vec2(100, spacer + ii * 90);
+		t_screen_item.position = Vec2(100, (spacer*0.5) + ii * spacer);
 		t_screen_items.push_back(t_screen_item);
 	}
 
@@ -266,7 +267,10 @@ bool minioncontroller_matching::gameIsOver()
 
 void minioncontroller_matching::endGame()
 {
-	int finalScore = (m_score / m_activity->getRounds()) * 100;
+	int finalScore = ((m_score * 100) / m_activity->getRounds());
+	cout << "finalScore: " << finalScore << endl;
+	cout << "m_score: " << m_score << endl;
+	cout << "m_activity->getRounds(): " << m_activity->getRounds() << endl;
 
 	m_activity->stopRewardSound();
 

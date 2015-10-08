@@ -218,6 +218,7 @@ HUD::HUD() : m_buttons(6, ScreenItem())
     m_age_index = m_buttons.size() -1;
     
 	// Create placeholders for the badges
+	m_badge_index = 0;
     t_screen_item.type = IMAGE;
     t_screen_item.name = L"none";
     t_screen_item.hover_text = L"none";
@@ -228,7 +229,6 @@ HUD::HUD() : m_buttons(6, ScreenItem())
     t_screen_item.visible = false;
     m_buttons.push_back(t_screen_item);
     m_badge_image_index = m_buttons.size() -1;
-    m_badge_index = 0;
     
     t_screen_item.type = IMAGE;
     t_screen_item.name = L"none";
@@ -288,7 +288,7 @@ bool HUD::isBackButtonUp()
 
 void HUD::rotateBadges(int rot, std::shared_ptr<Profile> profile)
 {
-    if(profile->getBadgeItemCount()> m_badge_index + 3 && rot > 0)
+    if(profile->getBadgeItemCount() > m_badge_index + 3 && rot > 0)
         m_badge_index++;
     else if(m_badge_index > 0 && rot < 0)
         m_badge_index--;
@@ -297,56 +297,36 @@ void HUD::rotateBadges(int rot, std::shared_ptr<Profile> profile)
 void HUD::updateProfile(shared_ptr<Interface> interface, std::shared_ptr<Profile> t_profile)
 {
     std::vector<Badge> t_badges = t_profile->getBadges();
-	cout << "inside updateProfile" << endl;
 
-    size_t curr_display_badge = m_badge_image_index;
-    for(size_t pos_badge = m_badge_index;
-        pos_badge < t_badges.size() && curr_display_badge < m_badge_image_index + 3;
-        ++pos_badge, ++curr_display_badge)
+	size_t curr_display_badge = m_badge_image_index;
+    for(size_t pos_badge = 0; pos_badge < t_badges.size() && curr_display_badge < m_badge_image_index + 3; ++pos_badge)
     {
-        if(t_badges[pos_badge].isComplete())
+		if (t_badges[pos_badge].isComplete() && pos_badge >= m_badge_index)
         {
             m_buttons[curr_display_badge].name = t_badges[pos_badge].m_image;
             m_buttons[curr_display_badge].hover_text = t_badges[pos_badge].m_name;
+			++curr_display_badge;
         }
-        else
-        for(size_t pos_piece = 0;
-            pos_piece < t_badges[pos_badge].m_pieces_map.size() && curr_display_badge < m_badge_image_index+3;
-            ++pos_piece, ++curr_display_badge)
-            {
-                m_buttons[curr_display_badge].name = t_badges[pos_badge].m_pieces_map[pos_piece].m_image;
-                m_buttons[curr_display_badge].hover_text = t_badges[pos_badge].m_name + L" " + std::to_wstring(t_badges[pos_badge].m_pieces_map[pos_piece].m_id);
-            }
+		else if (pos_badge >= m_badge_index)
+		{
+			for (auto pos_piece : t_badges[pos_badge].m_pieces_map)
+			{
+				m_buttons[curr_display_badge].name = pos_piece.second.m_image;
+				m_buttons[curr_display_badge].hover_text = t_badges[pos_badge].m_name + L" " + std::to_wstring(pos_piece.second.m_id);
+				++curr_display_badge;
+				if (curr_display_badge >= m_badge_image_index + 3)
+					break;
+			}
+		}
     }
-    /*size_t badge = m_badge_index;
-    
-    for(; badge < m_badge_index+3 && t_profile->getBadgeItemCount() > badge; ++ badge)
-    {
-
-            size_t t_badge = badge;
-            for(size_t piece = 0; piece < t_badges[t_badge].m_pieces.size() && badge < m_badge_index+3; ++piece)
-            {
-                m_buttons[badge + m_badge_image_index - m_badge_index].name = t_badges[t_badge].m_pieces[piece].m_image;
-                m_buttons[badge + m_badge_image_index - m_badge_index].hover_text = t_badges[t_badge].m_name + L" " + std::to_wstring(t_badges[t_badge].m_pieces[piece].m_id);
-                badge++; 
-            }
-        
-            if(badge < t_badges.size())
-            {
-                m_buttons[badge + m_badge_image_index - m_badge_index].name = t_badges[badge].m_image;
-                m_buttons[badge + m_badge_image_index - m_badge_index].hover_text = t_badges[badge].m_name;
-            }
-    }*/
-
+    size_t badge = m_badge_index;
+	
 	// This will display up to three badges
-    for(;curr_display_badge <m_badge_image_index+3; ++curr_display_badge )
+    for(;curr_display_badge < m_badge_image_index+3; ++curr_display_badge )
     {
         m_buttons[curr_display_badge].name = L"none";
         m_buttons[curr_display_badge].hover_text = L"none";
     }
-    
-	std::cout << "m_buttons.size(): " << m_buttons.size() << std::endl;
-	std::cout << "m_badge_image_index: " << m_badge_image_index << std::endl;
 
 	//updates the badges within the profile box
 	interface->updateHud(m_badge_image_index, m_buttons.size(), m_buttons);
@@ -355,7 +335,6 @@ void HUD::updateProfile(shared_ptr<Interface> interface, std::shared_ptr<Profile
 
 void HUD::toggleProfile(shared_ptr<Interface> interface, std::shared_ptr<Profile> t_profile)
 {
-    //std::cout << name.size() << age.size() << std::endl;
     // Set name and age of profile to display
     if(t_profile != nullptr) {
         m_buttons[m_name_index].name = t_profile->getName();

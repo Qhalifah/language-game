@@ -28,7 +28,6 @@ along with Dina'ki Adventures. If not, see <http://www.gnu.org/licenses/>.*/
 
 ProfileWrangler::ProfileWrangler() : m_profiles(), m_curr_profile_index(-1)
 {
-    //std::cout << m_profiles.size() << std::endl;
 }
 
 std::vector<std::shared_ptr<Profile>> ProfileWrangler::loadProfiles(std::string fileName)
@@ -41,11 +40,6 @@ std::vector<std::shared_ptr<Profile>> ProfileWrangler::loadProfiles(std::string 
         
         archive(m_profiles);
     }
-    
-	if (m_profiles.size() > 0)
-	{
-		cout << "From the profile wrangler load, index 0 is a " << m_profiles[0]->getGender() << endl;
-	}
 
     return m_profiles;
 }

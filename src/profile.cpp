@@ -180,7 +180,7 @@ size_t Profile::getBadgeItemCount()
     {
         if(badge.isComplete())
         {
-            t_count++;
+			++t_count;
         }
         else
         {

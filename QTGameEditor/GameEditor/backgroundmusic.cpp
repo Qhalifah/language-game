@@ -3,8 +3,6 @@
 using std::string;
 #include <vector>
 using std::vector;
-#include "../SFML_BGM/BGM.h"
-#include "../SFML_BGM/Communication.h"
 #include <QFileInfo>
 #include <QString>
 #include <QProcess>
@@ -50,8 +48,6 @@ void BackgroundMusic::play()
     if(m_music.empty())
         return;
     m_bgm.m_mus = m_music;
-    m_bgm.saveToFile(".\\BGM.cereal");
-    m_com.saveToFile(".\\Com.txt");
     m_process.start(QString(".\\SFML_BGM"));
 }
 

@@ -69,9 +69,9 @@ ProfileController::ProfileController(std::shared_ptr<ProfileWrangler> wrangler, 
     t_help_text.name += L"If you have a profile, select it and click on the GO\n";
     t_help_text.name += L"button to get to your game.\n";
     t_help_text.name += L"If you don't have a profile, create one by clicking on\n";
-    t_help_text.name += L"the + button.\n";
+    t_help_text.name += L"the NEW button.\n";
     t_help_text.name += L"If you want to delete your profile, click on your\n";
-    t_help_text.name += L"profile and press the - button.\n\n";
+    t_help_text.name += L"profile and press the DELETE button.\n\n";
 
     t_help_text.name += L"To create a profile from the profile creation page,\n";
     t_help_text.name += L"follow these steps:\n";
@@ -319,7 +319,7 @@ void ProfileController::updateProfiles()
     {
         if(t_profiles.size() > box + m_top_profile)
         {
-            m_screen_items[2*box+3].name = L"Name: " + (t_profiles[box+ m_top_profile]->getName() + L"\nAGE: " + std::to_wstring(t_profiles[box]->getAge()));
+            m_screen_items[2*box+3].name = L"Name: " + (t_profiles[box+ m_top_profile]->getName() + L"\nAGE: " + std::to_wstring(t_profiles[box+ m_top_profile]->getAge()));
             m_screen_items[2*box+4].name = m_screen_items[2*box+3].name;
             m_screen_items[2*box+4].visible = true;
         }

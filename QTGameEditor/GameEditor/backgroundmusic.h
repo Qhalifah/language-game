@@ -6,8 +6,6 @@ using std::string;
 #include <vector>
 using std::vector;
 #include <QString>
-#include "../SFML_BGM/BGM.h"
-#include "../SFML_BGM/Communication.h"
 #include <QProcess>
 #include <QComboBox>
 
@@ -30,8 +28,6 @@ public:
 private:
     int findIndex(QString & fnBase);
     vector<BGM::musicItem> m_music; // Used to store data
-    BGM m_bgm; // Used to play music
-    Communication m_com;
     QProcess m_process;
     int m_id;
     QComboBox * m_selectBGM;
