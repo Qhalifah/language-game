@@ -172,5 +172,7 @@ void Activity::load()
 	m_rounds = stoi(s_rounds);
 	m_maxScore = stoi(s_maxScore);
 
-	cout << "End Activity load" << endl;
+	cout << "End Activity load" << endl;    
+	cout << "Help Box is (" << m_screenItems[1].size.x << ", " << m_screenItems[1].size.y << ") at (" << m_screenItems[1].position.x << ", " << m_screenItems[1].position.y << ")" << endl;
+
 }

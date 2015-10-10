@@ -153,6 +153,8 @@ PairController::PairController(std::shared_ptr<Profile> profile,
     }
     m_screen->setScreenItems(t_screen_items);
     randomizeWords(initial_size, initial_size + 2*m_count);
+	
+	cout << "Size is: " << t_screen_item.size.x << ", " << t_screen_item.size.y << endl;
 };
 
 void PairController::mouseButtonPressedEvent(sf::Event event, sf::Vector2i mouse_loc)

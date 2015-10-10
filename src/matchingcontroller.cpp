@@ -55,6 +55,8 @@ minioncontroller_matching::minioncontroller_matching(std::shared_ptr<Profile> pr
 	createInitialRound();
 
 	ScreenItem t_screen_item = m_activity->getScreenItem(m_indexOfInstrBox);
+
+	cout << "Size is: " << t_screen_item.size.x << ", " << t_screen_item.size.y << endl;
 };
 
 
@@ -101,13 +103,14 @@ void minioncontroller_matching::mouseButtonReleasedEvent(sf::Event event, sf::Ve
     {
 		int hit_sprite = m_interfacePtr->getScreenHit(pos.x, pos.y);
         
-		if (hit_sprite > m_textObjectsIndex || hit_sprite == m_mainImageIndex)
+		if (hit_sprite == m_mainImageIndex)
 			m_interface->playScreenSound((size_t)hit_sprite);
 
         // if index is one of the clickable text boxes
-		if ((size_t)hit_sprite >= m_textObjectsIndex && 
+		if (hit_sprite != -1 &&
+			hit_sprite >= m_textObjectsIndex && 
 			hit_sprite < (int)(m_activity->getScreenItems().size()))
-        {
+		{
 			checkAnswer((size_t)hit_sprite);
         }
     }
