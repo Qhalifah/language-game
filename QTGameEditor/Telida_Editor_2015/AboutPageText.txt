@@ -1,0 +1,21 @@
+This is the Dina'ki Adventures Language Game Editor. This is a shared creation of Shaun Bond, Jeffery Waldon, Charlie Carlson, Simon Smith, Joseph DeWilde, and Aaron Andrews. This program was created for the Alaskan Native Language Archive as a way to preserve the Dina'ki language. This game editor is meant to create the levels of the Dina'ki Adventures language game as a way to pass down knowledge of the Dina'ki language to the next generation, as this language has few speakers left, and is in danger of dying out.
+
+This project can be found on Github at https://github.com/spbond/language-game
+
+Please report any problems found with this program or the Dinaki Adventures game player to the Issues there.
+
+Licensing Info:
+/*Copywrite 2014 */
+
+Dina'ki Adventures is free software : you can redistribute it and / or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Dina'ki Adventures is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Dina'ki Adventures. If not, see <http://www.gnu.org/licenses/>.
