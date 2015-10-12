@@ -837,18 +837,7 @@ void MainWindow::on_delBadgeFromScn_clicked()
 
 void MainWindow::on_chooseRewardBadge_activated(const QString &arg1)
 {
-
     vector<unique_ptr<MyRect>> * rects = ui->graphicsView->rectItems();
-    for(auto itr = rects->begin(); itr != rects->end(); ++itr)
-    {
-        QFileInfo actFile((*itr)->actFileName());
-        Activity act((*itr)->actFileName().toStdString(), NULL);
-        if(actFile.exists())
-        { act.load();
-        act.m_badge_piece.m_badge_name = ui->chooseRewardBadge->currentText().toStdWString();
-        act.save();}
-    }
-
     ui->graphicsView->setRewardBadgeId(m_badges->id(arg1));
 }
 
@@ -866,16 +855,6 @@ void MainWindow::on_setActPieceImg_clicked()
         return;
     QString newFile = m_fileManager.copyFile(filepath, FileManager::IMG);
     MyRect::m_selectedRect->setActPieceFilepath(newFile);
-    string actFileName = MyRect::m_selectedRect->actFileName().toStdString();
-    Activity *saveAct = new Activity(actFileName, NULL);
-    saveAct->load();
-    Piece *p = new Piece();
-    p->m_badge_name = ui->chooseRewardBadge->currentText().toStdWString();
-    p->m_image = newFile.toStdWString();
-    p->m_id = MyRect::m_selectedRect->id();
-    saveAct->setBadgePieceFromScene(*p);
-    saveAct->save();
-
     ui->actPieceImg->setPixmap(QPixmap(MyRect::m_selectedRect->actPieceFilepath()).scaled(50, 50,
                                                                      Qt::KeepAspectRatioByExpanding,
                                                                      Qt::FastTransformation));

@@ -323,10 +323,8 @@ void ScreenQGV::mouseReleaseEvent(QMouseEvent *event)
                     // If the file exists load the Activity data into the MyRect
                     if (checkFile.exists())
                     {
-                        Activity *act = new Activity(MyRect::m_selectedRect->actFileName().toStdString(), NULL);
-                        act->load();
                         MainWindow::ui->actPieceWidg->setHidden(false);
-                        MainWindow::ui->actPieceImg->setPixmap(QPixmap(QString::fromStdWString(act->m_badge_piece.m_image)).scaled(50, 50,
+                        MainWindow::ui->actPieceImg->setPixmap(QPixmap(MyRect::m_selectedRect->actPieceFilepath()).scaled(50, 50,
                                                                                    Qt::KeepAspectRatioByExpanding,
                                                                                    Qt::FastTransformation));
                     }

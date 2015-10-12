@@ -390,6 +390,7 @@ void FileManager::saveFiles(ScreenQGV &screen, BackgroundMusic & bgm)
 
             // Save the badge name to the pieces of all Activity objects used in the scene
             vector<unique_ptr<MyRect>> * items = screen.rectItems();
+            cout << "screen.rectItems()->size(): " << screen.rectItems()->size() << endl;
             int pieceNumber = 1;
             for(size_t i = 0; i < items->size(); ++i)
             {
@@ -400,11 +401,14 @@ void FileManager::saveFiles(ScreenQGV &screen, BackgroundMusic & bgm)
                     Activity *saveAct = new Activity(actFileName, NULL);
                     saveAct->load();
                     saveAct->m_badge_piece.m_badge_name = MainWindow::ui->chooseRewardBadge->currentText().toStdWString();
+                    saveAct->m_badge_piece.m_image = (*items)[i]->actPieceFilepath().toStdWString();
                     saveAct->m_badge_piece.m_id = pieceNumber;
                     saveAct->save();
-                    ++pieceNumber;
                     QString qstr = QString::fromStdWString(saveAct->m_badge_piece.m_badge_name);
-                    cout << "acts new piece badge name: " << qstr.toStdString() << endl;
+                    cout << "piece badge name: " << qstr.toStdString() << endl;
+                    cout << "piece image: " << (*items)[i]->actPieceFilepath().toStdString() << endl;
+                    cout << "piece id: " << pieceNumber << endl;
+                    ++pieceNumber;
                 }
             }
         }
@@ -551,29 +555,6 @@ void FileManager::loadFiles(ScreenQGV &screen, BackgroundMusic &bgm)
             }
         }
 
-        cout << "when loading, screen.rectItems()->size() size is " << screen.rectItems()->size() << endl;
-
-        vector<unique_ptr<MyRect>> * rects = screen.rectItems();
-        for(auto itr = rects->begin(); itr != rects->end(); ++itr)
-        {
-            cout << "loading the screen items that have an Activity" << endl;
-            if((*itr)->id())
-            {
-                MiniGame mg;
-                mg.first = (*itr)->gameType();
-                if(mg.first == GameType::PAIR)
-                {
-                    mg.second = "p";
-                }
-                else if(mg.first == GameType::MATCHING)
-                {
-                    mg.second = "m";
-                }
-                mg.second += QString::number((*itr)->id()).toStdString();
-                acts.push_back(mg);
-            }
-        }
-
         // Badge
        screen.setRewardBadgeId(MainWindow::m_badges->id(QString::fromStdWString(s.badge().m_name)));
     }
@@ -653,6 +634,16 @@ void FileManager::loadFiles(ScreenQGV &screen, BackgroundMusic &bgm)
                     // Removes the p from the Activity name and makes it an int, so "p1" would become the int, 1
                     rect->setId(QString::fromStdString(toActivity[index].second).remove(0, 1).toInt());
                     rect->setGameType(GameType::PAIR);
+
+                    // Load the image from the Activity
+                    string name = "p" + std::to_string(rect->id());
+                    QFileInfo actFile(QString::fromStdString(".//db//activities//" + name + ".act"));
+                    Activity act(name, dictionary);
+                    if(actFile.exists())
+                    {
+                        act.load();
+                        rect->setActPieceFilepath(QString::fromStdWString(act.m_badge_piece.m_image));
+                    }
                 }
                 else if(toActivity[index].first == GameType::MATCHING)
                 {
@@ -660,6 +651,16 @@ void FileManager::loadFiles(ScreenQGV &screen, BackgroundMusic &bgm)
                     // Removes the m from the Activity name and makes it an int, so "m1" would become the int, 1
                     rect->setId(QString::fromStdString(toActivity[index].second).remove(0, 1).toInt());
                     rect->setGameType(GameType::MATCHING);
+
+                    // Load the image from the Activity
+                    string name = "m" + std::to_string(rect->id());
+                    QFileInfo actFile(QString::fromStdString(".//db//activities//" + name + ".act"));
+                    Activity act(name, dictionary);
+                    if(actFile.exists())
+                    {
+                        act.load();
+                        rect->setActPieceFilepath(QString::fromStdWString(act.m_badge_piece.m_image));
+                    }
                 }
             }
             ++index;

@@ -181,10 +181,19 @@ void minioncontroller_matching::populateRound()
         srand(unsigned(time(NULL)));
         m_correctAnswerIndex = ((size_t)rand() % m_numOfChoices);
         t_screenitems[m_mainImageIndex].name = t_wordlist[m_correctAnswerIndex].getImageLocation();
-        if(m_profile->getGender() == Profile::female)
+		if (m_profile->getGender() == Profile::female)
+		{
 			t_screenitems[m_mainImageIndex].sound = t_wordlist[m_correctAnswerIndex].getGirlAudioLocation();
-        else
+			cout << "Playing the female audio" << endl;
+		}
+		else
+		{
 			t_screenitems[m_mainImageIndex].sound = t_wordlist[m_correctAnswerIndex].getBoyAudioLocation();
+			sf::String sStr = t_wordlist[m_correctAnswerIndex].getBoyAudioLocation();
+			cout << "Playing the male audio: " << sStr.toAnsiString() << endl;
+			sStr = t_wordlist[m_correctAnswerIndex].getGirlAudioLocation();
+			cout << "not the female audio: " << sStr.toAnsiString() << endl;
+		}
         m_screen->setScreenItems(t_screenitems);
     }
 }

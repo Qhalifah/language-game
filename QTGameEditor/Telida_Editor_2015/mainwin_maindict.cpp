@@ -212,9 +212,9 @@ void MainWindow::on_submitWord_clicked()
         {
             cout << "Add Word, " << m_currWord.name.toStdString() <<", to the act" << endl;
             act.addWordToDictionarySet(m_currWord.name.toStdWString(),
-                                   m_currWord.girlSnd.toStdWString(),
-                                   m_currWord.boySnd.toStdWString(),
-                                   m_currWord.img.toStdWString());
+                                       m_currWord.boySnd.toStdWString(),
+                                       m_currWord.girlSnd.toStdWString(),
+                                       m_currWord.img.toStdWString());
             act.save();
         }
     }
