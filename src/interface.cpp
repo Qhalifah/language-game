@@ -449,7 +449,7 @@ void Interface::newScreenObject(const ScreenItem& data, shared_ptr<Sound> sound,
 void Interface::updateHudSprite(size_t index, const ScreenItem& data)
 {
     if( unsigned(index) < m_hudSprites.size() )
-    {
+	{
         if( m_hudItems[index].name != data.name )
         {
             // TODO: This is hacky. Need to find a better way to handle hud sizing
@@ -512,7 +512,7 @@ void Interface::updateHudSprite(size_t index, const ScreenItem& data)
 //            data.hover_text != m_hudItems[index].hover_text)
         { // Mouse over status has changed.
             if( data.hover_text != L"none" && data.hover )
-            {
+			{
                 auto texture = makeWordTexture(data.hover_text, {20, 0},
                                                Color(220,150,0));
                 m_hudtextTextures.insert(pair< int, shared_ptr<Texture> >
@@ -530,6 +530,11 @@ void Interface::updateHudSprite(size_t index, const ScreenItem& data)
                 m_hudtext[index]->move(.5 * (m_window->getSize().x - bg_width), 0);
 
                 m_hudtext[index]->scale(m_scale);
+
+				if (m_hudtext[index]->getPosition().x + m_hudtext[index]->getLocalBounds().width > m_window->getSize().x)
+				{
+					m_hudtext[index]->move(m_window->getSize().x - (m_hudtext[index]->getPosition().x + m_hudtext[index]->getLocalBounds().width), 0);
+				}
             }
             else
             {
