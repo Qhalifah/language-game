@@ -184,15 +184,10 @@ void minioncontroller_matching::populateRound()
 		if (m_profile->getGender() == Profile::female)
 		{
 			t_screenitems[m_mainImageIndex].sound = t_wordlist[m_correctAnswerIndex].getGirlAudioLocation();
-			cout << "Playing the female audio" << endl;
 		}
 		else
 		{
 			t_screenitems[m_mainImageIndex].sound = t_wordlist[m_correctAnswerIndex].getBoyAudioLocation();
-			sf::String sStr = t_wordlist[m_correctAnswerIndex].getBoyAudioLocation();
-			cout << "Playing the male audio: " << sStr.toAnsiString() << endl;
-			sStr = t_wordlist[m_correctAnswerIndex].getGirlAudioLocation();
-			cout << "not the female audio: " << sStr.toAnsiString() << endl;
 		}
         m_screen->setScreenItems(t_screenitems);
     }

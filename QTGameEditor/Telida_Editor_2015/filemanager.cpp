@@ -173,27 +173,26 @@ void FileManager::saveFiles(ScreenQGV &screen, BackgroundMusic & bgm)
     ScreenItem box;
     box.type = ScreenItemType::BOX;
     box.name = QString("instructionbox").toStdWString();
-    box.size.x = std::floor(225 * xScale);
-    box.size.y = std::floor(70 * yScale);
-    box.position.x = std::floor(45 * xScale);
-    box.position.y = std::floor(45 * yScale);
+    box.size.x = std::floor(630 * (si.x/800));
+    box.size.y = std::floor(180 * (si.y/600));
+    box.position.x = std::floor(135 * (si.x/800));
+    box.position.y = std::floor(135 * (si.y/600));
     box.color = Color(0, 0, 0, 255);
     box.visible = false;
     sItems.push_back(box);
     cout << "Help Box is (" << sItems[1].size.x << ", " << sItems[1].size.y << ") at (" << sItems[1].position.x << ", " << sItems[1].position.y << ")" << endl;
-    cout << "Help Box is (" << box.size.x << ", " << box.size.y << ") at (" << box.position.x << ", " << box.position.y << ")" << endl;
-
 
     //Help text
     ScreenItem text;
     text.type = ScreenItemType::TEXT;
     text.name = QString("Help_Text").toStdWString();
-    text.size.x = std::floor(5 * xScale);
+    text.size.x = std::floor(5 * (si.x/800));
     text.size.y = 0;
-    text.position.x = std::floor(50 * xScale);
-    text.position.y = std::floor(50 * yScale);
+    text.position.x = std::floor(140 * (si.x/800));
+    text.position.y = std::floor(140 * (si.y/600));
     text.visible = false;
     sItems.push_back(text);
+    cout << "Help Text is (" << sItems[2].size.x << ", " << sItems[2].size.y << ") at (" << sItems[2].position.x << ", " << sItems[2].position.y << ")" << endl;
 
     vector<MusicItem> mItems;
     for(auto itr = bgm.getMusicData().begin(); itr != bgm.getMusicData().end(); ++itr)

@@ -287,6 +287,7 @@ void ScreenQGV::mouseReleaseEvent(QMouseEvent *event)
             {
                 MainWindow::ui->goToScene->setCurrentIndex(MainWindow::ui->goToScene->findText(MainWindow::m_scenes->name(sel->id())));
                 MainWindow::ui->badgeWidg->setHidden(false);
+                MainWindow::ui->selReqBadge->setHidden(false);
                 MainWindow::ui->selReqBadge->clear();
                 MainWindow::ui->selReqBadge->addItem(QString("Select a Required Badge"));
                 MainWindow::ui->selReqBadge->insertItems(1, sel->reqBadgeList());
