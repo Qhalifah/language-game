@@ -763,9 +763,11 @@ void MainWindow::on_goToActivity_activated(const QString &arg1)
 
     if(!ui->goToActivity->currentIndex())
     {
+        cout << "Setting MyRect with " << r->actFileName().toStdString() << " to null" << endl;
         r->setId(0);
         r->setGameType(GameType::NONE);
         ui->actPieceWidg->setHidden(true);
+        r->setActPieceFilepath(QString("None"));
         return;
     }
     QString actType = ui->goToActivity->currentText().section(QChar('-'), 0, 0);

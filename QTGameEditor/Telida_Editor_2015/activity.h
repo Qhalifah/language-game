@@ -54,7 +54,6 @@ public:
     template<class Archive>
     void serialize(Archive & ar)
     {
-        cout << "hi" << endl;
         ar(
            m_screenItems,
             m_BGM,
@@ -66,7 +65,6 @@ public:
             m_reward_image,
             m_reward_MusicItem
            );
-        cout << "by" << endl;
 
         QString qStr = QString::fromStdWString(m_badge_piece.m_badge_name);
         cout << "m_badge_piece.m_badge_name: " << qStr.toStdString() << endl;

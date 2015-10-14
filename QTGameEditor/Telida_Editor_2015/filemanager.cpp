@@ -301,7 +301,7 @@ void FileManager::saveFiles(ScreenQGV &screen, BackgroundMusic & bgm)
         vector<unique_ptr<MyRect>> * rects = screen.rectItems();
         unsigned index = 3;
         cout << "Map's rectItems size is " << screen.rectItems()->size() << endl;
-        for(auto itr = rects->begin(); itr != rects->end(); ++itr)
+        for(auto itr = rects->begin(); itr != rects->end(); ++itr, ++index)
         {
             set<unsigned> setSave;
             set<wstring> setStrSave;
@@ -315,7 +315,6 @@ void FileManager::saveFiles(ScreenQGV &screen, BackgroundMusic & bgm)
             }
             m.m_scnPreRegsIds[index] = setSave;
             m.m_scene_prereqs[index] = setStrSave;
-            ++index;
         }
         m.save();
     }
@@ -327,6 +326,7 @@ void FileManager::saveFiles(ScreenQGV &screen, BackgroundMusic & bgm)
         s.setScreenItems(sItems);
         vector<MiniGame> acts;
         vector<unique_ptr<MyRect>> * rects = screen.rectItems();
+
         map<set<unsigned>, string> reqs;
         // Go through MyRect objects to find the activites that the
         // scene links to and push them into acts.
@@ -359,7 +359,7 @@ void FileManager::saveFiles(ScreenQGV &screen, BackgroundMusic & bgm)
         {
             set<unsigned> aSet;
             int index = 3;
-            for(auto itr2 = rects->begin(); itr2 != rects->end(); ++itr2)
+            for(auto itr2 = rects->begin(); itr2 != rects->end(); ++itr2, ++index)
             {
                 if(!(*itr2)->id())
                     continue;
@@ -367,9 +367,7 @@ void FileManager::saveFiles(ScreenQGV &screen, BackgroundMusic & bgm)
                 {
                     aSet.insert(index);
                 }
-                ++index;
             }
-            //reqs[aSet] = i;
             reqs[aSet] = acts[i].second;
         }
         cout << "There are " << acts.size() << " Activity objects in this Scene" << endl;
@@ -381,32 +379,22 @@ void FileManager::saveFiles(ScreenQGV &screen, BackgroundMusic & bgm)
             Badges::Badge b2 = MainWindow::m_badges->badge(screen.rewardBadgeId());
             b.m_name = b2.name.toStdWString();
             b.m_image = b2.img.toStdWString();
-            //unsigned index = 0;
-            set<wstring> setForCountingPieces;
-            wstring badgeName = MainWindow::m_badges->badgeName(screen.rewardBadgeId()).toStdWString();
             b.m_total_pieces = s.m_activities.size();
-            cout << "Total badge pieces needed is " << b.m_total_pieces << endl;
 
             // Save the badge name to the pieces of all Activity objects used in the scene
             vector<unique_ptr<MyRect>> * items = screen.rectItems();
-            cout << "screen.rectItems()->size(): " << screen.rectItems()->size() << endl;
             int pieceNumber = 1;
             for(size_t i = 0; i < items->size(); ++i)
             {
                 if((*items)[i]->gameType() != GameType::NONE)
                 {
                     string actFileName = (*items)[i]->actFileName().toStdString();
-                    cout << "Saving data for the Activity " << actFileName << endl;
                     Activity *saveAct = new Activity(actFileName, NULL);
                     saveAct->load();
                     saveAct->m_badge_piece.m_badge_name = MainWindow::ui->chooseRewardBadge->currentText().toStdWString();
                     saveAct->m_badge_piece.m_image = (*items)[i]->actPieceFilepath().toStdWString();
                     saveAct->m_badge_piece.m_id = pieceNumber;
                     saveAct->save();
-                    QString qstr = QString::fromStdWString(saveAct->m_badge_piece.m_badge_name);
-                    cout << "piece badge name: " << qstr.toStdString() << endl;
-                    cout << "piece image: " << (*items)[i]->actPieceFilepath().toStdString() << endl;
-                    cout << "piece id: " << pieceNumber << endl;
                     ++pieceNumber;
                 }
             }
@@ -416,7 +404,6 @@ void FileManager::saveFiles(ScreenQGV &screen, BackgroundMusic & bgm)
             b = Badge();
         }
         s.setBadge(b);
-        QString qstr = QString::fromStdWString(s.m_badge.m_name);
         s.save();
     }
     else if(screen.editorType() == ScreenQGV::PAIRACT)
@@ -523,16 +510,6 @@ void FileManager::loadFiles(ScreenQGV &screen, BackgroundMusic &bgm)
         vector<MiniGame> acts = s.m_activities;
         map<set<unsigned>, string> reqs = s.m_requirements;
         cout << "s.m_requirements.size(): " << s.m_requirements.size() << endl;
-        //Is the below code not used anymore?
-        //I think it's been replaced by the triple for looop below it:
-        /*for(auto itr = reqs.begin(); itr != reqs.end(); ++itr)
-        {
-            for(auto itr2 = itr->first.begin(); itr2 != itr->first.end(); ++itr2)
-            {
-                toActivity[*itr2] = acts[itr->second];
-            }
-        }*/
-
         // If the index from a ScreenItem is in a set in m_requirements,
         // its index is used as a key in the toActivity map,
         // and the m_activities MiniGame is the value
@@ -596,10 +573,6 @@ void FileManager::loadFiles(ScreenQGV &screen, BackgroundMusic &bgm)
         qreal newH = screen.scene()->height();
         qreal xScale = newW/oldW;
         qreal yScale = newH/oldH;
-        cout << "screen.scene()->objectName(): " << screen.scene()->objectName().toStdString() <<endl;
-        cout << "oldW x oldH: " << oldW << " x " << oldH << endl;
-        cout << "newW x newH: " << newW << " x " << newH << endl;
-        cout << "xScale x yScale: " << xScale << " x " << yScale << endl;
         int index = 0;
         for(auto itr = sItems.begin(); itr != sItems.end(); ++itr)
         {

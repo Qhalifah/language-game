@@ -155,25 +155,23 @@ void Activity::save()
 	s_rounds = std::to_string(m_rounds);
 	s_maxScore = std::to_string(m_maxScore);
 
-    cout << "save activity to " + m_id + ".act" << endl;
+    /*cout << "save activity to " + m_id + ".act" << endl;
     QString str = QString::fromStdWString(m_badge_piece.m_badge_name);
     cout << "m_badge_name: " << str.toStdString() << endl;
     str = QString::fromStdWString(m_badge_piece.m_image);
     cout << "m_image: " << str.toStdString() << endl;
-    cout << "m_id: " << m_badge_piece.m_id << endl;
+    cout << "m_id: " << m_badge_piece.m_id << endl;*/
 
     std::ofstream os(".//db//activities//" + m_id + ".act", std::ios::binary);
 
     cereal::BinaryOutputArchive archive(os);
 
     archive( *this );
-
-    cout << "Help Box is (" << m_screenItems[1].size.x << ", " << m_screenItems[1].size.y << ") at (" << m_screenItems[1].position.x << ", " << m_screenItems[1].position.y << ")" << endl;
 }
 
 void Activity::load()
 {
-    cout << "activity load started." << endl;
+    //cout << "activity load started." << endl;
 
     std::ifstream is(".//db//activities//" + m_id + ".act",std::ios::binary);
 
@@ -187,7 +185,7 @@ void Activity::load()
     m_rounds = stoi(s_rounds);
     m_maxScore = stoi(s_maxScore);
 
-    cout << "Inside Activity::load() " << endl;
+    /*cout << "Inside Activity::load() " << endl;
     QString str = QString::fromStdWString(m_badge_piece.m_badge_name);
     cout << "m_badge_name: " << str.toStdString() << endl;
     str = QString::fromStdWString(m_badge_piece.m_image);
@@ -198,5 +196,5 @@ void Activity::load()
     cout << "MaxScore: " << m_maxScore << endl;
     cout << "Help Box is (" << m_screenItems[1].size.x << ", " << m_screenItems[1].size.y << ") at (" << m_screenItems[1].position.x << ", " << m_screenItems[1].position.y << ")" << endl;
 
-    cout << "activity load finished." << endl;    
+    cout << "activity load finished." << endl;  */
 }

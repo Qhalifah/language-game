@@ -111,6 +111,7 @@ void MyRect::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     this->setSelected(true);
     m_selectedRect = this;
     QGraphicsRectItem::mouseReleaseEvent(event);
+    cout << "Updating MyRect to the one in the list" << endl;
     this->update(this->rect());
 }
 

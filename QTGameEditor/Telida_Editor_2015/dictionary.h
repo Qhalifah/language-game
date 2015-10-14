@@ -76,12 +76,10 @@ class Dictionary
     template <class Archive>
     void load(Archive & ar)
     {
-        cout << "dict" << endl;
         ar(
            dictSet_id,
            m_words
            );
-           cout << "dict2" << endl;
     }
 
     private:
