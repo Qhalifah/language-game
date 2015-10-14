@@ -46,7 +46,7 @@ class Interface;
 class HUD
 {
 public:
-    HUD();
+    HUD(Vec2);
 
     const vector<ScreenItem>& getItems() const;
     void toggleKeys(shared_ptr<Interface>);

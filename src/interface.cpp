@@ -216,11 +216,11 @@ int Interface::getScreenHit(float x, float y)
 // Only checks objects which are in the HUD.
 int Interface::getHudHit(float x, float y)
 {
-    for( int sprite = (int)m_hudSprites.size()-1; sprite >= 0; --sprite )
+	for (int spriteIndex = (int)m_hudSprites.size() - 1; spriteIndex >= 0; --spriteIndex)
     {
-        if(m_hudItems[(size_t)sprite].visible &&
-           m_hudSprites[(size_t)sprite]->getGlobalBounds().contains(x, y))
-            return sprite;
+		if (m_hudItems[(size_t)spriteIndex].visible &&
+			m_hudSprites[(size_t)spriteIndex]->getGlobalBounds().contains(x, y))
+			return spriteIndex;
     }
     return -1;
 }
@@ -289,15 +289,14 @@ void Interface::resizeSprite(shared_ptr<Sprite> sprite,
 // This function is called by controller upon window resize
 void Interface::resize()
 {
-    float win_h = m_window->getSize().y;
 	float win_w = m_window->getSize().x;
+    float win_h = m_window->getSize().y;
     float scale = 1;
     m_view = View(FloatRect(0.f, 0.f, win_w, win_h));
     m_window->setView(m_view);
 
     if( !m_screenSprites.empty() )
     {
-		
 		FloatRect bg = m_screenSprites[0]->getGlobalBounds();
 
         if( (win_h/win_w) < ((bg.height+m_hud_height)/bg.width) )
@@ -463,8 +462,7 @@ void Interface::updateHudSprite(size_t index, const ScreenItem& data)
             m_hudSprites[index]->setPosition(m_hudItems[index].position);
 
             // Position sprite relative to map
-            //float bg_width = m_screenSprites[0]->getGlobalBounds().width;
-			float bg_width = getScreenRatioWidth();
+            float bg_width = m_screenSprites[0]->getGlobalBounds().width;
 
             m_hudSprites[index]->move(.5 * (m_window->getSize().x - bg_width), 0);
 
@@ -484,8 +482,7 @@ void Interface::updateHudSprite(size_t index, const ScreenItem& data)
                 m_hudSprites[index]->setPosition(position);
 
                 // Position sprite relative to map
-                //float bg_width = m_screenSprites[0]->getGlobalBounds().width;
-				float bg_width = getScreenRatioWidth();
+                float bg_width = m_screenSprites[0]->getGlobalBounds().width;
 
                 m_hudSprites[index]->move(.5 * (m_window->getSize().x - bg_width), 0);
 
@@ -496,20 +493,11 @@ void Interface::updateHudSprite(size_t index, const ScreenItem& data)
                     m_hudSprites[index]->move(-borderSize, -borderSize);
                 }
             }
-            if( data.size != m_hudItems[index].size )
-            {
-                //Vector2f size = m_hud_scale * data.size;
-
-                // TODO: it appears we don't need this.
-//                m_hudSprites[index]->scale
-//                    (size.x/m_hudItems[index].size.x,
-//                     size.y/m_hudItems[index].size.y);
-            }
         }
 
         // TODO: Might want to think about refactoring this
-//        if( data.hover != m_hudItems[index].hover ||
-//            data.hover_text != m_hudItems[index].hover_text)
+        if( data.hover != m_hudItems[index].hover ||
+            data.hover_text != m_hudItems[index].hover_text)
         { // Mouse over status has changed.
             if( data.hover_text != L"none" && data.hover )
 			{
@@ -524,8 +512,8 @@ void Interface::updateHudSprite(size_t index, const ScreenItem& data)
                 m_hudtext[index]->setPosition(m_hud_scale * data.position);
 
                 // Position sprite relative to map
-                //float bg_width = m_screenSprites[0]->getGlobalBounds().width;
-				float bg_width = getScreenRatioWidth();
+                float bg_width = m_screenSprites[0]->getGlobalBounds().width;
+				//float bg_width = getScreenRatioWidth();
 
                 m_hudtext[index]->move(.5 * (m_window->getSize().x - bg_width), 0);
 
@@ -616,9 +604,10 @@ void Interface::updateSprite(size_t index, const ScreenItem& data)
                 positionSprite(m_text[index], data);
                 m_text[index]->scale(m_scale);
 
-				if (m_text[index]->getPosition().x + m_text[index]->getLocalBounds().width > m_window->getSize().x)
+				// Keep the text within the bounds of the window
+				if (m_text[index]->getPosition().x + (m_text[index]->getLocalBounds().width * m_scale.x) > m_window->getSize().x)
 				{
-					m_text[index]->move(m_window->getSize().x - (m_text[index]->getPosition().x + m_text[index]->getLocalBounds().width), 0);
+					m_text[index]->move(m_window->getSize().x - (m_text[index]->getPosition().x + (m_text[index]->getLocalBounds().width * m_scale.x)), 0);
 				}
             }
             else
@@ -724,11 +713,11 @@ void Interface::changeHUD(const shared_ptr<HUD> hud)
 {
     float win_h = m_window->getSize().y;
     float win_w = m_window->getSize().x;
-    win_h -= m_hud_height;
-    m_hudItems = hud->getItems();
-    unsigned numButtons = m_hudItems.size();
+    win_h -= m_hud_height;						// Get just the height of the playable window
+
     m_hud_scale = m_hud_width / hud->width();
     m_hud_height = hud->height() * m_hud_scale;
+
     win_h += m_hud_height;
     m_window->setSize(sf::Vector2u(win_w, win_h));
     m_win_h = win_h;
@@ -737,7 +726,9 @@ void Interface::changeHUD(const shared_ptr<HUD> hud)
     m_hudSprites.clear();
     m_hudSounds.clear();
 
-    for(unsigned ii = 0; ii < numButtons; ++ii)
+	m_hudItems = hud->getItems();
+
+	for (unsigned ii = 0; ii < m_hudItems.size(); ++ii)
     {
         m_hudItems[ii].size *= m_hud_scale;
         m_hudItems[ii].position *= m_hud_scale;
@@ -839,8 +830,7 @@ void Interface::positionSprite(shared_ptr<Sprite> sprite,
     sprite->setPosition(screenItem.position*m_scale);
 
     // Position sprite relative to map
-    //float bg_width = m_screenSprites[0]->getGlobalBounds().width;
-	float bg_width = getScreenRatioWidth();
+    float bg_width = m_screenSprites[0]->getGlobalBounds().width;
     sprite->move(.5 * (m_window->getSize().x - bg_width), m_hud_height);
 
     // Adjust for border if it is a box

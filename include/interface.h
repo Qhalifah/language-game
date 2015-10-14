@@ -88,6 +88,10 @@ public:
     int getScreenHit(float x, float y);
     int getHudHit(float x, float y);
 
+	int getScreenRatioWidth();
+
+	int getScreenRatioHeight();
+
 private:
     //TexMap m_textures;
     Texture konstants;
@@ -127,7 +131,7 @@ private:
     unordered_map<size_t, shared_ptr<Sprite>> m_hudtext;
     unordered_map<size_t, shared_ptr<Texture>> m_hudtextTextures;
 
-	Vec2 m_screenRatio; // The ratio of the Map's background image, from the aspect ratio in the editor, default is 800x600
+	Vec2 m_screenRatio; // The ratio of the Map's background image, from the aspect ratio in the editor, default is 800x600, currently not used
 
     void render();
 
@@ -157,10 +161,6 @@ private:
     void loadError(const wstring& file, const wstring& problem, const wstring& func);
 
 	void setScreenRatio();
-
-	int getScreenRatioWidth();
-
-	int getScreenRatioHeight();
 };
 
 #endif /* Interface_H_ */

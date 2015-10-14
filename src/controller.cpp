@@ -155,7 +155,7 @@ void MinionController::deselectedItem(size_t index, Color col)
 MasterController::MasterController()
 : m_interface(new Interface()), m_window(m_interface->getWindow()),
   m_profile_wrangler(new ProfileWrangler()), m_controllers(),
-  m_hud(new HUD()), m_engaged_sprite(-1)
+  m_hud(new HUD(Vec2(m_interface->getScreenRatioWidth(), m_interface->getScreenRatioHeight()))), m_engaged_sprite(-1)
 {
     //m_profile_wrangler->loadProfiles();
     m_interface->changeHUD(m_hud);
@@ -344,7 +344,7 @@ void MasterController::handleEvent(sf::Event event)
                 m_engaged_sprite = hit_sprite;
             }
         }
-        else if(hit_sprite == -1)
+        else if(hit_sprite == -1) // hit_sprite is the back button
         {
             m_controllers.top()->mouseButtonPressedEvent
                                 (event, sf::Mouse::getPosition(*m_window));

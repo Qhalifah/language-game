@@ -549,10 +549,12 @@ void MainWindow::setupScreenQGVWidgets()
             ui->chooseRewardBadge->setHidden(true);
             ui->badgeLine->setHidden(true);
 
-            ui->label_10->setHidden(false);
+            // This presents the aspect ratio
+            // I'm taking this out because right now, I do not have the time to correctly implement this here or in the game player
+            /*ui->label_10->setHidden(false);
             ui->widthRatio->setHidden(false);
             ui->label_13->setHidden(false);
-            ui->heightRatio->setHidden(false);
+            ui->heightRatio->setHidden(false);*/
         }
         else // SCENE
         {

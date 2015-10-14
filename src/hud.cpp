@@ -29,7 +29,7 @@ along with Dina'ki Adventures. If not, see <http://www.gnu.org/licenses/>.*/
 #include "badge.h"
 #include <iterator>
 
-HUD::HUD() : m_buttons(6, ScreenItem())
+HUD::HUD(Vec2 aspectRatio) : m_buttons(6, ScreenItem())
 {
     float buttonWidth  = m_width / (m_buttons.size() + 1);
     float buttonHeight = m_height * .5;
@@ -40,8 +40,7 @@ HUD::HUD() : m_buttons(6, ScreenItem())
         m_buttons[ii].type = BUTTON;
         m_buttons[ii].color = Color(150, 150, 150);
         m_buttons[ii].size = Vec2(buttonWidth, buttonHeight);
-        m_buttons[ii].position = Vec2(spacer+(buttonWidth+spacer)*ii,
-                                      buttonHeight*.5);
+        m_buttons[ii].position = Vec2(spacer+(buttonWidth+spacer)*ii, buttonHeight*.5);
         m_buttons[ii].sound = L"audio/other/click2.wav";
         m_buttons[ii].volume = 100;
     }
@@ -253,15 +252,18 @@ HUD::HUD() : m_buttons(6, ScreenItem())
 
 void HUD::handleHit(std::shared_ptr<Interface> interface, int hitsprite)
 {
+	// If the sprite that last had its hover actions turned on is not the currently hit sprite
     if(m_last_hover != hitsprite)
     {
+	    // turn those hover actions off if the sprite is valid
         if(m_last_hover != -1)
         {
             m_buttons[(size_t)m_last_hover].hover = false;
             interface->updateHud((size_t)m_last_hover, m_buttons[(size_t)m_last_hover]);
             m_last_hover = -1;
         }
-        
+
+		// turn the hit sprite's hover actions on if it is a badge item
         if(hitsprite != -1 && (size_t)hitsprite < m_badge_image_index + 3 && (size_t)hitsprite >= m_badge_image_index)
         {
             m_buttons[(size_t)hitsprite].hover = true;
