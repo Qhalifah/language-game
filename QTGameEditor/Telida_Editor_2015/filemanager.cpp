@@ -629,7 +629,6 @@ void FileManager::loadFiles(ScreenQGV &screen, BackgroundMusic &bgm)
             {
                 if(toActivity[index].first == GameType::PAIR)
                 {
-                    screen.incrementActs();
                     // Removes the p from the Activity name and makes it an int, so "p1" would become the int, 1
                     rect->setId(QString::fromStdString(toActivity[index].second).remove(0, 1).toInt());
                     rect->setGameType(GameType::PAIR);
@@ -646,7 +645,6 @@ void FileManager::loadFiles(ScreenQGV &screen, BackgroundMusic &bgm)
                 }
                 else if(toActivity[index].first == GameType::MATCHING)
                 {
-                    screen.incrementActs();
                     // Removes the m from the Activity name and makes it an int, so "m1" would become the int, 1
                     rect->setId(QString::fromStdString(toActivity[index].second).remove(0, 1).toInt());
                     rect->setGameType(GameType::MATCHING);

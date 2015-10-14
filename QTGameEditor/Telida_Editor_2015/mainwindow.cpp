@@ -763,9 +763,8 @@ void MainWindow::on_goToActivity_activated(const QString &arg1)
 
     if(!ui->goToActivity->currentIndex())
     {
-        if(r->id())
-            ui->graphicsView->decrementActs();
         r->setId(0);
+        r->setGameType(GameType::NONE);
         ui->actPieceWidg->setHidden(true);
         return;
     }
@@ -780,7 +779,6 @@ void MainWindow::on_goToActivity_activated(const QString &arg1)
         ui->actPieceImg->setPixmap(QPixmap(r->actPieceFilepath()).scaled(50, 50,
                                                                          Qt::KeepAspectRatioByExpanding,
                                                                          Qt::FastTransformation));
-        ui->graphicsView->incrementActs();
     }
     if(actType == QString("Pairing"))
     {
@@ -800,6 +798,7 @@ void MainWindow::on_goToActivity_activated(const QString &arg1)
         ui->actPieceImg->setPixmap(QPixmap(QString::fromStdWString(act->m_badge_piece.m_image)).scaled(50, 50,
                                                                          Qt::KeepAspectRatioByExpanding,
                                                                          Qt::FastTransformation));
+        r->setActPieceFilepath(QString::fromStdWString(act->m_badge_piece.m_image));
     }
 }
 

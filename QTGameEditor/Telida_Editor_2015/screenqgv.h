@@ -95,9 +95,6 @@ public:
 
     void setRewardBadgeId(unsigned id){m_rewardBadgeId = id;}
     unsigned rewardBadgeId(){return m_rewardBadgeId;}
-    void incrementActs();
-    void decrementActs();
-    unsigned numActivities(){return m_numActivities;}
 
 protected:
     QGraphicsRectItem * m_background;
@@ -131,7 +128,6 @@ protected:
     MusicItem m_reward_MusicItem; // Activity
 
     unsigned m_rewardBadgeId;
-    unsigned m_numActivities;
     // Every ScreenQGV has a show this widget/whatever function,
 };
 

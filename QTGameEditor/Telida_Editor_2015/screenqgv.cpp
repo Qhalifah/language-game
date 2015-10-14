@@ -23,7 +23,6 @@ ScreenQGV::ScreenQGV(QWidget *parent) :
     m_filepath(""), m_edType(NONE), m_id(0),
     m_showBoxLines(true), m_showHotspotLines(true),
     m_showImgLines(true), m_showTextLines(true),
-    m_numActivities(0),
     m_rewardBadgeId(0)
 {
     this->setBackgroundBrush(QBrush(Qt::black));
@@ -260,7 +259,6 @@ void ScreenQGV::reset()
     m_choices = 4;
     m_rounds = 5;
     m_maxScore = 100;
-    m_numActivities = 0;
     MainWindow::ui->chooseRewardBadge->setEnabled(false);
 }
 
@@ -438,23 +436,4 @@ void ScreenQGV::toggleLines(bool checked, ScreenItemType type)
     else if(type == ScreenItemType::BOX)
         m_showBoxLines = checked;
     this->scene()->update(0, 0, this->scene()->width(), this->scene()->height());
-}
-
-void ScreenQGV::incrementActs()
-{
-    ++m_numActivities;
-    MainWindow::ui->chooseRewardBadge->setEnabled(true);
-    MainWindow::ui->actPieceWidg->setHidden(false);
-}
-
-void ScreenQGV::decrementActs()
-{
-    if(--m_numActivities < 0)
-        m_numActivities = 0;
-    if(!m_numActivities)
-    {
-        //MainWindow::ui->chooseRewardBadge->setCurrentIndex(0);
-        MainWindow::ui->chooseRewardBadge->setEnabled(false);
-        MainWindow::ui->actPieceWidg->setHidden(true);
-    }
 }

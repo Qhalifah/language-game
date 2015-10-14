@@ -615,6 +615,11 @@ void Interface::updateSprite(size_t index, const ScreenItem& data)
                              (index, make_shared<Sprite>(*texture)));
                 positionSprite(m_text[index], data);
                 m_text[index]->scale(m_scale);
+
+				if (m_text[index]->getPosition().x + m_text[index]->getLocalBounds().width > m_window->getSize().x)
+				{
+					m_text[index]->move(m_window->getSize().x - (m_text[index]->getPosition().x + m_text[index]->getLocalBounds().width), 0);
+				}
             }
             else
             {
