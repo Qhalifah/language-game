@@ -381,21 +381,26 @@ void FileManager::saveFiles(ScreenQGV &screen, BackgroundMusic & bgm)
             b.m_image = b2.img.toStdWString();
             b.m_total_pieces = s.m_activities.size();
 
-            // Save the badge name to the pieces of all Activity objects used in the scene
+            // Save the badge name to the pieces of all Activities in the scene
             vector<unique_ptr<MyRect>> * items = screen.rectItems();
             int pieceNumber = 1;
-            for(size_t i = 0; i < items->size(); ++i)
+            for(size_t j = 0; j < s.m_activities.size(); ++j)
             {
-                if((*items)[i]->gameType() != GameType::NONE)
+                for(size_t i = 0; i < items->size(); ++i)
                 {
-                    string actFileName = (*items)[i]->actFileName().toStdString();
-                    Activity *saveAct = new Activity(actFileName, NULL);
-                    saveAct->load();
-                    saveAct->m_badge_piece.m_badge_name = MainWindow::ui->chooseRewardBadge->currentText().toStdWString();
-                    saveAct->m_badge_piece.m_image = (*items)[i]->actPieceFilepath().toStdWString();
-                    saveAct->m_badge_piece.m_id = pieceNumber;
-                    saveAct->save();
-                    ++pieceNumber;
+                    if((*items)[i]->actFileName().toStdString() == s.m_activities[j].second)
+                    {
+                        cout << "Setting the piece" << endl;
+                        string actFileName = (*items)[i]->actFileName().toStdString();
+                        Activity *saveAct = new Activity(actFileName, NULL);
+                        saveAct->load();
+                        saveAct->m_badge_piece.m_badge_name = MainWindow::ui->chooseRewardBadge->currentText().toStdWString();
+                        saveAct->m_badge_piece.m_image = (*items)[i]->actPieceFilepath().toStdWString();
+                        saveAct->m_badge_piece.m_id = pieceNumber;
+                        saveAct->save();
+                        ++pieceNumber;
+                        break;
+                    }
                 }
             }
         }
