@@ -162,7 +162,7 @@ void Activity::save()
     cout << "m_image: " << str.toStdString() << endl;
     cout << "m_id: " << m_badge_piece.m_id << endl;*/
 
-    std::ofstream os(".//db//activities//" + m_id + ".act", std::ios::binary);
+    std::ofstream os(m_DocumentsPath + "//Dinaki Adventures//db//activities//" + m_id + ".act", std::ios::binary);
 
     cereal::BinaryOutputArchive archive(os);
 
@@ -171,9 +171,7 @@ void Activity::save()
 
 void Activity::load()
 {
-    //cout << "activity load started." << endl;
-
-    std::ifstream is(".//db//activities//" + m_id + ".act",std::ios::binary);
+    std::ifstream is(m_DocumentsPath + "//Dinaki Adventures//db//activities//" + m_id + ".act", std::ios::binary);
 
     if(!is.eof() && is)
     {

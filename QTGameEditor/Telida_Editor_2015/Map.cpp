@@ -146,8 +146,9 @@ void Map::save()
         m_screenItems[0].name = L"None";
     }
 
-    std::ofstream os(".//db//maps//" + m_id + ".map", std::ios::binary | std::ios_base::binary | ofstream::out | std::ios::trunc);
+    std::ofstream os(m_DocumentsPath + "//Dinaki Adventures//db//maps//" + m_id + ".map", std::ios::binary | std::ios_base::binary | ofstream::out | std::ios::trunc);
 
+    cout << m_DocumentsPath + "//Dinaki Adventures//db//maps//" + m_id + ".map" << endl;
     cereal::PortableBinaryOutputArchive archive(os);
 
     archive(*this);
@@ -157,12 +158,13 @@ void Map::save()
 void Map::load()
 {
     cout << "in map load" << endl;
-    std::ifstream is(".//db//maps//" + m_id + ".map", std::ios::binary | std::ios_base::binary | ifstream::in);
+    std::ifstream is(m_DocumentsPath + "//Dinaki Adventures//db//maps//" + m_id + ".map", std::ios::binary | std::ios_base::binary | ifstream::in);
+
+    cout << m_DocumentsPath + "\Dinaki Adventures\db\maps\\" + m_id + ".map" << endl;
 
     if(!is.eof() && is)
     {
         cereal::PortableBinaryInputArchive archive(is);
-
         archive(*this);
     }
 

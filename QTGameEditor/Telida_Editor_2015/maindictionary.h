@@ -12,6 +12,9 @@ using std::wstring;
 using std::cout;
 using std::endl;
 #include "cereal/types/unordered_map.hpp"
+#include <windows.h>
+#include <iostream>
+#include <shlobj.h>
 
 class MainDictionary
 {
@@ -77,6 +80,10 @@ protected:
     QMap<unsigned, Word> m_dict;
     unordered_map<unsigned, WordSave> m_dictSave;
     unsigned m_id;
+
+private:
+    wchar_t cStr[MAX_PATH];
+    std::string m_DocumentsPath;
 };
 
 #endif // MAINDICTIONARY_H

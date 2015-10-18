@@ -12,6 +12,9 @@ using std::set;
 using std::wstring;
 #include "maindictionary.h"
 #include <QVector>
+#include <windows.h>
+#include <iostream>
+#include <shlobj.h>
 
 class DictionarySets
 {
@@ -87,6 +90,10 @@ protected:
     QMap<unsigned, DictSet> m_dictSets;
     unordered_map<unsigned, DictSetSave> m_dictSetsSave;
     unsigned m_id;
+
+private:
+    wchar_t cStr[MAX_PATH];
+    std::string m_DocumentsPath;
 };
 
 #endif // DICTIONARYSETS_H

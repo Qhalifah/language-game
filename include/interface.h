@@ -133,6 +133,8 @@ private:
 
 	Vec2 m_screenRatio; // The ratio of the Map's background image, from the aspect ratio in the editor, default is 800x600, currently not used
 
+	string m_DocumentsPath;
+
     void render();
 
     void newHudObject(const ScreenItem&, size_t index);

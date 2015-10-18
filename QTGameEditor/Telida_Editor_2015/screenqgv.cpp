@@ -37,6 +37,10 @@ ScreenQGV::ScreenQGV(QWidget *parent) :
     setRewardSoundFile(L"None");
     setRewardSoundVolume(50);
     setRewardSoundPitch(1);
+
+    // Get the user's Documents folder path
+    SHGetFolderPath(NULL, CSIDL_MYDOCUMENTS, NULL, DWORD("FOLDERID_Documents"), cStr);
+    m_DocumentsPath = QString::fromStdWString(cStr).toStdString();
 }
 
 ScreenQGV::~ScreenQGV()
@@ -315,7 +319,7 @@ void ScreenQGV::mouseReleaseEvent(QMouseEvent *event)
                 if(MyRect::m_selectedRect->gameType() != GameType::NONE)
                 {
                     // Check if the file exists
-                    string actFileName = ".//db//activities//";
+                    string actFileName = m_DocumentsPath+"//Dinaki Adventures//db//activities//";
                     actFileName.append(MyRect::m_selectedRect->actFileName().toStdString());
                     actFileName.append(".act");
                     QFileInfo checkFile(QString::fromStdString(actFileName));

@@ -23,7 +23,14 @@ void Scene::save()
         m_screenItems[0].name = L"None";
     }
 
-    std::ofstream os(".//db//scenes//" + m_id + ".scn", std::ios::binary | std::ios_base::binary | ofstream::out | std::ios::trunc);
+
+    // Get the user's Documents folder path
+    wchar_t cStr[MAX_PATH];
+    SHGetFolderPath(NULL, CSIDL_MYDOCUMENTS, NULL, DWORD("FOLDERID_Documents"), cStr);
+    std::string path = QString::fromStdWString(cStr).toStdString();
+
+
+    std::ofstream os(m_DocumentsPath + "//Dinaki Adventures//db//scenes//" + m_id + ".scn", std::ios::binary | std::ios_base::binary | ofstream::out | std::ios::trunc);
     QString qS = QString::fromStdWString(m_badge.m_name);
     cout << "Scene badge name: "<< qS.toStdString() << endl;
     if( !os.fail() )
@@ -37,7 +44,7 @@ void Scene::save()
 void Scene::load()
 {
     cout << "in scene load" << endl;
-    std::ifstream is(".//db//scenes//" + m_id + ".scn", std::ios::binary | std::ios_base::binary | ifstream::in);
+    std::ifstream is(m_DocumentsPath+"//Dinaki Adventures//db//scenes//" + m_id + ".scn", std::ios::binary | std::ios_base::binary | ifstream::in);
 
     if(!is.eof() && is)
     {
@@ -45,7 +52,6 @@ void Scene::load()
 
         archive(*this);
     }
-    cout << "Inside scene::load() " << endl;
     cout << "Scene's m_id is " << m_id << endl;
     for(int ii=0; ii<m_activities.size(); ++ii)
     {

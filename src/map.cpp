@@ -96,7 +96,7 @@ Map::scenePrereqs() const
 
 void Map::save()
 {
-    std::ofstream os(".//db//maps//" + m_id + ".map", std::ios::binary | ofstream::out | std::ios::trunc);
+	std::ofstream os(m_DocumentsPath + "//Dinaki Adventures//db//maps//" + m_id + ".map", std::ios::binary | ofstream::out | std::ios::trunc);
 
     cereal::PortableBinaryOutputArchive archive(os);
 
@@ -105,7 +105,7 @@ void Map::save()
 
 void Map::load()
 {
-    std::ifstream is(".//db//maps//" + m_id + ".map", std::ios::binary | ifstream::in);
+	std::ifstream is(m_DocumentsPath + "//Dinaki Adventures//db//maps//" + m_id + ".map", std::ios::binary | ifstream::in);
 
     if(!is.eof() && is)
     {

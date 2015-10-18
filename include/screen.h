@@ -43,13 +43,14 @@ using std::vector;
 #include <cereal/types/utility.hpp>
 #include <cereal/types/vector.hpp>
 #include <cereal/types/base_class.hpp>
-#include <iostream>
 #include <memory>
 using std::shared_ptr;
 #include "dictionary.h"
 #include <iostream>
 using std::cout;
 using std::endl;
+#include <windows.h>
+#include <shlobj.h>
 
 // Data type to represent possible types of screen items.
 enum ScreenItemType
@@ -115,7 +116,6 @@ public:
         );
     }
 };
-
 
 // Wrapper class to make Color cerealizable.
 namespace mine {
@@ -241,12 +241,12 @@ public:
     virtual void save() = 0;
     virtual void load() = 0;
 
-protected:
+	std::string m_DocumentsPath;        // Used to get the user's Document file path
 
+protected:
     vector<ScreenItem> m_screenItems;   // Interactibles/soundeffects
     vector<MusicItem>  m_BGM;           // Background music filenames
     shared_ptr<Dictionary> m_dictionary;
-
 
 private:
 

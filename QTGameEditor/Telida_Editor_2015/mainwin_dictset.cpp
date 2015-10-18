@@ -24,12 +24,12 @@ void MainWindow::on_dictSetDone_clicked()
     else
     {
         cout << "inside else in mainwin_dictset" << endl;
-        QDir path(".//db//activities//");
+        QDir path(QString::fromStdString(m_DocumentsPath+"//Dinaki Adventures//db//activities//"));
         QStringList actFiles = path.entryList(QDir::Files);
         for(auto itr = actFiles.begin(); itr != actFiles.end(); ++itr)
         {
             cout << "actFile: " << itr->toStdString()<< endl;
-            QString actFileDir = ".//db//activities//";
+            QString actFileDir = QString::fromStdString(m_DocumentsPath+"//Dinaki Adventures//db//activities//");
             QFileInfo actFile(actFileDir + *itr);
             if(actFile.exists())
             {
@@ -109,26 +109,3 @@ void MainWindow::on_delDictSetWord_clicked()
     list.removeAt(ui->dictSetView->currentIndex().row());
     m_dictSetModel.setStringList(list);
 }
-/*
-void MainWindow::on_copyDictSetTo_clicked()
-{
-    bool ok;
-    QString text = QInputDialog::getText(this, tr("Enter Dictionary Name to Copy to."),
-                                         tr("Dictionary Name:"), QLineEdit::Normal,
-                                         QString(""), &ok);
-    if(!ok)
-        return;
-    if(text.isEmpty())
-    {
-        ui->dictSetErr->setText(QString("The Dictionary Name\ncannot be empty."));
-        return;
-    }
-    if(m_dictSetData.contains(text))
-    {
-        ui->dictSetErr->setText(QString("There is already a\ndictionary set with that name."));
-        return;
-    }
-    m_dictSetData[text] = m_dictSetList;
-    m_fileManager.saveDictSet(m_dictSetData);
-}
-*/

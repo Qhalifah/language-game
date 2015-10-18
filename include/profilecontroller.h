@@ -34,7 +34,7 @@ class ProfileController : public MinionController
 {
 public:
     ProfileController(std::shared_ptr<ProfileWrangler> wrangler, std::shared_ptr<Profile> profile,
-                  std::shared_ptr<Interface> interface,
+		std::shared_ptr<Interface> _interface,
                   std::shared_ptr<MasterController> masterController,
                       std::shared_ptr<Screen> screen);
     
@@ -67,7 +67,9 @@ private:
     size_t m_age_field = 0;
     
     int m_current_edit = -1; 
-    bool m_show_new_profile = false; 
+	bool m_show_new_profile = false;
+
+	std::string m_DocumentsPath;        // Used to get the user's Document file path
 };
 
 #endif /* end define for __PROFILE_CONTROLLER_H__ */

@@ -22,11 +22,11 @@ using std::wcout;
 using std::endl;
 
 minioncontroller_matching::minioncontroller_matching(std::shared_ptr<Profile> profile,
-                                                     std::shared_ptr<Interface> interface,
+	std::shared_ptr<Interface> _interface,
                                                      std::shared_ptr<MasterController> masterController,
                                                      std::shared_ptr<Activity> activity)
-                                                     : MinionController(profile, interface, masterController, activity), 
-                                                     m_activity(activity), m_interfacePtr(interface)
+													 : MinionController(profile, _interface, masterController, activity),
+													 m_activity(activity), m_interfacePtr(_interface)
 {
 
     m_helpMessage  = L"In this game, I'll give you a bunch of words and then a\n";
@@ -284,7 +284,8 @@ void minioncontroller_matching::endGame()
     vector<ScreenItem> t_screenitems = m_screen->getScreenItems();
 
     // change background screen to black
-    t_screenitems[0].name = L"images/activity_endscreen.png";
+	sf::String sStr(m_activity->m_DocumentsPath);
+	t_screenitems[0].name = sStr.toWideString() + L"/Dinaki Adventures/images/activity_endscreen.png";
     m_interface->update(0, t_screenitems[0]);
 
     // set box with player score to visible

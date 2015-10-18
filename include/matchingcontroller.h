@@ -46,7 +46,7 @@ class minioncontroller_matching : public MinionController
 {
 public:
     minioncontroller_matching(std::shared_ptr<Profile> profile,
-                              std::shared_ptr<Interface> interface,
+		std::shared_ptr<Interface> _interface,
                               std::shared_ptr<MasterController> masterController,
                               std::shared_ptr<Activity> activity);
 

@@ -250,7 +250,7 @@ HUD::HUD(Vec2 aspectRatio) : m_buttons(6, ScreenItem())
     m_buttons.push_back(t_screen_item);
 }
 
-void HUD::handleHit(std::shared_ptr<Interface> interface, int hitsprite)
+void HUD::handleHit(std::shared_ptr<Interface> _interface, int hitsprite)
 {
 	// If the sprite that last had its hover actions turned on is not the currently hit sprite
     if(m_last_hover != hitsprite)
@@ -259,7 +259,7 @@ void HUD::handleHit(std::shared_ptr<Interface> interface, int hitsprite)
         if(m_last_hover != -1)
         {
             m_buttons[(size_t)m_last_hover].hover = false;
-            interface->updateHud((size_t)m_last_hover, m_buttons[(size_t)m_last_hover]);
+			_interface->updateHud((size_t)m_last_hover, m_buttons[(size_t)m_last_hover]);
             m_last_hover = -1;
         }
 
@@ -268,7 +268,7 @@ void HUD::handleHit(std::shared_ptr<Interface> interface, int hitsprite)
         {
             m_buttons[(size_t)hitsprite].hover = true;
             m_last_hover = hitsprite;
-            interface->updateHud((size_t)m_last_hover, m_buttons[(size_t)m_last_hover]);
+			_interface->updateHud((size_t)m_last_hover, m_buttons[(size_t)m_last_hover]);
         }
     }
 }
@@ -296,7 +296,7 @@ void HUD::rotateBadges(int rot, std::shared_ptr<Profile> profile)
         m_badge_index--;
 }
 
-void HUD::updateProfile(shared_ptr<Interface> interface, std::shared_ptr<Profile> t_profile)
+void HUD::updateProfile(shared_ptr<Interface> _interface, std::shared_ptr<Profile> t_profile)
 {
     std::vector<Badge> t_badges = t_profile->getBadges();
 
@@ -331,11 +331,11 @@ void HUD::updateProfile(shared_ptr<Interface> interface, std::shared_ptr<Profile
     }
 
 	//updates the badges within the profile box
-	interface->updateHud(m_badge_image_index, m_buttons.size(), m_buttons);
+	_interface->updateHud(m_badge_image_index, m_buttons.size(), m_buttons);
 }
 
 
-void HUD::toggleProfile(shared_ptr<Interface> interface, std::shared_ptr<Profile> t_profile)
+void HUD::toggleProfile(shared_ptr<Interface> _interface, std::shared_ptr<Profile> t_profile)
 {
     // Set name and age of profile to display
     if(t_profile != nullptr) {
@@ -352,17 +352,17 @@ void HUD::toggleProfile(shared_ptr<Interface> interface, std::shared_ptr<Profile
     
 	if (t_profile != nullptr) {
 		cout << "t_profile != nullptr" << endl;
-        updateProfile(interface, t_profile);
+		updateProfile(_interface, t_profile);
     }
     else {
 		cout << "m_profile_index: " << m_profile_index << endl;
     }
 
-	interface->updateHud(m_profile_index, m_buttons.size(), m_buttons);
+	_interface->updateHud(m_profile_index, m_buttons.size(), m_buttons);
     m_profile_up = !m_profile_up;
 }
 
-void HUD::toggleKeys(shared_ptr<Interface> interface)
+void HUD::toggleKeys(shared_ptr<Interface> _interface)
 {
     // m_firstKey - 1 to account for container
     for(auto ii = unsigned(m_firstKey-1); ii < m_profile_index; ++ii)
@@ -371,15 +371,15 @@ void HUD::toggleKeys(shared_ptr<Interface> interface)
     }
 
     m_keyboard_up = !m_keyboard_up;
-    interface->updateHud(m_firstKey-1, m_profile_index, m_buttons);
+	_interface->updateHud(m_firstKey - 1, m_profile_index, m_buttons);
 }
 
-void HUD::toggleBackButton(shared_ptr<Interface>  interface)
+void HUD::toggleBackButton(shared_ptr<Interface>  _interface)
 {
     m_buttons[m_back_button_index].visible = !m_buttons[m_back_button_index].visible;
     
     m_back_button_up = !m_back_button_up;
-    interface->updateHud(m_back_button_index, m_buttons[m_back_button_index]);
+	_interface->updateHud(m_back_button_index, m_buttons[m_back_button_index]);
 }
 
 void HUD::engage(size_t index)

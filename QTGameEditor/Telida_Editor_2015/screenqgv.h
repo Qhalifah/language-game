@@ -129,6 +129,11 @@ protected:
 
     unsigned m_rewardBadgeId;
     // Every ScreenQGV has a show this widget/whatever function,
+
+private:
+    // Used to get the user's Documents file path
+    wchar_t cStr[MAX_PATH];
+    std::string m_DocumentsPath;
 };
 
 #endif // SCREENQGV_H

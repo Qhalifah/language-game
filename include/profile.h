@@ -96,12 +96,7 @@ public:
     // same as above but takes badge name as string
     bool lookupBadge(std::wstring) const;
     bool lookupBadge(std::string) const;
-    
-    // returns the name of the file which contains the saved games for this profile
-    // std::wstring getSavedGamesFile();
-    // changes save game file TODO: Find a good naming convention
-    //void setSavedGamesFile(std::wstring);
-    
+        
     // load in saved game
     void loadSavedGames();
     // save the list of games states to the savedgamesfile
@@ -153,8 +148,6 @@ private:
     std::wstring m_saved_games_file;
     
     std::unordered_map<std::wstring, Badge> m_badges;
-    //GameState m_current_game;
-    //std::vector<std::shared_ptr<GameState>> m_saved_games;
 };
 
 

@@ -196,7 +196,7 @@ void MainWindow::on_submitWord_clicked()
     }
 
     // Edit the Word in Activity Dictionaries
-    QDir actFiles(QString::fromStdString(".//db//activities"));
+    QDir actFiles(QString::fromStdString(m_DocumentsPath+"//Dinaki Adventures//db//activities"));
     actFiles.setNameFilters(QStringList()<<"*.act");
     QStringList activityFileNameList = actFiles.entryList();
     for(auto ii : activityFileNameList)
@@ -244,7 +244,7 @@ void MainWindow::on_delWord_clicked()
         }
 
         // Delete Word from Activity Dictionaries
-        QDir actFiles(QString::fromStdString(".//db//activities"));
+        QDir actFiles(QString::fromStdString(m_DocumentsPath+"//Dinaki Adventures//db//activities"));
         actFiles.setNameFilters(QStringList()<<"*.act");
         QStringList activityFileNameList = actFiles.entryList();
         for(auto ii : activityFileNameList)

@@ -8,6 +8,9 @@ using std::string;
 #include <QString>
 #include <QMap>
 #include <QStringList>
+#include <windows.h>
+#include <iostream>
+#include <shlobj.h>
 
 class Activities
 {
@@ -61,6 +64,8 @@ private:
     QMap<unsigned, Activity> m_acts; // Unique id to name of scene
     unordered_map<unsigned, ActSave> m_actSave; // Needed for saving/loading using cereal
     unsigned m_id; // An id for the next activity to be added, increments for each use
+    wchar_t cStr[MAX_PATH];
+    std::string m_DocumentsPath;
 };
 
 #endif // ACTIVITIES_H

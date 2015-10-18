@@ -49,24 +49,29 @@ class Ui_MainWindow;
 
 QMap<FileManager::File, QString> setup()
 {
+    // Get the user's Documents folder path
+    wchar_t cStr[MAX_PATH];
+    SHGetFolderPath(NULL, CSIDL_MYDOCUMENTS, NULL, DWORD("FOLDERID_Documents"), cStr);
+    string DocumentsPath = QString::fromStdWString(cStr).toStdString();
+
     QMap<FileManager::File, QString> f;
-    f[FileManager::ACTBGM] = QString(".//audio//background//minigames//");
-    f[FileManager::SCNBGM] = QString(".//audio//background//scenes//");
-    f[FileManager::MAPBGM] = QString(".//audio//background//");
-    f[FileManager::OTHERSND] = QString(".//audio//other//");
-    f[FileManager::FEMSND] = QString(".//audio//words//Female//");
-    f[FileManager::MALESND] = QString(".//audio//words//Male//");
-    f[FileManager::ACTDIR] = QString(".//db//activities//");
-    f[FileManager::MAP] = QString(".//db//maps//WorldMap.map");
-    f[FileManager::SCNDIR] = QString(".//db//scenes//");
-    f[FileManager::BADGES] = QString(".//editor//badges.cereal");
-    f[FileManager::DICTSETS] = QString(".//editor//dictSets.cereal");
-    f[FileManager::FILES] = QString(".//editor//files.cereal");
-    f[FileManager::MAINDICT] = QString(".//editor//mainDict.cereal");
-    f[FileManager::PAIRACTS] = QString(".//editor//pairActs.cereal");
-    f[FileManager::MATCHACTS] = QString(".//editor//matchActs.cereal");
-    f[FileManager::IMG] = QString(".//images//");
-    f[FileManager::WORDIMG] = QString(".//images//words//");
+    f[FileManager::ACTBGM] = QString::fromStdString(DocumentsPath+"//audio//background//minigames//");
+    f[FileManager::SCNBGM] = QString::fromStdString(DocumentsPath+"//audio//background//scenes//");
+    f[FileManager::MAPBGM] = QString::fromStdString(DocumentsPath+"//Dinaki Adventures//audio//background//");
+    f[FileManager::OTHERSND] = QString::fromStdString(DocumentsPath+"//Dinaki Adventures//audio//other//");
+    f[FileManager::FEMSND] = QString::fromStdString(DocumentsPath+"//Dinaki Adventures//audio//words//Female//");
+    f[FileManager::MALESND] = QString::fromStdString(DocumentsPath+"//Dinaki Adventures//audio//words//Male//");
+    f[FileManager::ACTDIR] = QString::fromStdString(DocumentsPath+"//Dinaki Adventures//db//activities//");
+    f[FileManager::MAP] = QString::fromStdString(DocumentsPath+"//Dinaki Adventures//db//maps//WorldMap.map");
+    f[FileManager::SCNDIR] = QString::fromStdString(DocumentsPath+"//Dinaki Adventures//db//scenes//");
+    f[FileManager::BADGES] = QString::fromStdString(DocumentsPath+"//Dinaki Adventures//editor//badges.cereal");
+    f[FileManager::DICTSETS] = QString::fromStdString(DocumentsPath+"//Dinaki Adventures//editor//dictSets.cereal");
+    f[FileManager::FILES] = QString::fromStdString(DocumentsPath+"//Dinaki Adventures//editor//files.cereal");
+    f[FileManager::MAINDICT] = QString::fromStdString(DocumentsPath+"//Dinaki Adventures//editor//mainDict.cereal");
+    f[FileManager::PAIRACTS] = QString::fromStdString(DocumentsPath+"//Dinaki Adventures//editor//pairActs.cereal");
+    f[FileManager::MATCHACTS] = QString::fromStdString(DocumentsPath+"//Dinaki Adventures//editor//matchActs.cereal");
+    f[FileManager::IMG] = QString::fromStdString(DocumentsPath+"//Dinaki Adventures//images//");
+    f[FileManager::WORDIMG] = QString::fromStdString(DocumentsPath+"//Dinaki Adventures//images//words//");
     return f;
 }
 
@@ -82,34 +87,38 @@ FileManager::FileManager()
         - deletes all unnecessary files
         */
 
+    // Get the user's Documents folder path
+    SHGetFolderPath(NULL, CSIDL_MYDOCUMENTS, NULL, DWORD("FOLDERID_Documents"), cStr);
+    m_DocumentsPath = QString::fromStdWString(cStr).toStdString();
+
     // Make directories if they don't already exist
-    QDir dir("editor");
+    QDir dir(QString::fromStdString(m_DocumentsPath+"//Dinaki Adventures//editor"));
     if (!dir.exists()) {dir.mkpath(".");}
 
-    QFile f(".//editor//files.cereal");
+    QFile f(QString::fromStdString(m_DocumentsPath+"//Dinaki Adventures//editor//files.cereal"));
     if(f.exists())
     {
-        ifstream ifile(".//editor//files.cereal", std::ios::binary);
+        ifstream ifile(m_DocumentsPath+"//Dinaki Adventures//editor//files.cereal", std::ios::binary);
         BinaryInputArchive archive(ifile);
         archive(*this);
     }
 
     vector<QDir> directories = {
-        QString(".//audio//"),
-        QString(".//audio//background//"),
-        QString("./audio//background//minigames//"),
-        QString(".//audio//background//scenes//"),
-        QString(".//audio//other//"),
-        QString(".//audio//words//"),
-        QString(".//audio//words//Female//"),
-        QString(".//audio//words//Male//"),
-        QString(".//images//"),
-        QString(".//images//words//"),
-        QString(".//db//"),
-        QString(".//db//profilepage//"),
-        QString(".//db//maps//"),
-        QString(".//db//scenes//"),
-        QString(".//db//activities//")
+        QString::fromStdString(m_DocumentsPath+"//Dinaki Adventures//audio//"),
+        QString::fromStdString(m_DocumentsPath+"//Dinaki Adventures//audio//background//"),
+        QString::fromStdString(m_DocumentsPath+"//Dinaki Adventures/audio//background//minigames//"),
+        QString::fromStdString(m_DocumentsPath+"//Dinaki Adventures//audio//background//scenes//"),
+        QString::fromStdString(m_DocumentsPath+"//Dinaki Adventures//audio//other//"),
+        QString::fromStdString(m_DocumentsPath+"//Dinaki Adventures//audio//words//"),
+        QString::fromStdString(m_DocumentsPath+"//Dinaki Adventures//audio//words//Female//"),
+        QString::fromStdString(m_DocumentsPath+"//Dinaki Adventures//audio//words//Male//"),
+        QString::fromStdString(m_DocumentsPath+"//Dinaki Adventures//images//"),
+        QString::fromStdString(m_DocumentsPath+"//Dinaki Adventures//images//words//"),
+        QString::fromStdString(m_DocumentsPath+"//Dinaki Adventures//db//"),
+        QString::fromStdString(m_DocumentsPath+"//Dinaki Adventures//db//profilepage//"),
+        QString::fromStdString(m_DocumentsPath+"//Dinaki Adventures//db//maps//"),
+        QString::fromStdString(m_DocumentsPath+"//Dinaki Adventures//db//scenes//"),
+        QString::fromStdString(m_DocumentsPath+"//Dinaki Adventures//db//activities//")
     };
 
     // Make directories if they don't already exist
@@ -418,7 +427,7 @@ void FileManager::saveFiles(ScreenQGV &screen, BackgroundMusic & bgm)
         cout << "sound file is " << qS.toStdString() << endl;
         string name = "p";
         name += QString::number(screen.id()).toStdString();
-        QFileInfo actFile(QString::fromStdString(".//db//activities//" + name + ".act"));
+        QFileInfo actFile(QString::fromStdString(m_DocumentsPath+"//db//activities//" + name + ".act"));
         Activity act(name, dictionary);
         if(actFile.exists())
         { act.load();}
@@ -433,8 +442,6 @@ void FileManager::saveFiles(ScreenQGV &screen, BackgroundMusic & bgm)
         act.setRewardSoundVolume(screen.getRewardSoundVolume());
         act.setRewardSoundPitch(screen.getRewardSoundPitch());
         act.save();
-        cout << "Help Box is (" << act.getScreenItems()[1].size.x << ", " << act.getScreenItems()[1].size.y << ")" << endl;
-        cout << "at (" << act.getScreenItems()[1].position.x << ", " << act.getScreenItems()[1].position.y << ")" << endl;
 
     }
     else // MATCHACT
@@ -442,7 +449,7 @@ void FileManager::saveFiles(ScreenQGV &screen, BackgroundMusic & bgm)
         cout << "fileManager saving a matching activity" << endl;
         string name = "m";
         name += QString::number(screen.id()).toStdString();
-        QFileInfo actFile(QString::fromStdString(".//db//activities//" + name + ".act"));
+        QFileInfo actFile(QString::fromStdString(m_DocumentsPath+"//db//activities//" + name + ".act"));
         Activity act(name, dictionary);
         if(actFile.exists())
         { act.load();}
@@ -457,13 +464,7 @@ void FileManager::saveFiles(ScreenQGV &screen, BackgroundMusic & bgm)
         act.setRewardSoundVolume(screen.getRewardSoundVolume());
         act.setRewardSoundPitch(screen.getRewardSoundPitch());
         act.save();
-        cout << "Help Box is (" << act.getScreenItems()[1].size.x << ", " << act.getScreenItems()[1].size.y << ")" << endl;
-        cout << "at (" << act.getScreenItems()[1].position.x << ", " << act.getScreenItems()[1].position.y << ")" << endl;
     }
-
-    //ofstream ofile(".//editor//files.cereal", std::ios::binary);
-    //BinaryOutputArchive archive(ofile);
-    //archive(*this);
 }
 
 void FileManager::loadFiles(ScreenQGV &screen, BackgroundMusic &bgm)
@@ -490,19 +491,19 @@ void FileManager::loadFiles(ScreenQGV &screen, BackgroundMusic &bgm)
 
     if(screen.editorType() == ScreenQGV::MAP)
     {
-        QFileInfo qFI(".//db//maps//WorldMap.map");
+        QFileInfo qFI(QString::fromStdString(m_DocumentsPath+"//Dinaki Adventures//db//maps//WorldMap.map"));
         if(qFI.isFile())
         {
             cout << "Loading Map" << endl;
             m.load();
             sItems = m.getScreenItems();
             mItems = m.getBGM();
-            MainWindow::ui->widthRatio->setValue(sItems[0].size.x);
-            MainWindow::ui->heightRatio->setValue(sItems[0].size.y);
-            cout << "widthRatio x heightRatio: " << MainWindow::ui->widthRatio->value() << " x " << MainWindow::ui->heightRatio->value() << endl;
+            MainWindow::ui->widthRatio->setValue(800);
+            MainWindow::ui->heightRatio->setValue(600);
         }
         else
         {
+            cout << "Failed to load " << m_DocumentsPath+"//Dinaki Adventures//db//maps//WorldMap.map";
             MainWindow::ui->widthRatio->setValue(800);
             MainWindow::ui->heightRatio->setValue(600);
         }
@@ -613,7 +614,7 @@ void FileManager::loadFiles(ScreenQGV &screen, BackgroundMusic &bgm)
 
                     // Load the image from the Activity
                     string name = "p" + std::to_string(rect->id());
-                    QFileInfo actFile(QString::fromStdString(".//db//activities//" + name + ".act"));
+                    QFileInfo actFile(QString::fromStdString(m_DocumentsPath+"//Dinaki Adventures//db//activities//" + name + ".act"));
                     Activity act(name, dictionary);
                     if(actFile.exists())
                     {
@@ -629,7 +630,7 @@ void FileManager::loadFiles(ScreenQGV &screen, BackgroundMusic &bgm)
 
                     // Load the image from the Activity
                     string name = "m" + std::to_string(rect->id());
-                    QFileInfo actFile(QString::fromStdString(".//db//activities//" + name + ".act"));
+                    QFileInfo actFile(QString::fromStdString(m_DocumentsPath+"//Dinaki Adventures//db//activities//" + name + ".act"));
                     Activity act(name, dictionary);
                     if(actFile.exists())
                     {

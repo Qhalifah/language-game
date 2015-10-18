@@ -37,20 +37,16 @@ class MapController : public MinionController
 {
 public:
     MapController(std::shared_ptr<Profile> profile,
-                  std::shared_ptr<Interface> interface,
+				  std::shared_ptr<Interface> _interface,
                   std::shared_ptr<MasterController> masterController,
                   std::shared_ptr<Map> map)
-                  : MinionController(profile, interface, masterController, map), m_engaged_sprite(0), m_map(map)
+				  : MinionController(profile, _interface, masterController, map), m_engaged_sprite(0), m_map(map)
 {
         m_map->setHelpMessage();
-        unordered_map<unsigned, string> t_strVec;
-        t_strVec.insert(pair<unsigned, string>(3, "RiverScene"));
-        t_strVec.insert(pair<unsigned, string>(4, "VillageScene"));
-        //m_map->setScenes(t_strVec);
 };
 
-    void mouseButtonReleasedEvent(sf::Event event, sf::Vector2i mouse_loc);
-
+	void mouseButtonReleasedEvent(sf::Event event, sf::Vector2i mouse_loc);
+	void mouseButtonPressedEvent(sf::Event event, sf::Vector2i mouse_loc);
     void mouseMovedEvent(sf::Event event, sf::Vector2i mouse_loc);
 
 private:

@@ -67,8 +67,13 @@ bool MusicItem::operator==(const MusicItem& rval) const
 Screen::Screen(shared_ptr<Dictionary> dictionary)
 : m_screenItems(), m_BGM(), m_dictionary(dictionary)
 {
-	// Do nothing.  Data members will be initialized to default values, and
+	// Data members will be initialized to default values, and
     // derived class objects will populate with data.
+
+	// Get the user's Documents folder path
+	wchar_t cStr[MAX_PATH];
+	SHGetFolderPath(NULL, CSIDL_MYDOCUMENTS, NULL, DWORD("FOLDERID_Documents"), cStr);
+	m_DocumentsPath = sf::String(cStr).toAnsiString();
 }
 
 Screen::~Screen()

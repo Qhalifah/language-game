@@ -68,6 +68,11 @@ Interface::Interface()
                                           "Dinak'i Adventures!")),
   m_view(m_window->getDefaultView())
 {
+	// Get the user's Documents folder path
+	wchar_t cStr[MAX_PATH];
+	SHGetFolderPath(NULL, CSIDL_MYDOCUMENTS, NULL, DWORD("FOLDERID_Documents"), cStr);
+	m_DocumentsPath = sf::String(cStr).toAnsiString();
+
     // Higlighting effect for focused objects implemented as shader object
     if(!m_focusshader.loadFromFile("shaders/focus_f.glsl", Shader::Fragment))
     {
@@ -747,8 +752,9 @@ void Interface::changeMode(shared_ptr<Screen> new_screen)
     if( m_screenItems.empty() )
     {
         m_screenItems.push_back(ScreenItem());
-        m_screenItems[0].type = IMAGE;
-        m_screenItems[0].name = L"images/error.png";
+		m_screenItems[0].type = IMAGE;
+		sf::String sStr(m_DocumentsPath);
+		m_screenItems[0].name = sStr.toWideString()+L"/Dinaki Adventures/images/error.png";
         m_screenItems[0].size = {800, 600};
     }
 
@@ -870,8 +876,8 @@ shared_ptr<Sprite> Interface::makeSpriteFromScreenItem(
     {
         if( screenItem.name != L"none" &&
             !texture->loadFromFile(sf::String(screenItem.name)) )
-        {
-            texture->loadFromFile("images/error.png");
+		{
+			texture->loadFromFile(m_DocumentsPath+"/Dinaki Adventures/images/error.png");
             loadError(sf::String(screenItem.name),
                       L"Loading texture from file",
                       L"makeSpriteFromScreenItem()");
@@ -1031,8 +1037,8 @@ shared_ptr<Texture> Interface::makeWordTexture(const wstring& word,
             if( !m_font.count(chr) ) // count() returns 0 if !exist
             {
                 wcerr << "Error: Could not find char '" << chr
-                     << "' when displaying text." << endl;
-                loadCharacter(chr, "./images/error.png");
+					<< "' when displaying text." << endl;
+				loadCharacter(chr, m_DocumentsPath + "/Dinaki Adventures/images/error.png");
             }
 
             // Scale, position and draw character

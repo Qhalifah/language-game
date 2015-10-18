@@ -27,12 +27,16 @@ along with Dina'ki Adventures. If not, see <http://www.gnu.org/licenses/>.*/
 #include <cereal/types/memory.hpp>
 
 ProfileWrangler::ProfileWrangler() : m_profiles(), m_curr_profile_index(-1)
-{
+{	
+	// Get the user's Documents folder path
+	wchar_t cStr[MAX_PATH];
+	SHGetFolderPath(NULL, CSIDL_MYDOCUMENTS, NULL, DWORD("FOLDERID_Documents"), cStr);
+	m_DocumentsPath = sf::String(cStr).toAnsiString();
 }
 
 std::vector<std::shared_ptr<Profile>> ProfileWrangler::loadProfiles(std::string fileName)
 {
-    std::ifstream is(".//db//profilepage//" + fileName + ".p",  std::ios::in | std::ios::binary );
+    std::ifstream is(m_DocumentsPath+"//Dinaki Adventures//db//profilepage//" + fileName + ".p",  std::ios::in | std::ios::binary );
     
     if (is.is_open() && !is.eof())
     {
@@ -88,7 +92,7 @@ void ProfileWrangler::removeProfile()
 
 void ProfileWrangler::saveProfiles(std::string fileName) const
 {
-    std::ofstream os(".//db//profilepage//" + fileName + ".p", std::ios::out | std::ios::binary | std::ios::trunc);
+	std::ofstream os(m_DocumentsPath + "//Dinaki Adventures//db//profilepage//" + fileName + ".p", std::ios::out | std::ios::binary | std::ios::trunc);
 
     if(os.is_open())
     {

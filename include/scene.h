@@ -36,7 +36,6 @@ using std::vector;
 using std::set;
 #include <map>
 using std::map;
-//#include <algorithm>
 #include <utility>
 using std::pair;
 
@@ -86,7 +85,6 @@ public:
     }
 
     vector<MiniGame> m_activities;
-    //map<set<unsigned>, unsigned> m_requirements;
 	map<set<unsigned>, string> m_requirements;
 
 private:

@@ -106,10 +106,10 @@ void PairController::randomizeWords(unsigned int start, unsigned int end)
 }
 
 PairController::PairController(std::shared_ptr<Profile> profile,
-                std::shared_ptr<Interface> interface,
+	std::shared_ptr<Interface> _interface,
                 std::shared_ptr<MasterController> masterController,
                 std::shared_ptr<Activity> activity)
-                : MinionController(profile, interface, masterController, activity),
+				: MinionController(profile, _interface, masterController, activity),
                   m_engaged_sprite(0), m_answered(0), m_tries(0),
                   m_activity(activity)
 {
@@ -326,7 +326,8 @@ void PairController::endGame()
     vector<ScreenItem> t_screenitems = m_screen->getScreenItems();
 
     // change background screen to black
-    t_screenitems[0].name = L"images/activity_endscreen.png";
+	sf::String sStr(m_activity->m_DocumentsPath);
+	t_screenitems[0].name = sStr.toWideString() + L"/Dinaki Adventures/images/activity_endscreen.png";
     m_interface->update(0, t_screenitems[0]);
 
     // set box with player score to visible
@@ -366,7 +367,6 @@ void PairController::setActivitySound()
 	m_sound->setBuffer(*m_soundBuffer);
 	m_sound->setVolume(m_activity->getRewardSoundVolume());
 	m_sound->setPitch(1);
-	//m_sound->setPitch(m_activity->getRewardSoundPitch());
 	m_sound->setLoop(false);
 }
 

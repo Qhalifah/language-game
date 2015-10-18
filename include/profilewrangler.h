@@ -35,6 +35,9 @@ along with Dina'ki Adventures. If not, see <http://www.gnu.org/licenses/>.*/
 #include <vector>
 
 #include <cereal/archives/binary.hpp>
+#include <SFML\System\String.hpp>
+#include <windows.h>
+#include <shlobj.h>
 
 class ProfileWrangler
 {
@@ -72,7 +75,8 @@ public:
 private:
     std::vector< std::shared_ptr<Profile> > m_profiles;
     
-    int m_curr_profile_index;
+	int m_curr_profile_index;
+	std::string m_DocumentsPath;        // Used to get the user's Document file path
 };
 
 

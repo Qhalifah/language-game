@@ -17,6 +17,9 @@
 #include "map.h"
 #include <QMediaPlayer>
 #include <QURL>
+#include <windows.h>
+#include <iostream>
+#include <shlobj.h>
 
 namespace Ui {
 class MainWindow;
@@ -217,7 +220,11 @@ private slots:
     void on_actionAbout_triggered();
 
 public:
-        void hideRightHandToolbarItems();
+    void hideRightHandToolbarItems();
+
+    // Used to get the user's Documents file path
+    wchar_t cStr[MAX_PATH];
+    std::string m_DocumentsPath;
 
 private:
     void setupScreenQGVWidgets();

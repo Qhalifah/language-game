@@ -18,6 +18,10 @@ using std::ofstream;
 
 DBMap::DBMap(string filename)
 {
+    // Get the user's Documents folder path
+    SHGetFolderPath(NULL, CSIDL_MYDOCUMENTS, NULL, DWORD("FOLDERID_Documents"), cStr);
+    m_DocumentsPath = QString::fromStdWString(cStr).toStdString();
+
     load(filename);
 }
 
@@ -133,7 +137,7 @@ void DBMap::save()
         m_dbMapSave[itr.key()] = itr.value().toStdString();
     }
 
-    ofstream os(".//editor//scenes.cereal");
+    ofstream os(m_DocumentsPath+"//Dinaki Adventures//editor//scenes.cereal");
     cereal::BinaryOutputArchive archive(os);
     archive(*this);
 }
@@ -142,7 +146,7 @@ void DBMap::load(string filename)
 {
     m_dbMap.clear();
     m_dbMapSave.clear();
-    ifstream is(".//editor//" + filename + ".cereal");
+    ifstream is(m_DocumentsPath+"//Dinaki Adventures//editor//" + filename + ".cereal");
     if(!is.is_open())
     {
         m_id = 0;

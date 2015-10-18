@@ -16,6 +16,10 @@ using std::ofstream;
 
 Activities::Activities(QString filename):m_filename(filename)
 {
+    // Get the user's Documents folder path
+    SHGetFolderPath(NULL, CSIDL_MYDOCUMENTS, NULL, DWORD("FOLDERID_Documents"), cStr);
+    m_DocumentsPath = QString::fromStdWString(cStr).toStdString();
+
     m_id = 0;
     ActSave actSave;
     m_acts.clear();
@@ -151,7 +155,7 @@ void Activities::save()
         m_actSave[itr.key()] = Activities::ActSave(itr.value());
     }
 
-    ofstream os(".//editor//" + m_filename.toStdString() + ".cereal", std::ios::binary); //);
+    ofstream os(m_DocumentsPath+"//Dinaki Adventures//editor//" + m_filename.toStdString() + ".cereal", std::ios::binary); //);
     cereal::BinaryOutputArchive archive(os);
     archive(*this);
 }
@@ -163,8 +167,8 @@ void Activities::load()
     m_acts.clear();
     m_actSave.clear();
 
-    cout << "above ifstream: .//editor//" + m_filename.toStdString()+ ".cereal" << endl;
-    ifstream is(".//editor//"+m_filename.toStdString()+".cereal", std::ios::binary);
+    cout << "above ifstream: " << m_DocumentsPath+"//Dinaki Adventures//editor//" + m_filename.toStdString()+ ".cereal" << endl;
+    ifstream is(m_DocumentsPath+"//Dinaki Adventures//editor//"+m_filename.toStdString()+".cereal", std::ios::binary);
     cout << "above if" << endl;
     if(!is.is_open())
     {

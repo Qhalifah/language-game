@@ -30,6 +30,9 @@ using std::vector;
 #include <memory>
 using std::shared_ptr;
 #include "dictionary.h"
+#include <windows.h>
+#include <iostream>
+#include <shlobj.h>
 
 // Data type to represent possible types of screen items.
 enum ScreenItemType
@@ -195,8 +198,12 @@ public:
     Screen(shared_ptr<Dictionary> dictionary)
     : m_screenItems(), m_BGM(), m_dictionary(dictionary)
     {
-        // Do nothing.  Data members will be initialized to default values, and
+        // Data members will be initialized to default values, and
         // derived class objects will populate with data.
+
+        // Get the user's Documents folder path
+        SHGetFolderPath(NULL, CSIDL_MYDOCUMENTS, NULL, DWORD("FOLDERID_Documents"), cStr);
+        m_DocumentsPath = QString::fromStdWString(cStr).toStdString();
     }
     virtual ~Screen(){}
 
@@ -221,9 +228,10 @@ protected:
     vector<ScreenItem> m_screenItems;   // Interactibles/soundeffects
     vector<MusicItem>  m_BGM;           // Background music filenames
     shared_ptr<Dictionary> m_dictionary;
-
+    std::string m_DocumentsPath;
 
 private:
 
+    wchar_t cStr[MAX_PATH];
 };
 #endif /* SCREEN_H_ */

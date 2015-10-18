@@ -21,6 +21,10 @@ using std::unordered_map;
 
 MainDictionary::MainDictionary()
 {
+    // Get the user's Documents folder path
+    SHGetFolderPath(NULL, CSIDL_MYDOCUMENTS, NULL, DWORD("FOLDERID_Documents"), cStr);
+    m_DocumentsPath = QString::fromStdWString(cStr).toStdString();
+
     load();
 }
 
@@ -133,7 +137,7 @@ void MainDictionary::save()
         m_dictSave[itr.key()] = ws;
     }
 
-    ofstream os(".//editor//mainDict.cereal", std::ios::binary | std::ios_base::binary | ofstream::out | std::ios::trunc);
+    ofstream os(m_DocumentsPath+"//Dinaki Adventures//editor//mainDict.cereal", std::ios::binary | std::ios_base::binary | ofstream::out | std::ios::trunc);
     BinaryOutputArchive archive(os);
     archive(*this);
 }
@@ -144,7 +148,7 @@ void MainDictionary::load()
     m_dictSave.clear();
     m_dict.clear();
 
-    ifstream is(".//editor//mainDict.cereal", std::ios::binary | std::ios_base::binary | ifstream::in);
+    ifstream is(m_DocumentsPath+"//Dinaki Adventures//editor//mainDict.cereal", std::ios::binary | std::ios_base::binary | ifstream::in);
     if(!is.is_open())
     {
         cout << "Couldn't open mainDict" << endl;

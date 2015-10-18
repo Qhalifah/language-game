@@ -35,18 +35,24 @@ along with Dina'ki Adventures. If not, see <http://www.gnu.org/licenses/>.*/
 #include <SFML/Audio/SoundSource.hpp>
 
 ProfileController::ProfileController(std::shared_ptr<ProfileWrangler> wrangler, std::shared_ptr<Profile> profile,
-                  std::shared_ptr<Interface> interface,
+	std::shared_ptr<Interface> _interface,
                   std::shared_ptr<MasterController> masterController,
                   std::shared_ptr<Screen> screen)
-: MinionController(profile, interface, masterController, screen), m_profile_wrangler(wrangler)
+				  : MinionController(profile, _interface, masterController, screen), m_profile_wrangler(wrangler)
 {
+	// Get the user's Documents folder path
+	wchar_t cStr[MAX_PATH];
+	SHGetFolderPath(NULL, CSIDL_MYDOCUMENTS, NULL, DWORD("FOLDERID_Documents"), cStr);
+	m_DocumentsPath = sf::String(cStr).toAnsiString();
+	std::wstring wideDocumentsPath = cStr;
+
     //gather original collection of screen items (background)
     m_screen_items = m_screen->getScreenItems();
 
     //create the background image
     ScreenItem t_background_image;
     t_background_image.type = IMAGE;
-    t_background_image.name = L"images/greyBackground.png";
+	t_background_image.name = wideDocumentsPath + L"/Dinaki Adventures/images/greyBackground.png";
     t_background_image.size = { 800, 600 };
 
     //create help box and text
@@ -134,7 +140,7 @@ ProfileController::ProfileController(std::shared_ptr<ProfileWrangler> wrangler, 
         
         top_pos += 140;
     }
-    
+
     //create plus, minus and go buttons
 	ScreenItem scrollDownButton;
     scrollDownButton.type = BUTTON;
@@ -143,7 +149,7 @@ ProfileController::ProfileController(std::shared_ptr<ProfileWrangler> wrangler, 
     scrollDownButton.color = Color(140,140,140,255);
     scrollDownButton.position = {20,top_pos-120};
     scrollDownButton.behavior = MOUSE_DOWN_ENGAGE | MOUSE_UP_ENGAGE;
-    scrollDownButton.sound = L"audio/other/click2.wav";
+	scrollDownButton.sound = wideDocumentsPath + L"audio/other/click2.wav";
     m_screen_items.push_back(scrollDownButton);
     
     ScreenItem scrollUpButton;
@@ -152,8 +158,8 @@ ProfileController::ProfileController(std::shared_ptr<ProfileWrangler> wrangler, 
     scrollUpButton.size = {60,60};
     scrollUpButton.color = Color(140,140,140,255);
     scrollUpButton.position = {20,top_pos - 540};
-    scrollUpButton.behavior = MOUSE_DOWN_ENGAGE | MOUSE_UP_ENGAGE;
-    scrollUpButton.sound = L"audio/other/click2.wav";
+	scrollUpButton.behavior = MOUSE_DOWN_ENGAGE | MOUSE_UP_ENGAGE;
+	scrollUpButton.sound = wideDocumentsPath + L"/Dinaki Adventures/audio/other/click2.wav";
     m_screen_items.push_back(scrollUpButton);
 	
 	ScreenItem deleteButton;
@@ -163,7 +169,7 @@ ProfileController::ProfileController(std::shared_ptr<ProfileWrangler> wrangler, 
 	 deleteButton.color = Color(140, 140, 140, 255);
 	 deleteButton.position = { 710, top_pos - 540 };
 	 deleteButton.behavior = MOUSE_DOWN_ENGAGE | MOUSE_UP_ENGAGE;
-	 deleteButton.sound = L"audio/other/click2.wav";
+	 deleteButton.sound = wideDocumentsPath + L"/Dinaki Adventures/audio/other/click2.wav";
 	m_screen_items.push_back(deleteButton);
 	
     ScreenItem goButton;
@@ -173,7 +179,7 @@ ProfileController::ProfileController(std::shared_ptr<ProfileWrangler> wrangler, 
     goButton.color = Color(140,140,140,255);
     goButton.position = {720,top_pos -120};
     goButton.behavior = MOUSE_DOWN_ENGAGE | MOUSE_UP_ENGAGE;
-    goButton.sound = L"audio/other/click2.wav";
+	goButton.sound = wideDocumentsPath + L"/Dinaki Adventures/audio/other/click2.wav";
     m_screen_items.push_back(goButton);
     
 	// create the window for the creation of a new profile
@@ -235,7 +241,7 @@ ProfileController::ProfileController(std::shared_ptr<ProfileWrangler> wrangler, 
     maleButton.position = {150,210};
     maleButton.color = Color(150,150,150,255);
     maleButton.visible = false;
-    maleButton.sound = L"audio/other/click2.wav";
+	maleButton.sound = wideDocumentsPath + L"/Dinaki Adventures/audio/other/click2.wav";
     maleButton.behavior = MOUSE_DOWN_ENGAGE;
     m_screen_items.push_back(maleButton);
 
@@ -246,7 +252,7 @@ ProfileController::ProfileController(std::shared_ptr<ProfileWrangler> wrangler, 
     femaleButton.position = {450,210};
     femaleButton.color = Color(150,150,150,255);
     femaleButton.visible = false;
-    femaleButton.sound = L"audio/other/click2.wav";
+	femaleButton.sound = wideDocumentsPath + L"/Dinaki Adventures/audio/other/click2.wav";
     femaleButton.behavior = MOUSE_DOWN_ENGAGE;
 	m_screen_items.push_back(femaleButton);
     

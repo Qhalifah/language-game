@@ -80,6 +80,8 @@ public:
     }
 private:
     map<string, int> m_files;
+    wchar_t cStr[MAX_PATH];
+    std::string m_DocumentsPath;
 };
 
 #endif // FILEMANAGER_H

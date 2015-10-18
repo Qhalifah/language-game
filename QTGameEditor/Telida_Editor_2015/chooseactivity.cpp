@@ -145,8 +145,15 @@ void ChooseActivity::on_del_clicked()
     }
     // Delete the Actvity from this window's dropdown menu
     ui->select->removeItem(ui->select->currentIndex());
+
+
+    // Get the user's Documents folder path
+    wchar_t cStr[MAX_PATH];
+    SHGetFolderPath(NULL, CSIDL_MYDOCUMENTS, NULL, DWORD("FOLDERID_Documents"), cStr);
+    string DocumentsPath = QString::fromStdWString(cStr).toStdString();
+
     // Actually delete the Activity's file from the activities folder in the file system
-    QFile::remove(QString::fromStdString(".//db//activities//" + actFileNameBeingDeleted + ".act"));
+    QFile::remove(QString::fromStdString(DocumentsPath+"//Dinaki Adventures//db//activities//" + actFileNameBeingDeleted + ".act"));
 }
 
 void ChooseActivity::on_matchingRadBtn_toggled(bool checked)

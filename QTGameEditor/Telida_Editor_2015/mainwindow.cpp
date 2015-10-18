@@ -35,6 +35,10 @@ MainWindow::MainWindow(QWidget *parent) :
     m_sceneStr("Add New Activity"),
     m_hotspotStr(m_mapStr)
 {
+    // Get the user's Documents folder path
+    SHGetFolderPath(NULL, CSIDL_MYDOCUMENTS, NULL, DWORD("FOLDERID_Documents"), cStr);
+    m_DocumentsPath = QString::fromStdWString(cStr).toStdString();
+
     ui->setupUi(this);
     m_BGM.setComboBox(ui->selectBGM);
     // Main Dictionary
@@ -63,7 +67,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->goToScene->insertItems(1, m_scenes->list());
     ui->graphicsView->setEditorType(ScreenQGV::NONE);
     ui->screenErr->setStyleSheet(QString("QLabel { background-color : white; color : red; }"));
-    ui->graphicsView->loadBGI(QString::fromStdString(".//images//EditorIntro.png"));
+    ui->graphicsView->loadBGI(QString::fromStdString(m_DocumentsPath+"//Dinaki Adventures//images//EditorIntro.png"));
     hideRightHandToolbarItems();
 }
 

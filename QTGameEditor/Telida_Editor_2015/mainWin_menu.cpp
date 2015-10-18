@@ -184,7 +184,7 @@ void MainWindow::on_actionAbout_triggered()
         return;
     ui->stackedWidget->setCurrentWidget(ui->aboutPage);
 
-    QFile file(".//editor//AboutPageText.txt");
+    QFile file(QString::fromStdString(m_DocumentsPath+"//Dinaki Adventures//editor//AboutPageText.txt"));
     if(!file.open(QIODevice::ReadOnly)) {
         cout << "Failed to open AboutPageText.txt" << endl;
     }

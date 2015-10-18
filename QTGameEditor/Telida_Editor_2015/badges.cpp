@@ -22,6 +22,10 @@ using std::unordered_map;
 
 Badges::Badges()
 {
+    // Get the user's Documents folder path
+    SHGetFolderPath(NULL, CSIDL_MYDOCUMENTS, NULL, DWORD("FOLDERID_Documents"), cStr);
+    m_DocumentsPath = QString::fromStdWString(cStr).toStdString();
+
     load();
 }
 
@@ -120,7 +124,7 @@ void Badges::save()
         m_badgesSave[itr.key()] = bs;
     }
 
-    ofstream os(".//editor//badges.cereal", std::ios::binary); //);
+    ofstream os(m_DocumentsPath+"//Dinaki Adventures//editor//badges.cereal", std::ios::binary); //);
     BinaryOutputArchive archive(os);
     archive(*this);
 }
@@ -130,7 +134,7 @@ void Badges::load()
     m_badgesSave.clear();
     m_badges.clear();
 
-    ifstream is(".//editor//badges.cereal", std::ios::binary); //);
+    ifstream is(m_DocumentsPath+"//Dinaki Adventures//editor//badges.cereal", std::ios::binary); //);
     if(!is.is_open())
     {
         m_id = 0;

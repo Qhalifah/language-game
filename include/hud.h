@@ -50,7 +50,7 @@ public:
 
     const vector<ScreenItem>& getItems() const;
     void toggleKeys(shared_ptr<Interface>);
-    void toggleProfile(shared_ptr<Interface> interface, std::shared_ptr<Profile>);
+    void toggleProfile(shared_ptr<Interface>, std::shared_ptr<Profile>);
     void toggleBackButton(shared_ptr<Interface>);
     void engage(size_t index);
     void disengage(size_t index);
@@ -65,7 +65,7 @@ public:
     void rotateBadges(int, std::shared_ptr<Profile> );
     void updateProfile(std::shared_ptr<Interface>,  std::shared_ptr<Profile>);
     
-    void handleHit(std::shared_ptr<Interface> interface, int hitsptrie);
+    void handleHit(std::shared_ptr<Interface>, int hitsptrie);
     
 private:
     bool m_profile_up = false;

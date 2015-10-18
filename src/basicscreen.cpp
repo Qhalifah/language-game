@@ -27,10 +27,10 @@ using std::ofstream;
 using std::ifstream;
 
 
-BasicScreen::BasicScreen(string name, shared_ptr<Dictionary> dictionary, string file_location, string file_type)
-	: Screen(dictionary), m_id(name), m_file_location(file_location), m_file_type(file_type)
+BasicScreen::BasicScreen(string name, shared_ptr<Dictionary> dictionary, string file_type)
+	: Screen(dictionary), m_id(name), m_file_type(file_type)
 {
-    
+	m_file_location = m_DocumentsPath + "//Dinaki Adventures//db//";
 }
 
 void BasicScreen::save()

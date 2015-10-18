@@ -25,8 +25,8 @@ using std::string;
 class BasicScreen : public Screen
 {
 public:
-    BasicScreen(string name = "BasicScreen", shared_ptr<Dictionary> dictionary = nullptr, string file_location = ".//db//", string file_type = "txt");
-    
+	BasicScreen(string name = "BasicScreen", shared_ptr<Dictionary> dictionary = nullptr, string file_type = "txt");
+
     void save();
     void load();
 
@@ -38,8 +38,8 @@ public:
 
 
 private:
-    string m_id;
-    string m_file_location;
+	string m_id;
+	string m_file_location;
     string m_file_type; 
 };
 

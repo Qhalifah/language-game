@@ -38,21 +38,12 @@ class SceneController : public MinionController
 {
 public:
     SceneController(std::shared_ptr<Profile> profile,
-                    std::shared_ptr<Interface> interface,
+		std::shared_ptr<Interface> _interface,
                     std::shared_ptr<MasterController> masterController,
                     std::shared_ptr<Scene> scene)
-                    :MinionController(profile, interface, masterController, scene),
+					:MinionController(profile, _interface, masterController, scene),
                     m_engaged_sprite(0), m_scene(scene) {
 
-        //MiniGame t_miniGame = (std::make_pair(PAIR, "Pair"));
-        //m_scene->m_activities.push_back(t_miniGame);
-        //t_miniGame = (std::make_pair(MATCHING, "Matching"));
-        //m_scene->m_activities.push_back(t_miniGame);
-
-        //std::set<int> tempSet0 = { 3, 4 };
-        //std::set<int> tempSet1 = { 3, 5 };
-        //m_scene->m_requirements.insert(m_scene->m_requirements.begin(), std::pair<set<int>, int>(tempSet0, 0));
-        //m_scene->m_requirements.insert(m_scene->m_requirements.begin(), std::pair<set<int>, int>(tempSet1, 1));
         m_scene->setHelpMessage();
 
         Badge t_badge = m_scene->badge();

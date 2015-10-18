@@ -27,12 +27,12 @@ along with Dina'ki Adventures. If not, see <http://www.gnu.org/licenses/>.*/
 #include <fstream>
 
 MinionController::MinionController(std::shared_ptr<Profile> profile,
-                 std::shared_ptr<Interface> interface,
+	std::shared_ptr<Interface> _interface,
                  std::shared_ptr<MasterController> masterController,
                  std::shared_ptr<Screen> screen)
 : m_screen(screen),
   m_profile(profile),
-  m_interface(interface),
+  m_interface(_interface),
   m_master_controller(masterController) {};
 
 MinionController::~MinionController() {};
@@ -230,46 +230,7 @@ void MasterController::handleEvent(sf::Event event)
         {
             if(getProfile() != nullptr)
                 m_hud->toggleProfile(m_interface, getProfile());
-        }
-        else if(event.key.code == sf::Keyboard::F3)
-        {
-            if(getProfile() != nullptr)
-            {
-                Badge t_badge;
-                t_badge.m_name = L"Test Badge One";
-                t_badge.m_image = L"images/map.png";
-                getProfile()->addBadge(t_badge);
-                
-                t_badge.m_name = L"Test Badge Two";
-                t_badge.m_image = L"images/rubberboots.png";
-                t_badge.m_total_pieces = 3;
-                getProfile()->addBadge(t_badge);
-                Piece t_piece;
-                t_piece.m_id = 1;
-                t_piece.m_image = L"images/fish.png";
-                t_piece.m_badge_name = t_badge.m_name;
-                getProfile()->addBadgePiece(t_piece);
-                t_piece.m_id = 0;
-                t_piece.m_image = L"images/rod.png";
-                t_piece.m_badge_name = t_badge.m_name;
-                getProfile()->addBadgePiece(t_piece);
-                
-                                t_badge.m_total_pieces = 0;
-                
-                t_badge.m_name = L"Test Badge Three";
-                t_badge.m_image = L"images/map.png";
-                getProfile()->addBadge(t_badge);
-                
-                //t_badge.m_name = L"Test Badge Four";
-                //t_badge.m_image = L"images/boat.png";
-                //getProfile()->addBadge(t_badge);
-            }
-        }
-        else if(event.key.code == sf::Keyboard::F4)
-        {
-
-        }
-        
+        }        
         if(m_hud->isProfileUp() && event.key.code == sf::Keyboard::Right)
         {
             m_hud->rotateBadges(1, getProfile());

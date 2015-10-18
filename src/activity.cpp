@@ -149,7 +149,7 @@ void Activity::stopRewardSound()
 
 void Activity::save()
 {
-    std::ofstream out_stream(".//db//activities//" + m_id + ".act", std::ios::binary);
+	std::ofstream out_stream(m_DocumentsPath + "//Dinaki Adventures//db//activities//" + m_id + ".act", std::ios::binary);
 
     if( !out_stream.fail() )
     {
@@ -160,7 +160,7 @@ void Activity::save()
 
 void Activity::load()
 {
-    std::ifstream in_stream(".//db//activities//" + m_id + ".act",std::ios::binary);
+	std::ifstream in_stream(m_DocumentsPath + "//Dinaki Adventures//db//activities//" + m_id + ".act", std::ios::binary);
 
     if(in_stream && !in_stream.eof())
     {
@@ -173,6 +173,4 @@ void Activity::load()
 	m_maxScore = stoi(s_maxScore);
 
 	cout << "End Activity load" << endl;    
-	cout << "Help Box is (" << m_screenItems[1].size.x << ", " << m_screenItems[1].size.y << ") at (" << m_screenItems[1].position.x << ", " << m_screenItems[1].position.y << ")" << endl;
-
 }

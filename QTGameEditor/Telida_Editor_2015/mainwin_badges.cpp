@@ -101,7 +101,7 @@ void MainWindow::on_delBadge_clicked()
     m.save();
 
     // Delete Badge from Scenes and their Activity objects
-    QDir scnFiles(QString::fromStdString(".//db//scenes"));
+    QDir scnFiles(QString::fromStdString(m_DocumentsPath+"//Dinaki Adventures//db//scenes"));
     scnFiles.setNameFilters(QStringList()<<"*.scn");
     QStringList sceneFileNameList = scnFiles.entryList();
     for(auto ii : sceneFileNameList)
@@ -149,7 +149,7 @@ void MainWindow::on_submitBadge_clicked()
     m.save();
 
     // Change Badge in Scenes and their Activity objects
-    QDir scnFiles(QString::fromStdString(".//db//scenes"));
+    QDir scnFiles(QString::fromStdString(m_DocumentsPath+"//Dinaki Adventures//db//scenes"));
     scnFiles.setNameFilters(QStringList()<<"*.scn");
     QStringList sceneFileNameList = scnFiles.entryList();
     for(auto ii : sceneFileNameList)

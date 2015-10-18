@@ -48,7 +48,7 @@ int main()
 
 	std::shared_ptr<MasterController> game_controller(new MasterController);
 
-	std::shared_ptr<Screen> profile_page(new BasicScreen("Dummy", nullptr, ".//dummy_file_location//", "dummy_extension"));
+	std::shared_ptr<Screen> profile_page(new BasicScreen("Dummy", nullptr, "dummy_extension"));
 
 	std::shared_ptr<ProfileController> profile_controller(new ProfileController(game_controller->getProfileWranlger(), game_controller->getProfile(), game_controller->getInterface(), game_controller, profile_page));
 

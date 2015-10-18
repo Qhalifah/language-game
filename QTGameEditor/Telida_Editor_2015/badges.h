@@ -7,6 +7,9 @@
 using std::unordered_map;
 #include <string>
 using std::wstring;
+#include <windows.h>
+#include <iostream>
+#include <shlobj.h>
 
 class Badges
 {
@@ -62,6 +65,10 @@ protected:
     QMap<unsigned, Badge> m_badges;
     unordered_map<unsigned, BadgeSave> m_badgesSave;
     unsigned m_id;
+
+private:
+    wchar_t cStr[MAX_PATH];
+    std::string m_DocumentsPath;
 };
 
 #endif // BADGES_H

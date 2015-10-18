@@ -89,6 +89,12 @@ void MapController::mouseMovedEvent(sf::Event event, sf::Vector2i mouse_loc)
             m_screen->setScreenItem((size_t)hit_sprite, screen_item);
             m_interface->update((size_t)hit_sprite, screen_item);
         }
+
+		// Always display the Hover Text on hover
+		screen_item.hover = true;
+		m_screen->setScreenItem((size_t)hit_sprite, screen_item);
+		m_interface->update((size_t)hit_sprite, screen_item);
+		m_engaged_sprite = hit_sprite;
     }
 }
 
@@ -124,19 +130,57 @@ void MapController::mouseButtonReleasedEvent(sf::Event event, sf::Vector2i mouse
             if( screen_item.selected )
                 screen_item.color = sf::Color::Green;
             m_interface->update((size_t)hit_sprite, screen_item);
-        }
 
-        string scene = m_map->getScene((size_t)hit_sprite);
-        if( scene != "" )
-        {
-            // If scene isn't locked, then load it
-            if( !locked((size_t)hit_sprite) )
-            {
-                m_interface->playScreenSound((size_t)hit_sprite);
-                loadScene(scene);
-            }
+			string scene = m_map->getScene((size_t)hit_sprite);
+			if (scene != "")
+			{
+				// If scene isn't locked, then load it
+				if (!locked((size_t)hit_sprite))
+				{
+					m_interface->playScreenSound((size_t)hit_sprite);
+					loadScene(scene);
+				}
+			}
         }
     }
+}
+
+void MapController::mouseButtonPressedEvent(sf::Event event, sf::Vector2i mouse_loc)
+{
+	int hit_sprite = m_interface->getScreenHit(mouse_loc.x, mouse_loc.y);
+
+	if (hit_sprite > 1) // Ensure that it is part of the screen
+	{
+		ScreenItem m_screen_item = m_screen->getScreenItems()[(size_t)hit_sprite];
+
+		if (m_screen_item.behavior & MOUSE_DOWN_SELECT)
+		{
+			m_screen_item.selected = !m_screen_item.selected;
+			if (m_screen_item.selected)
+				m_screen_item.color = sf::Color::Green;
+			m_interface->update((size_t)hit_sprite, m_screen_item);
+
+			string scene = m_map->getScene((size_t)hit_sprite);
+			if (scene != "")
+			{
+				// If scene isn't locked, then load it
+				if (!locked((size_t)hit_sprite))
+				{
+					m_interface->playScreenSound((size_t)hit_sprite);
+					loadScene(scene);
+				}
+			}
+		}
+
+		if (m_screen_item.behavior & MOUSE_DOWN_ENGAGE)
+		{
+			m_screen_item.selected = !m_screen_item.selected;
+			if (m_screen_item.selected)
+				m_screen_item.color = sf::Color::Green;
+			m_screen->setScreenItem((size_t)hit_sprite, m_screen_item);
+			m_interface->update((size_t)hit_sprite, m_screen_item);
+		}
+	}
 }
 
 void MapController::disengageSprite(int sprite, ScreenItem& screen_item)

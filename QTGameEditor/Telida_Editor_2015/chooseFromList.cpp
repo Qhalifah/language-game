@@ -70,8 +70,13 @@ void chooseFromList::on_del_clicked()
     m.removeScene(sceneID);
     m.save();
 
+    // Get the user's Documents folder path
+    wchar_t cStr[MAX_PATH];
+    SHGetFolderPath(NULL, CSIDL_MYDOCUMENTS, NULL, DWORD("FOLDERID_Documents"), cStr);
+    string DocumentsPath = QString::fromStdWString(cStr).toStdString();
+
     m_list.removeOne(ui->select->currentText());
     m_deletedList->append(ui->select->currentText());
     ui->select->removeItem(ui->select->currentIndex());
-    QFile::remove(QString::fromStdString(".//db//scenes//" + std::to_string(sceneID) + ".scn"));
+    QFile::remove(QString::fromStdString(DocumentsPath+"//Dinaki Adventures//db//scenes//" + std::to_string(sceneID) + ".scn"));
 }

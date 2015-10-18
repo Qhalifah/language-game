@@ -35,7 +35,7 @@ Badge Scene::badge()
 
 void Scene::save()
 {
-	std::ofstream out_stream(".//db//scenes//" + m_id + ".scn", std::ios::binary | std::ios_base::binary | ofstream::out | std::ios::trunc);
+	std::ofstream out_stream(m_DocumentsPath + "//Dinaki Adventures//db//scenes//" + m_id + ".scn", std::ios::binary | std::ios_base::binary | ofstream::out | std::ios::trunc);
 
     if( !out_stream.fail() )
     {
@@ -46,7 +46,7 @@ void Scene::save()
 
 void Scene::load()
 {
-	std::ifstream in_stream(".//db//scenes//" + m_id + ".scn", std::ios::binary | std::ios_base::binary | ifstream::in);
+	std::ifstream in_stream(m_DocumentsPath + "//Dinaki Adventures//db//scenes//" + m_id + ".scn", std::ios::binary | std::ios_base::binary | ifstream::in);
 
 	cout << "beginning scene loading." << endl;
     if(in_stream && !in_stream.eof())

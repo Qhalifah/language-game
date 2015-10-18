@@ -61,9 +61,63 @@ void SceneController::mouseMovedEvent(sf::Event event, sf::Vector2i mouse_loc)
         }
 
         if( screen_item.behavior & HOVER_SELECT )
-        {
-            //TODO: implement this
-        }
+		{
+			// Toggle selected status
+			screen_item.selected = !screen_item.selected;
+
+			if (screen_item.selected)
+			{
+				m_interface->playScreenSound((size_t)hit_sprite);
+
+				// Set color of selection box
+				screen_item.color = sf::Color::Green;
+
+				// Add to set of selected items
+				m_myset.insert((size_t)hit_sprite);
+
+				// Update sprite
+				m_screen->setScreenItem(unsigned(hit_sprite), screen_item);
+				m_interface->update((size_t)hit_sprite, screen_item);
+
+				// If the current set matches one of the sets of requirements,
+				// Launch the appropriate activity
+				if (m_scene->m_requirements.count(m_myset))
+				{
+					std::shared_ptr<MinionController> act_controller;
+					MiniGame currentActMiniGame = m_scene->getMiniGameForActivityFileName(m_scene->m_requirements[m_myset]);
+					std::shared_ptr<Activity> new_activity(new Activity(currentActMiniGame.second));
+					new_activity->load();
+					act_controller = getGameType(currentActMiniGame.first, new_activity);
+					auto screenItems = m_screen->getScreenItems();
+
+					for (auto ii = 0u; ii < screenItems.size(); ++ii)
+					{
+						screenItems[ii].selected = false;
+						screenItems[ii].engaged = false;
+						m_screen->setScreenItem(ii, screenItems[ii]);
+					}
+
+					m_master_controller->push_controller(act_controller);
+					m_myset.clear();
+				}
+			}
+			else // Not selected
+			{
+				// Remove from set of selected items
+				m_myset.erase((size_t)hit_sprite);
+
+				// Update sprite
+				m_screen->setScreenItem((size_t)hit_sprite, screen_item);
+				m_interface->update((size_t)hit_sprite, screen_item);
+			}
+
+		}
+
+		// Always display the Hover Text on hover
+		screen_item.hover = true;
+		m_screen->setScreenItem((size_t)hit_sprite, screen_item);
+		m_interface->update((size_t)hit_sprite, screen_item);
+		m_engaged_sprite = hit_sprite;
     }
 }
 
@@ -102,11 +156,8 @@ void SceneController::mouseButtonReleasedEvent(sf::Event event, sf::Vector2i mou
                     std::shared_ptr<MinionController> act_controller;
 					MiniGame currentActMiniGame = m_scene->getMiniGameForActivityFileName(m_scene->m_requirements[m_myset]);
                     std::shared_ptr<Activity> new_activity(new Activity(currentActMiniGame.second));
-                    cout << "hi world" << endl;
                     new_activity->load();
-                    cout << "bye world" << endl;
                     act_controller = getGameType(currentActMiniGame.first , new_activity);
-					cout << "Here" << endl;
                     auto screenItems = m_screen->getScreenItems();
 
                     for(auto ii = 0u; ii < screenItems.size(); ++ii)
@@ -133,7 +184,13 @@ void SceneController::mouseButtonReleasedEvent(sf::Event event, sf::Vector2i mou
 
         if( m_screen_item.behavior & MOUSE_UP_ENGAGE )
         {
-            //TODO: implement this in case user wants this behavior
+			m_screen_item.engaged = true;
+			m_screen_item.hover = true;
+			m_screen->setScreenItem((size_t)hit_sprite, m_screen_item);
+			m_interface->update((size_t)hit_sprite, m_screen_item);
+
+			// Currently engaged sprite is now the one we are over.
+			m_engaged_sprite = hit_sprite;
         }
     }
 }
@@ -147,13 +204,66 @@ void SceneController::mouseButtonPressedEvent(sf::Event event, sf::Vector2i mous
         ScreenItem m_screen_item = m_screen->getScreenItems()[(size_t)hit_sprite];
 
         if( m_screen_item.behavior & MOUSE_DOWN_SELECT )
-        {
-            //TODO: implement this in case user wants this behavior
+		{
+			// Toggle selected status
+			m_screen_item.selected = !m_screen_item.selected;
+
+			if (m_screen_item.selected)
+			{
+				m_interface->playScreenSound((size_t)hit_sprite);
+
+				// Set color of selection box
+				m_screen_item.color = sf::Color::Green;
+
+				// Add to set of selected items
+				m_myset.insert((size_t)hit_sprite);
+
+				// Update sprite
+				m_screen->setScreenItem(unsigned(hit_sprite), m_screen_item);
+				m_interface->update((size_t)hit_sprite, m_screen_item);
+
+				// If the current set matches one of the sets of requirements,
+				// Launch the appropriate activity
+				if (m_scene->m_requirements.count(m_myset))
+				{
+					std::shared_ptr<MinionController> act_controller;
+					MiniGame currentActMiniGame = m_scene->getMiniGameForActivityFileName(m_scene->m_requirements[m_myset]);
+					std::shared_ptr<Activity> new_activity(new Activity(currentActMiniGame.second));
+					new_activity->load();
+					act_controller = getGameType(currentActMiniGame.first, new_activity);
+					auto screenItems = m_screen->getScreenItems();
+
+					for (auto ii = 0u; ii < screenItems.size(); ++ii)
+					{
+						screenItems[ii].selected = false;
+						screenItems[ii].engaged = false;
+						m_screen->setScreenItem(ii, screenItems[ii]);
+					}
+
+					m_master_controller->push_controller(act_controller);
+					m_myset.clear();
+				}
+			}
+			else // Not selected
+			{
+				// Remove from set of selected items
+				m_myset.erase((size_t)hit_sprite);
+
+				// Update sprite
+				m_screen->setScreenItem((size_t)hit_sprite, m_screen_item);
+				m_interface->update((size_t)hit_sprite, m_screen_item);
+			}
         }
 
         if( m_screen_item.behavior & MOUSE_DOWN_ENGAGE )
-        {
-            //TODO: implement this in case user wants this behavior
+		{
+			m_screen_item.engaged = true;
+			m_screen_item.hover = true;
+			m_screen->setScreenItem((size_t)hit_sprite, m_screen_item);
+			m_interface->update((size_t)hit_sprite, m_screen_item);
+
+			// Currently engaged sprite is now the one we are over.
+			m_engaged_sprite = hit_sprite;
         }
     }
 }

@@ -9,6 +9,9 @@ using std::wstring;
 #include <QString>
 #include <QMap>
 #include <QStringList>
+#include <windows.h>
+#include <iostream>
+#include <shlobj.h>
 
 
 class DBMap
@@ -41,6 +44,8 @@ private:
     QMap<unsigned, QString> m_dbMap; // Unique id to name of scene
     unordered_map<unsigned, string> m_dbMapSave; // Needed for saving/loading using cereal
     unsigned m_id; // An id for the next scene to be added, increments for each use
+    wchar_t cStr[MAX_PATH]; // Used to fill m_DocumentsPath
+    std::string m_DocumentsPath; // Used to get the user's Document file path
 };
 
 #endif // DBMAP_H

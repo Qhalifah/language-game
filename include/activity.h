@@ -80,8 +80,6 @@ public:
 			, m_reward_image
 			, m_reward_MusicItem
 			);
-		cout << "Help Box is (" << m_screenItems[1].size.x << ", " << m_screenItems[1].size.y << ") at (" << m_screenItems[1].position.x << ", " << m_screenItems[1].position.y << ")" << endl;
-		cout << "End Activity serialize" << endl;
     }
 
 private:

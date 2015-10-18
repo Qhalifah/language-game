@@ -43,7 +43,7 @@ class MinionController
 {
 public:
     MinionController(std::shared_ptr<Profile> profile,
-                     std::shared_ptr<Interface> interface,
+                     std::shared_ptr<Interface> _interface,
                      std::shared_ptr<MasterController> masterController,
                      std::shared_ptr<Screen> screen);
 

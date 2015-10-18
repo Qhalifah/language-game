@@ -29,7 +29,6 @@ using std::free;
 #include "interface.h"
 #include "dictionary.h"
 #include <memory>
-//#include <vector>
 #include <set>
 using std::set;
 #include <string>
@@ -39,7 +38,7 @@ class PairController : public MinionController
 {
 public:
     PairController(std::shared_ptr<Profile> profile,
-                   std::shared_ptr<Interface> interface,
+		std::shared_ptr<Interface> _interface,
                    std::shared_ptr<MasterController> masterController,
                    std::shared_ptr<Activity> screen);
     
