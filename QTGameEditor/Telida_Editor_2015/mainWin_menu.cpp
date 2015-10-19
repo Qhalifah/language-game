@@ -19,12 +19,13 @@ void MainWindow::on_actionA_Dictionary_Set_triggered()
         cout << "Cancel returned at widget stuff" << endl;
         return;
     }
-    m_currId = m_dictSets->getSelection();
-    if(!m_currId)
+    unsigned chosenDictSetId = m_dictSets->getSelection();
+    if(!chosenDictSetId)
     {
-        cout << "Cancel returned at !m_currId" << endl;
+        cout << "Cancel returned at chosenDictSetId" << endl;
         return;
     }
+    m_currId = chosenDictSetId;
     m_dictSetModel.setStringList(m_dictSets->dictSetList(m_currId, m_mainDict));
     m_mainDictModel.setStringList(m_mainDict->list());
     ui->dictSetAdd->setHidden(true);
@@ -153,7 +154,9 @@ void MainWindow::on_actionNew_Activity_triggered()
     ScreenQGV::EditorType type = ChooseActType().getEditorType();
     if(type == ScreenQGV::NONE)
         return;
+    cout << "resetting the reward image" << endl;
     ui->graphicsView->reset();
+
     if(type == ScreenQGV::PAIRACT)
         ui->graphicsView->setEditorType(ScreenQGV::PAIRACT);
     else

@@ -15,6 +15,7 @@ void MainWindow::on_dictSetDone_clicked()
         ui->dictSetErr->setText(QString("The dictionary set\nname cannot be empty."));
         return;
     }
+    cout << "m_currId: " << m_currId << endl;
     if(!m_dictSets->editDictSet(m_currId, ui->dictSetName->text(),
                                m_dictSetModel.stringList(), m_mainDict))
     {

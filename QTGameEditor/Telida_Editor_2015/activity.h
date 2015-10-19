@@ -65,11 +65,6 @@ public:
             m_reward_image,
             m_reward_MusicItem
            );
-
-        QString qStr = QString::fromStdWString(m_badge_piece.m_badge_name);
-        cout << "m_badge_piece.m_badge_name: " << qStr.toStdString() << endl;
-        qStr = QString::fromStdWString(m_badge_piece.m_image);
-        cout << "m_badge_piece.m_image: " << qStr.toStdString() << endl;
     }
 
     Piece m_badge_piece;

@@ -86,6 +86,8 @@ private:
     size_t m_badge_image_index;
     
     int m_last_hover = -1;
+
+	string m_DocumentsPath;
 };
 
 

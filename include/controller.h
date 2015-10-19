@@ -93,6 +93,7 @@ protected:
     std::shared_ptr<MasterController> m_master_controller; // no cereal
     
 private:
+
 };
 
 
@@ -169,7 +170,8 @@ private:
     int m_engaged_sprite;
 
     void goBack();
-    void disengageSprite(size_t sprite);
+	void disengageSprite(size_t sprite);
+	wstring m_WideDocumentsPath;
 };
 
 

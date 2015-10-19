@@ -393,8 +393,11 @@ void FileManager::saveFiles(ScreenQGV &screen, BackgroundMusic & bgm)
             // Save the badge name to the pieces of all Activities in the scene
             vector<unique_ptr<MyRect>> * items = screen.rectItems();
             int pieceNumber = 1;
+
+            cout << "s.m_activities.size(): " << s.m_activities.size() << endl;
             for(size_t j = 0; j < s.m_activities.size(); ++j)
             {
+                cout << "items->size(): " << items->size() << endl;
                 for(size_t i = 0; i < items->size(); ++i)
                 {
                     if((*items)[i]->actFileName().toStdString() == s.m_activities[j].second)
@@ -404,6 +407,7 @@ void FileManager::saveFiles(ScreenQGV &screen, BackgroundMusic & bgm)
                         Activity *saveAct = new Activity(actFileName, NULL);
                         saveAct->load();
                         saveAct->m_badge_piece.m_badge_name = MainWindow::ui->chooseRewardBadge->currentText().toStdWString();
+                        cout << "Setting the act image: " << (*items)[i]->actPieceFilepath().toStdString() << endl;
                         saveAct->m_badge_piece.m_image = (*items)[i]->actPieceFilepath().toStdWString();
                         saveAct->m_badge_piece.m_id = pieceNumber;
                         saveAct->save();
@@ -442,7 +446,6 @@ void FileManager::saveFiles(ScreenQGV &screen, BackgroundMusic & bgm)
         act.setRewardSoundVolume(screen.getRewardSoundVolume());
         act.setRewardSoundPitch(screen.getRewardSoundPitch());
         act.save();
-
     }
     else // MATCHACT
     {

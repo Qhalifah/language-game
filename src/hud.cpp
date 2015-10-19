@@ -31,6 +31,12 @@ along with Dina'ki Adventures. If not, see <http://www.gnu.org/licenses/>.*/
 
 HUD::HUD(Vec2 aspectRatio) : m_buttons(6, ScreenItem())
 {
+	// Get the user's Documents folder path
+	wchar_t cStr[MAX_PATH];
+	SHGetFolderPath(NULL, CSIDL_MYDOCUMENTS, NULL, DWORD("FOLDERID_Documents"), cStr);
+	m_DocumentsPath = sf::String(cStr).toAnsiString();
+	std::wstring wideDocumentsPath = cStr;
+
     float buttonWidth  = m_width / (m_buttons.size() + 1);
     float buttonHeight = m_height * .5;
     float spacer = buttonWidth / (m_buttons.size() + 1);
@@ -41,7 +47,7 @@ HUD::HUD(Vec2 aspectRatio) : m_buttons(6, ScreenItem())
         m_buttons[ii].color = Color(150, 150, 150);
         m_buttons[ii].size = Vec2(buttonWidth, buttonHeight);
         m_buttons[ii].position = Vec2(spacer+(buttonWidth+spacer)*ii, buttonHeight*.5);
-        m_buttons[ii].sound = L"audio/other/click2.wav";
+		m_buttons[ii].sound = wideDocumentsPath + L"/Dinaki Adventures/audio/other/click2.wav";
         m_buttons[ii].volume = 100;
     }
 
@@ -56,10 +62,10 @@ HUD::HUD(Vec2 aspectRatio) : m_buttons(6, ScreenItem())
 
     // Add back button
     temp.type = IMAGE;
-    temp.name = L"images/back.png";
+	temp.name = wideDocumentsPath + L"/Dinaki Adventures/images/back.png";
     temp.size = {m_height, m_height};
     temp.position = {spacer, m_height + spacer};
-    temp.sound = L"audio/other/pageturn.wav";
+	temp.sound = wideDocumentsPath + L"/Dinaki Adventures/audio/other/pageturn.wav";
     temp.visible = false; 
     m_buttons.push_back(temp);
     m_back_button_index = m_buttons.size() -1;
@@ -78,7 +84,7 @@ HUD::HUD(Vec2 aspectRatio) : m_buttons(6, ScreenItem())
     // Create virtual keys
     temp.type = BUTTON;
     temp.size = {m_height * .5f, m_height * .5f};
-    temp.sound = L"audio/other/click2.wav";
+	temp.sound = wideDocumentsPath + L"/Dinaki Adventures/audio/other/click2.wav";
     temp.color = Color(150, 150, 150, 255);
     temp.visible = false;
 

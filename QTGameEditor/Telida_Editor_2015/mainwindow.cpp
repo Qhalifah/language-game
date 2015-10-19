@@ -170,6 +170,7 @@ void MainWindow::on_selectBGM_activated(const QString &arg1)
     {
         ui->vol->setEnabled(false);
         ui->pitch->setEnabled(false);
+        ui->vol->setValue(50);
         return;
     }
     ui->vol->setEnabled(true);
@@ -181,6 +182,7 @@ void MainWindow::on_vol_valueChanged(int value)
 {
     if(ui->selectBGM->currentIndex() == 0)
         return;
+
     m_BGM.setVolume(value, ui->selectBGM->currentText());
 }
 
@@ -576,6 +578,8 @@ void MainWindow::setupScreenQGVWidgets()
             ui->chooseRewardBadge->addItem(QString("Choose a Reward Badge"));
             ui->chooseRewardBadge->insertItems(1, m_badges->list());
             ui->chooseRewardBadge->setCurrentText(m_badges->badgeName(ui->graphicsView->rewardBadgeId()));
+            if(ui->graphicsView->actsAreInScene())
+                ui->chooseRewardBadge->setEnabled(true);
         }
         ui->choicesWidg->setHidden(true);
         ui->roundsWidg->setHidden(true);
@@ -637,6 +641,7 @@ void MainWindow::setupScreenQGVWidgets()
         ui->numChoices->setValue(ui->graphicsView->choices());
         ui->numRounds->setValue(ui->graphicsView->rounds());
         ui->maxScore->setValue(ui->graphicsView->maxScore());
+
         ui->actRewardImg->setPixmap(QPixmap(QString::fromStdWString(ui->graphicsView->getRewardImage())).scaled(50, 50,
                                                                    Qt::KeepAspectRatioByExpanding,
                                                                    Qt::FastTransformation));
@@ -769,17 +774,20 @@ void MainWindow::on_goToActivity_activated(const QString &arg1)
 
     if(!ui->goToActivity->currentIndex())
     {
-        cout << "Setting MyRect with " << r->actFileName().toStdString() << " to null" << endl;
+        cout << "Setting MyRect with " << r->id() << " 0" << endl;
         r->setId(0);
         r->setGameType(GameType::NONE);
         ui->actPieceWidg->setHidden(true);
         r->setActPieceFilepath(QString("None"));
+        if(!ui->graphicsView->actsAreInScene())
+            ui->chooseRewardBadge->setEnabled(false);
         return;
     }
     QString actType = ui->goToActivity->currentText().section(QChar('-'), 0, 0);
     actType = actType.remove(QChar(' '));
     QString str = ui->goToActivity->currentText().section(QChar('-'), 1, 1);
-    ui->actPieceWidg->setHidden(false);
+    if(ui->graphicsView->rewardBadgeId())
+        ui->actPieceWidg->setHidden(false);
 
     if(!r->id())
     {
@@ -797,6 +805,7 @@ void MainWindow::on_goToActivity_activated(const QString &arg1)
     {
         r->setId(m_matchActs->id(str.remove(0, 1)));
         r->setGameType(GameType::MATCHING);
+        cout << "set matching" << endl;
     }
     if(r->id())
     {
@@ -808,6 +817,8 @@ void MainWindow::on_goToActivity_activated(const QString &arg1)
                                                                          Qt::FastTransformation));
         r->setActPieceFilepath(QString::fromStdWString(act->m_badge_piece.m_image));
     }
+    if(ui->graphicsView->actsAreInScene())
+        ui->chooseRewardBadge->setEnabled(true);
 }
 
 void MainWindow::on_selReqBadge_activated(const QString &arg1)
@@ -846,6 +857,10 @@ void MainWindow::on_chooseRewardBadge_activated(const QString &arg1)
 {
     vector<unique_ptr<MyRect>> * rects = ui->graphicsView->rectItems();
     ui->graphicsView->setRewardBadgeId(m_badges->id(arg1));
+    if(ui->graphicsView->rewardBadgeId())
+        ui->actPieceWidg->setHidden(false);
+    else
+        ui->actPieceWidg->setHidden(true);
 }
 
 void MainWindow::on_setActPieceImg_clicked()
@@ -858,10 +873,11 @@ void MainWindow::on_setActPieceImg_clicked()
             tr("All files (*.jpg *.jpeg *.png *bmp);;JPEG (*.jpg *.jpeg);;PNG (*.png);; BMP (*.bmp)" ),
             &selfilter
     );
-    if(filepath.isEmpty())
+    if(filepath.isEmpty() || MyRect::m_selectedRect->id() == 0)
         return;
     QString newFile = m_fileManager.copyFile(filepath, FileManager::IMG);
     MyRect::m_selectedRect->setActPieceFilepath(newFile);
+    ui->graphicsView->setActPieceFilePathToAllMyRects(MyRect::m_selectedRect->actFileName(), newFile);
     ui->actPieceImg->setPixmap(QPixmap(MyRect::m_selectedRect->actPieceFilepath()).scaled(50, 50,
                                                                      Qt::KeepAspectRatioByExpanding,
                                                                      Qt::FastTransformation));

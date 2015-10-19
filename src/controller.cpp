@@ -160,6 +160,11 @@ MasterController::MasterController()
     //m_profile_wrangler->loadProfiles();
     m_interface->changeHUD(m_hud);
 
+	// Get the user's Documents folder path
+	wchar_t cStr[MAX_PATH];
+	SHGetFolderPath(NULL, CSIDL_MYDOCUMENTS, NULL, DWORD("FOLDERID_Documents"), cStr);
+	m_WideDocumentsPath = cStr;
+
     /*
     // TODO: decide who pushes minion controller onto stack
     MinionController temp_controller(m_profile_wrangler.getCurrentProfile(),
@@ -271,7 +276,7 @@ void MasterController::handleEvent(sf::Event event)
             {
                 disengageSprite((size_t)m_engaged_sprite);
             }
-            if(m_hud->getItems()[(size_t)hit_sprite].name == L"images/back.png")
+            if(m_hud->getItems()[(size_t)hit_sprite].name == m_WideDocumentsPath+L"/Dinaki Adventures/images/back.png")
             {
                 m_hud->engage((size_t)hit_sprite);
                 m_interface->updateHud((size_t)hit_sprite, m_hud->getItems()[(size_t)hit_sprite]);
@@ -297,7 +302,7 @@ void MasterController::handleEvent(sf::Event event)
 
         if(hit_sprite > -1 && m_engaged_sprite != hit_sprite)
         {
-            if(m_hud->getItems()[(size_t)hit_sprite].name != L"images/back.png")
+			if (m_hud->getItems()[(size_t)hit_sprite].name != m_WideDocumentsPath + L"/Dinaki Adventures/images/back.png")
             {
                 m_hud->engage((size_t)hit_sprite);
                 m_interface->playHudSound((size_t)hit_sprite);
@@ -327,7 +332,7 @@ void MasterController::handleEvent(sf::Event event)
                 {
                     closedEvent();
                 }
-                else if(m_hud->getItems()[(size_t)hit_sprite].name == L"images/back.png")
+				else if (m_hud->getItems()[(size_t)hit_sprite].name == m_WideDocumentsPath + L"/Dinaki Adventures/images/back.png")
                 {
                     goBack();
                 }
@@ -463,11 +468,6 @@ void MasterController::pop_controller()
     
     m_interface->changeMode(m_controllers.top()->getScreen());
 }
-
-//void MasterController::addTimeEvent(unsigned int index, sf::Time time)
-//{
-//    m_event_times.push_back(std::make_pair(index, m_clock.getElapsedTime() + time));
-//}
 
 std::shared_ptr<Profile> MasterController::getProfile()
 {

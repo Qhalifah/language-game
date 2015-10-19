@@ -257,6 +257,12 @@ void ScreenQGV::reset()
     m_bgPixmap = QPixmap(this->sceneRect().width(), this->sceneRect().height());
     m_bgPixmap.fill(Qt::white);
     m_background->setBrush(QBrush(m_bgPixmap));
+    cout << "resetting the reward image" << endl;
+    MainWindow::ui->graphicsView->setRewardImage(L"None");
+    MainWindow::ui->selectBGM->clear();
+    MainWindow::ui->graphicsView->setRewardSoundFile(L"None");
+    MainWindow::ui->graphicsView->setRewardSoundVolume(50);
+
     m_markerSelected = false;
     m_id = 0;
     m_dictSetId = 0;
@@ -314,7 +320,7 @@ void ScreenQGV::mouseReleaseEvent(QMouseEvent *event)
             }
             else
             {
-                // Sets the Piece image from an Activity's file
+                // Sets the Piece image from the selected MyRect
                 // If there is no file, then the GameType is set to NONE
                 if(MyRect::m_selectedRect->gameType() != GameType::NONE)
                 {
@@ -326,10 +332,13 @@ void ScreenQGV::mouseReleaseEvent(QMouseEvent *event)
                     // If the file exists load the Activity data into the MyRect
                     if (checkFile.exists())
                     {
-                        MainWindow::ui->actPieceWidg->setHidden(false);
-                        MainWindow::ui->actPieceImg->setPixmap(QPixmap(MyRect::m_selectedRect->actPieceFilepath()).scaled(50, 50,
-                                                                                   Qt::KeepAspectRatioByExpanding,
-                                                                                   Qt::FastTransformation));
+                        if(m_rewardBadgeId != 0)
+                        {
+                            MainWindow::ui->actPieceWidg->setHidden(false);
+                            MainWindow::ui->actPieceImg->setPixmap(QPixmap(MyRect::m_selectedRect->actPieceFilepath()).scaled(50, 50,
+                                                                                       Qt::KeepAspectRatioByExpanding,
+                                                                                       Qt::FastTransformation));
+                        }
                     }
                     else // The file does not exist, set the GameType to NONE
                     {
@@ -347,6 +356,7 @@ void ScreenQGV::mouseReleaseEvent(QMouseEvent *event)
                 {
                     actName = "Matching - ";
                     actName += MainWindow::m_matchActs->act(sel->id()).name;
+                    cout << "Couldn't find " << actName.toStdString() << " for " << MainWindow::ui->goToActivity->findText(actName) << endl;
                     MainWindow::ui->goToActivity->setCurrentIndex(MainWindow::ui->goToActivity->findText(actName));
                 }
             }
@@ -440,4 +450,27 @@ void ScreenQGV::toggleLines(bool checked, ScreenItemType type)
     else if(type == ScreenItemType::BOX)
         m_showBoxLines = checked;
     this->scene()->update(0, 0, this->scene()->width(), this->scene()->height());
+}
+
+void ScreenQGV::setActPieceFilePathToAllMyRects(QString actFileName, QString newActPieceFilePath)
+{
+    for(int ii=0; ii<m_markers.size(); ++ii)
+    {
+        if(m_markers[ii]->actFileName() == actFileName)
+        {
+            m_markers[ii]->setActPieceFilepath(newActPieceFilePath);
+        }
+    }
+}
+
+bool ScreenQGV::actsAreInScene()
+{
+    for(int ii=0; ii<m_markers.size(); ++ii)
+    {
+        if(m_markers[ii]->id())
+        {
+            return true;
+        }
+    }
+    return false;
 }

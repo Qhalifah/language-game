@@ -77,6 +77,8 @@ public:
 
     void mouseReleaseEvent(QMouseEvent * event);
     void toggleLines(bool checked, ScreenItemType type);
+    void setActPieceFilePathToAllMyRects(QString, QString);
+    bool actsAreInScene();
 
     void setChoices(size_t x){m_choices = x;}
     void setRounds(size_t x){m_rounds = x;}

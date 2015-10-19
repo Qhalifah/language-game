@@ -32,7 +32,6 @@ Word::Word()
     m_imageLocation = L"EMPTY";
 }
 
-
 Word::Word(std::wstring const & dinName,
            std::wstring const & boyAudioLocation,
            std::wstring const & girlAudioLocation,
