@@ -55,8 +55,8 @@ QMap<FileManager::File, QString> setup()
     string DocumentsPath = QString::fromStdWString(cStr).toStdString();
 
     QMap<FileManager::File, QString> f;
-    f[FileManager::ACTBGM] = QString::fromStdString(DocumentsPath+"//audio//background//minigames//");
-    f[FileManager::SCNBGM] = QString::fromStdString(DocumentsPath+"//audio//background//scenes//");
+    f[FileManager::ACTBGM] = QString::fromStdString(DocumentsPath+"//Dinaki Adventures//audio//background//minigames//");
+    f[FileManager::SCNBGM] = QString::fromStdString(DocumentsPath+"//Dinaki Adventures//audio//background//scenes//");
     f[FileManager::MAPBGM] = QString::fromStdString(DocumentsPath+"//Dinaki Adventures//audio//background//");
     f[FileManager::OTHERSND] = QString::fromStdString(DocumentsPath+"//Dinaki Adventures//audio//other//");
     f[FileManager::FEMSND] = QString::fromStdString(DocumentsPath+"//Dinaki Adventures//audio//words//Female//");
