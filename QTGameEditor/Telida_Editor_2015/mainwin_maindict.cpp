@@ -120,22 +120,6 @@ void MainWindow::on_addMaleVoice_clicked()
 
 void MainWindow::on_playFemVoice_clicked()
 {
-    if(m_currWord.girlSnd.isEmpty())
-        return;
-    ofstream ofile(".\\ComSnd.txt");
-    if(!ofile.is_open())
-       return;
-    int playSound = true;
-    ofile << playSound;
-    ofile << "\n";
-    ofile << 100;
-    ofile << "\n";
-    ofile << 100;
-    ofile << "\n";
-    ofile << m_currWord.girlSnd.toStdString();
-    ofile.close();
-    m_soundApp.putChar('c');
-
     QMediaPlayer *qMP = new QMediaPlayer;
     qMP->setVolume(50);
     qMP->setMedia(QUrl::fromLocalFile(m_currWord.girlSnd));
@@ -144,25 +128,9 @@ void MainWindow::on_playFemVoice_clicked()
 
 void MainWindow::on_playMaleVoice_clicked()
 {
-    if(m_currWord.boySnd.isEmpty())
-        return;
-    ofstream ofile(".\\ComSnd.txt");
-    if(!ofile.is_open())
-       return;
-    int playSound = true;
-    ofile << playSound;
-    ofile << "\n";
-    ofile << 100;
-    ofile << "\n";
-    ofile << 100;
-    ofile << "\n";
-    ofile << m_currWord.boySnd.toStdString();
-    ofile.close();
-    m_soundApp.putChar('c');
-
     QMediaPlayer *qMP = new QMediaPlayer;
     qMP->setVolume(50);
-    qMP->setMedia(QUrl::fromLocalFile(m_currWord.girlSnd));
+    qMP->setMedia(QUrl::fromLocalFile(m_currWord.boySnd));
     qMP->play();
 }
 

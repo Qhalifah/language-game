@@ -349,7 +349,7 @@ bool MyRect::save()
     {
         cout << "MyRect GameType is MATCHING" << endl;
     }
-
+/*
     ofstream ofile(".\\ComSnd.txt");
     if(!ofile.is_open())
         return false;
@@ -361,7 +361,7 @@ bool MyRect::save()
     ofile << m_pitch;
     ofile << "\n";
     ofile << m_sndFilepath.toStdString();
-    ofile.close();
+    ofile.close();*/
     return true;
 }
 

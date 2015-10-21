@@ -149,7 +149,7 @@ ProfileController::ProfileController(std::shared_ptr<ProfileWrangler> wrangler, 
     scrollDownButton.color = Color(140,140,140,255);
     scrollDownButton.position = {20,top_pos-120};
     scrollDownButton.behavior = MOUSE_DOWN_ENGAGE | MOUSE_UP_ENGAGE;
-	scrollDownButton.sound = wideDocumentsPath + L"audio/other/click2.wav";
+	scrollDownButton.sound = wideDocumentsPath + L"/Dinaki Adventures/audio/other/click2.wav";
     m_screen_items.push_back(scrollDownButton);
     
     ScreenItem scrollUpButton;

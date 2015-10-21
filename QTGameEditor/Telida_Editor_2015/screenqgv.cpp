@@ -260,6 +260,7 @@ void ScreenQGV::reset()
     cout << "resetting the reward image" << endl;
     MainWindow::ui->graphicsView->setRewardImage(L"None");
     MainWindow::ui->selectBGM->clear();
+    MainWindow::ui->selectBGM->addItem("Select Background Music");
     MainWindow::ui->graphicsView->setRewardSoundFile(L"None");
     MainWindow::ui->graphicsView->setRewardSoundVolume(50);
 
@@ -342,6 +343,7 @@ void ScreenQGV::mouseReleaseEvent(QMouseEvent *event)
                     }
                     else // The file does not exist, set the GameType to NONE
                     {
+                        cout << "The file does not exist, set the GameType to NONE" << endl;
                         MyRect::m_selectedRect->setGameType(GameType::NONE);
                     }
                 }
@@ -356,7 +358,6 @@ void ScreenQGV::mouseReleaseEvent(QMouseEvent *event)
                 {
                     actName = "Matching - ";
                     actName += MainWindow::m_matchActs->act(sel->id()).name;
-                    cout << "Couldn't find " << actName.toStdString() << " for " << MainWindow::ui->goToActivity->findText(actName) << endl;
                     MainWindow::ui->goToActivity->setCurrentIndex(MainWindow::ui->goToActivity->findText(actName));
                 }
             }

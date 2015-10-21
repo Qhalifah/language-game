@@ -83,11 +83,21 @@ void MapController::mouseMovedEvent(sf::Event event, sf::Vector2i mouse_loc)
 
         if (screen_item.behavior & HOVER_SELECT)
         {
-            screen_item.selected = !screen_item.selected;
-            if( screen_item.selected )
-                screen_item.color = sf::Color::Green;
-            m_screen->setScreenItem((size_t)hit_sprite, screen_item);
-            m_interface->update((size_t)hit_sprite, screen_item);
+			screen_item.selected = !screen_item.selected;
+			if (screen_item.selected)
+				screen_item.color = sf::Color::Green;
+			m_interface->update((size_t)hit_sprite, screen_item);
+
+			string scene = m_map->getScene((size_t)hit_sprite);
+			if (scene != "")
+			{
+				// If scene isn't locked, then load it
+				if (!locked((size_t)hit_sprite))
+				{
+					m_interface->playScreenSound((size_t)hit_sprite);
+					loadScene(scene);
+				}
+			}
         }
 
 		// Always display the Hover Text on hover
@@ -177,8 +187,18 @@ void MapController::mouseButtonPressedEvent(sf::Event event, sf::Vector2i mouse_
 			m_screen_item.selected = !m_screen_item.selected;
 			if (m_screen_item.selected)
 				m_screen_item.color = sf::Color::Green;
-			m_screen->setScreenItem((size_t)hit_sprite, m_screen_item);
 			m_interface->update((size_t)hit_sprite, m_screen_item);
+
+			string scene = m_map->getScene((size_t)hit_sprite);
+			if (scene != "")
+			{
+				// If scene isn't locked, then load it
+				if (!locked((size_t)hit_sprite))
+				{
+					m_interface->playScreenSound((size_t)hit_sprite);
+					loadScene(scene);
+				}
+			}
 		}
 	}
 }
